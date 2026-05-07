@@ -28,14 +28,14 @@ options:
     description: Encryption passphrase for backup
     type: str
 extends_documentation_fragment:
-  - truenas.storage.truenas
+  - stevefulme1.storage.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage backup or restore system configuration
-  truenas.storage.config_backup:
+  stevefulme1.storage.config_backup:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     action: example_value
@@ -50,7 +50,7 @@ result:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

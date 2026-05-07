@@ -41,14 +41,14 @@ options:
     type: bool
     default: False
 extends_documentation_fragment:
-  - truenas.storage.truenas
+  - stevefulme1.storage.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage set posix or nfsv4 acl permissions on a dataset
-  truenas.storage.dataset_permission:
+  stevefulme1.storage.dataset_permission:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     path: example_value
@@ -62,7 +62,7 @@ result:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

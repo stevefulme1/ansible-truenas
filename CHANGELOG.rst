@@ -1,5 +1,5 @@
 ================================
-truenas.storage Release Notes
+stevefulme1.storage Release Notes
 ================================
 
 .. contents:: Topics
@@ -52,7 +52,7 @@ v1.0.0
 Release Summary
 ---------------
 
-Initial release of the ``truenas.storage`` collection.
+Initial release of the ``stevefulme1.storage`` collection.
 This changelog contains all changes to the modules and plugins in this collection.
 
 Major Changes
@@ -64,74 +64,74 @@ Major Changes
 New Modules
 -----------
 
-- truenas.storage.acme - Manage ACME DNS authenticators
-- truenas.storage.activedirectory - Configure Active Directory
-- truenas.storage.alert_info - Get current system alerts
-- truenas.storage.alert_policy - Manage alert policies
-- truenas.storage.alert_service - Manage alert notification services
-- truenas.storage.app - Manage applications (SCALE)
-- truenas.storage.ca - Manage Certificate Authorities
-- truenas.storage.certificate - Manage TLS certificates
-- truenas.storage.cloud_credential - Manage cloud credentials
-- truenas.storage.cloud_sync - Manage cloud sync tasks
-- truenas.storage.config_backup - System config backup/restore
-- truenas.storage.dataset - Manage ZFS datasets
-- truenas.storage.dataset_inherit - Reset dataset properties to inherited
-- truenas.storage.dataset_mount - Mount/unmount datasets
-- truenas.storage.dataset_permission - Manage dataset permissions and ACLs
-- truenas.storage.dataset_promote - Promote cloned datasets
-- truenas.storage.dataset_unlock - Unlock encrypted datasets
-- truenas.storage.disk_info - Get disk information
-- truenas.storage.dns - Manage DNS configuration
-- truenas.storage.docker_image - Manage Docker images
-- truenas.storage.facts - Gather TrueNAS system facts
-- truenas.storage.failover - Initiate HA failover
-- truenas.storage.group - Manage local groups
-- truenas.storage.ha_config - Manage HA configuration
-- truenas.storage.init_script - Manage init/shutdown scripts
-- truenas.storage.interface - Manage network interfaces
-- truenas.storage.iscsi_extent - Manage iSCSI extents
-- truenas.storage.iscsi_initiator - Manage iSCSI initiators
-- truenas.storage.iscsi_portal - Manage iSCSI portals
-- truenas.storage.iscsi_target - Manage iSCSI targets
-- truenas.storage.iscsi_targetextent - Manage iSCSI target-extent associations
-- truenas.storage.kerberos_keytab - Manage Kerberos keytabs
-- truenas.storage.kerberos_realm - Manage Kerberos realms
-- truenas.storage.lag - Manage link aggregation (LAGG)
-- truenas.storage.ldap - Configure LDAP directory service
-- truenas.storage.mail - Manage mail/SMTP configuration
-- truenas.storage.nfs_config - Configure global NFS settings
-- truenas.storage.nfs_kerberos - Configure NFS Kerberos settings
-- truenas.storage.nfs_share - Manage NFS exports
-- truenas.storage.ntp - Manage NTP servers
-- truenas.storage.pool - Manage ZFS storage pools
-- truenas.storage.pool_export - Export/disconnect a ZFS pool
-- truenas.storage.pool_resilver - Configure pool resilver priority
-- truenas.storage.pool_scrub - Configure pool scrub schedules
-- truenas.storage.pool_upgrade - Upgrade ZFS pool feature flags
-- truenas.storage.privilege - Manage user privileges
-- truenas.storage.replication - Manage replication tasks
-- truenas.storage.replication_restore - Restore from a replication
-- truenas.storage.replication_run - Trigger a replication run
-- truenas.storage.reporting - Configure reporting/graphing settings
-- truenas.storage.rsync_task - Manage rsync tasks
-- truenas.storage.service - Manage system services
-- truenas.storage.shell_info - Get available user shells
-- truenas.storage.smb_acl - Manage SMB share ACLs
-- truenas.storage.smb_config - Configure global SMB settings
-- truenas.storage.smb_share - Manage SMB/CIFS shares
-- truenas.storage.smb_status_info - Get SMB service status
-- truenas.storage.snapshot - Manage ZFS snapshots
-- truenas.storage.snapshot_clone - Clone a ZFS snapshot
-- truenas.storage.snapshot_rollback - Rollback to a ZFS snapshot
-- truenas.storage.snapshot_task - Manage periodic snapshot tasks
-- truenas.storage.snmp - Configure SNMP service
-- truenas.storage.ssh - Configure SSH service
-- truenas.storage.ssh_connection - Manage SSH connections/keypairs
-- truenas.storage.static_route - Manage static routes
-- truenas.storage.syslog - Configure remote syslog
-- truenas.storage.system - Manage system general settings
-- truenas.storage.tunable - Manage system tunables
-- truenas.storage.user - Manage local users
-- truenas.storage.vlan - Manage VLAN interfaces
-- truenas.storage.vm - Manage virtual machines
+- stevefulme1.storage.acme - Manage ACME DNS authenticators
+- stevefulme1.storage.activedirectory - Configure Active Directory
+- stevefulme1.storage.alert_info - Get current system alerts
+- stevefulme1.storage.alert_policy - Manage alert policies
+- stevefulme1.storage.alert_service - Manage alert notification services
+- stevefulme1.storage.app - Manage applications (SCALE)
+- stevefulme1.storage.ca - Manage Certificate Authorities
+- stevefulme1.storage.certificate - Manage TLS certificates
+- stevefulme1.storage.cloud_credential - Manage cloud credentials
+- stevefulme1.storage.cloud_sync - Manage cloud sync tasks
+- stevefulme1.storage.config_backup - System config backup/restore
+- stevefulme1.storage.dataset - Manage ZFS datasets
+- stevefulme1.storage.dataset_inherit - Reset dataset properties to inherited
+- stevefulme1.storage.dataset_mount - Mount/unmount datasets
+- stevefulme1.storage.dataset_permission - Manage dataset permissions and ACLs
+- stevefulme1.storage.dataset_promote - Promote cloned datasets
+- stevefulme1.storage.dataset_unlock - Unlock encrypted datasets
+- stevefulme1.storage.disk_info - Get disk information
+- stevefulme1.storage.dns - Manage DNS configuration
+- stevefulme1.storage.docker_image - Manage Docker images
+- stevefulme1.storage.facts - Gather TrueNAS system facts
+- stevefulme1.storage.failover - Initiate HA failover
+- stevefulme1.storage.group - Manage local groups
+- stevefulme1.storage.ha_config - Manage HA configuration
+- stevefulme1.storage.init_script - Manage init/shutdown scripts
+- stevefulme1.storage.interface - Manage network interfaces
+- stevefulme1.storage.iscsi_extent - Manage iSCSI extents
+- stevefulme1.storage.iscsi_initiator - Manage iSCSI initiators
+- stevefulme1.storage.iscsi_portal - Manage iSCSI portals
+- stevefulme1.storage.iscsi_target - Manage iSCSI targets
+- stevefulme1.storage.iscsi_targetextent - Manage iSCSI target-extent associations
+- stevefulme1.storage.kerberos_keytab - Manage Kerberos keytabs
+- stevefulme1.storage.kerberos_realm - Manage Kerberos realms
+- stevefulme1.storage.lag - Manage link aggregation (LAGG)
+- stevefulme1.storage.ldap - Configure LDAP directory service
+- stevefulme1.storage.mail - Manage mail/SMTP configuration
+- stevefulme1.storage.nfs_config - Configure global NFS settings
+- stevefulme1.storage.nfs_kerberos - Configure NFS Kerberos settings
+- stevefulme1.storage.nfs_share - Manage NFS exports
+- stevefulme1.storage.ntp - Manage NTP servers
+- stevefulme1.storage.pool - Manage ZFS storage pools
+- stevefulme1.storage.pool_export - Export/disconnect a ZFS pool
+- stevefulme1.storage.pool_resilver - Configure pool resilver priority
+- stevefulme1.storage.pool_scrub - Configure pool scrub schedules
+- stevefulme1.storage.pool_upgrade - Upgrade ZFS pool feature flags
+- stevefulme1.storage.privilege - Manage user privileges
+- stevefulme1.storage.replication - Manage replication tasks
+- stevefulme1.storage.replication_restore - Restore from a replication
+- stevefulme1.storage.replication_run - Trigger a replication run
+- stevefulme1.storage.reporting - Configure reporting/graphing settings
+- stevefulme1.storage.rsync_task - Manage rsync tasks
+- stevefulme1.storage.service - Manage system services
+- stevefulme1.storage.shell_info - Get available user shells
+- stevefulme1.storage.smb_acl - Manage SMB share ACLs
+- stevefulme1.storage.smb_config - Configure global SMB settings
+- stevefulme1.storage.smb_share - Manage SMB/CIFS shares
+- stevefulme1.storage.smb_status_info - Get SMB service status
+- stevefulme1.storage.snapshot - Manage ZFS snapshots
+- stevefulme1.storage.snapshot_clone - Clone a ZFS snapshot
+- stevefulme1.storage.snapshot_rollback - Rollback to a ZFS snapshot
+- stevefulme1.storage.snapshot_task - Manage periodic snapshot tasks
+- stevefulme1.storage.snmp - Configure SNMP service
+- stevefulme1.storage.ssh - Configure SSH service
+- stevefulme1.storage.ssh_connection - Manage SSH connections/keypairs
+- stevefulme1.storage.static_route - Manage static routes
+- stevefulme1.storage.syslog - Configure remote syslog
+- stevefulme1.storage.system - Manage system general settings
+- stevefulme1.storage.tunable - Manage system tunables
+- stevefulme1.storage.user - Manage local users
+- stevefulme1.storage.vlan - Manage VLAN interfaces
+- stevefulme1.storage.vm - Manage virtual machines

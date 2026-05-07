@@ -24,14 +24,14 @@ options:
     type: str
     required: true
 extends_documentation_fragment:
-  - truenas.storage.truenas
+  - stevefulme1.storage.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage restore from a replication target
-  truenas.storage.replication_restore:
+  stevefulme1.storage.replication_restore:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     task_id: 1
@@ -46,7 +46,7 @@ result:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

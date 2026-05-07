@@ -20,14 +20,14 @@ options:
     type: dict
     required: true
 extends_documentation_fragment:
-  - truenas.storage.truenas
+  - stevefulme1.storage.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage configure alert class policies
-  truenas.storage.alert_policy:
+  stevefulme1.storage.alert_policy:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     classes: {}
@@ -41,7 +41,7 @@ config:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

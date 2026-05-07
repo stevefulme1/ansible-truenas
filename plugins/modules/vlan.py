@@ -43,14 +43,14 @@ options:
     choices: [present, absent]
     default: present
 extends_documentation_fragment:
-  - truenas.storage.truenas
+  - stevefulme1.storage.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage create or modify vlan interfaces
-  truenas.storage.vlan:
+  stevefulme1.storage.vlan:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     name: example_value
@@ -66,7 +66,7 @@ vlan:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

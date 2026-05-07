@@ -25,14 +25,14 @@ options:
     elements: str
     required: true
 extends_documentation_fragment:
-  - truenas.storage.truenas
+  - stevefulme1.storage.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage manage smb share-level acls
-  truenas.storage.smb_acl:
+  stevefulme1.storage.smb_acl:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     share: example_value
@@ -48,7 +48,7 @@ result:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

@@ -4,6 +4,48 @@ truenas.storage Release Notes
 
 .. contents:: Topics
 
+v1.1.0
+======
+
+Release Summary
+---------------
+
+Community fixes, security hardening, and expanded CI coverage.
+Addresses open issues and PRs from the arensb/ansible-truenas project.
+
+Minor Changes
+-------------
+
+- ca - Add TrueNAS SCALE 25.10 compatibility with new ``create_type`` values.
+- ca - Add ``add_to_trusted_store`` parameter.
+- ca - Add field mapping for ``state_value`` to API field ``state``.
+- group - Add ``allow_duplicate_gid`` parameter for non-unique GID support.
+- group - Add ``users`` parameter to assign members to a group.
+- nfs_share - Add TrueNAS 25.04 compatibility for path/paths field changes.
+- nfs_share - Map ``readonly`` param to API field ``ro`` for correct behavior.
+- nfs_share - Normalize comment field comparison to handle null vs empty string.
+- user - Add ``password_disabled``, ``smb``, ``sudo_commands_nopasswd``, ``microsoft_account``, and ``roles`` (RBAC) parameters.
+- user - Add ``update_password`` parameter (``always``/``on_create``) for idempotent password management.
+- user - Add ``mutually_exclusive`` validation for ``password`` and ``password_disabled``.
+
+Bugfixes
+--------
+
+- activedirectory - Fix ``bindpw`` comparison against API response breaking idempotency.
+- group - Fix lookup comparing against wrong field name, preventing idempotent updates.
+- ldap - Fix ``bindpw`` comparison against API response breaking idempotency.
+- mail - Fix ``pass_value`` comparison against API response breaking idempotency.
+- snmp - Fix ``v3_password`` and ``v3_privpassphrase`` comparison against API response breaking idempotency.
+
+Security Fixes
+--------------
+
+- cloud_credential - Add ``no_log=True`` to ``attributes`` parameter to prevent cloud provider secrets from appearing in logs.
+- kerberos_keytab - Add ``no_log=True`` to ``file`` parameter to prevent keytab content from appearing in logs.
+- truenas_api - Replace broad ``except Exception`` with specific ``HTTPError``/``URLError`` handlers to prevent masking programming errors.
+- truenas_api - Validate job existence in ``job_wait()`` before polling.
+- user, ca, certificate, ssh_connection, cloud_credential - Strip sensitive fields from return values in check mode to prevent credential leakage.
+
 v1.0.0
 ======
 

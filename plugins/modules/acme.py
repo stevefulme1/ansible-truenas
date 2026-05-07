@@ -37,14 +37,14 @@ options:
     choices: [present, absent]
     default: present
 extends_documentation_fragment:
-  - stevefulme1.storage.truenas
+  - stevefulme1.truenas.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage configure acme (let's encrypt) registration
-  stevefulme1.storage.acme:
+  stevefulme1.truenas.acme:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     name: example_value
@@ -59,7 +59,7 @@ acme:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

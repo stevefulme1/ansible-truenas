@@ -31,14 +31,14 @@ options:
     type: list
     elements: str
 extends_documentation_fragment:
-  - stevefulme1.storage.truenas
+  - stevefulme1.truenas.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage control ha failover
-  stevefulme1.storage.failover:
+  stevefulme1.truenas.failover:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     state: present
@@ -52,7 +52,7 @@ result:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

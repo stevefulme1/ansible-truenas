@@ -17,14 +17,14 @@ description:
 options:
   {}
 extends_documentation_fragment:
-  - stevefulme1.storage.truenas
+  - stevefulme1.truenas.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage gather smb service status and active sessions
-  stevefulme1.storage.smb_status_info:
+  stevefulme1.truenas.smb_status_info:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
 """
@@ -37,7 +37,7 @@ data:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

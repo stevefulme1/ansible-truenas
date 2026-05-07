@@ -29,14 +29,14 @@ options:
     type: bool
     default: False
 extends_documentation_fragment:
-  - stevefulme1.storage.truenas
+  - stevefulme1.truenas.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage export or import a zfs pool
-  stevefulme1.storage.pool_export:
+  stevefulme1.truenas.pool_export:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     pool: example_value
@@ -51,7 +51,7 @@ result:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

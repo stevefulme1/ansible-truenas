@@ -1,5 +1,5 @@
 ================================
-stevefulme1.storage Release Notes
+stevefulme1.truenas Release Notes
 ================================
 
 .. contents:: Topics
@@ -52,7 +52,7 @@ v1.0.0
 Release Summary
 ---------------
 
-Initial release of the ``stevefulme1.storage`` collection.
+Initial release of the ``stevefulme1.truenas`` collection.
 This changelog contains all changes to the modules and plugins in this collection.
 
 Major Changes
@@ -64,74 +64,74 @@ Major Changes
 New Modules
 -----------
 
-- stevefulme1.storage.acme - Manage ACME DNS authenticators
-- stevefulme1.storage.activedirectory - Configure Active Directory
-- stevefulme1.storage.alert_info - Get current system alerts
-- stevefulme1.storage.alert_policy - Manage alert policies
-- stevefulme1.storage.alert_service - Manage alert notification services
-- stevefulme1.storage.app - Manage applications (SCALE)
-- stevefulme1.storage.ca - Manage Certificate Authorities
-- stevefulme1.storage.certificate - Manage TLS certificates
-- stevefulme1.storage.cloud_credential - Manage cloud credentials
-- stevefulme1.storage.cloud_sync - Manage cloud sync tasks
-- stevefulme1.storage.config_backup - System config backup/restore
-- stevefulme1.storage.dataset - Manage ZFS datasets
-- stevefulme1.storage.dataset_inherit - Reset dataset properties to inherited
-- stevefulme1.storage.dataset_mount - Mount/unmount datasets
-- stevefulme1.storage.dataset_permission - Manage dataset permissions and ACLs
-- stevefulme1.storage.dataset_promote - Promote cloned datasets
-- stevefulme1.storage.dataset_unlock - Unlock encrypted datasets
-- stevefulme1.storage.disk_info - Get disk information
-- stevefulme1.storage.dns - Manage DNS configuration
-- stevefulme1.storage.docker_image - Manage Docker images
-- stevefulme1.storage.facts - Gather TrueNAS system facts
-- stevefulme1.storage.failover - Initiate HA failover
-- stevefulme1.storage.group - Manage local groups
-- stevefulme1.storage.ha_config - Manage HA configuration
-- stevefulme1.storage.init_script - Manage init/shutdown scripts
-- stevefulme1.storage.interface - Manage network interfaces
-- stevefulme1.storage.iscsi_extent - Manage iSCSI extents
-- stevefulme1.storage.iscsi_initiator - Manage iSCSI initiators
-- stevefulme1.storage.iscsi_portal - Manage iSCSI portals
-- stevefulme1.storage.iscsi_target - Manage iSCSI targets
-- stevefulme1.storage.iscsi_targetextent - Manage iSCSI target-extent associations
-- stevefulme1.storage.kerberos_keytab - Manage Kerberos keytabs
-- stevefulme1.storage.kerberos_realm - Manage Kerberos realms
-- stevefulme1.storage.lag - Manage link aggregation (LAGG)
-- stevefulme1.storage.ldap - Configure LDAP directory service
-- stevefulme1.storage.mail - Manage mail/SMTP configuration
-- stevefulme1.storage.nfs_config - Configure global NFS settings
-- stevefulme1.storage.nfs_kerberos - Configure NFS Kerberos settings
-- stevefulme1.storage.nfs_share - Manage NFS exports
-- stevefulme1.storage.ntp - Manage NTP servers
-- stevefulme1.storage.pool - Manage ZFS storage pools
-- stevefulme1.storage.pool_export - Export/disconnect a ZFS pool
-- stevefulme1.storage.pool_resilver - Configure pool resilver priority
-- stevefulme1.storage.pool_scrub - Configure pool scrub schedules
-- stevefulme1.storage.pool_upgrade - Upgrade ZFS pool feature flags
-- stevefulme1.storage.privilege - Manage user privileges
-- stevefulme1.storage.replication - Manage replication tasks
-- stevefulme1.storage.replication_restore - Restore from a replication
-- stevefulme1.storage.replication_run - Trigger a replication run
-- stevefulme1.storage.reporting - Configure reporting/graphing settings
-- stevefulme1.storage.rsync_task - Manage rsync tasks
-- stevefulme1.storage.service - Manage system services
-- stevefulme1.storage.shell_info - Get available user shells
-- stevefulme1.storage.smb_acl - Manage SMB share ACLs
-- stevefulme1.storage.smb_config - Configure global SMB settings
-- stevefulme1.storage.smb_share - Manage SMB/CIFS shares
-- stevefulme1.storage.smb_status_info - Get SMB service status
-- stevefulme1.storage.snapshot - Manage ZFS snapshots
-- stevefulme1.storage.snapshot_clone - Clone a ZFS snapshot
-- stevefulme1.storage.snapshot_rollback - Rollback to a ZFS snapshot
-- stevefulme1.storage.snapshot_task - Manage periodic snapshot tasks
-- stevefulme1.storage.snmp - Configure SNMP service
-- stevefulme1.storage.ssh - Configure SSH service
-- stevefulme1.storage.ssh_connection - Manage SSH connections/keypairs
-- stevefulme1.storage.static_route - Manage static routes
-- stevefulme1.storage.syslog - Configure remote syslog
-- stevefulme1.storage.system - Manage system general settings
-- stevefulme1.storage.tunable - Manage system tunables
-- stevefulme1.storage.user - Manage local users
-- stevefulme1.storage.vlan - Manage VLAN interfaces
-- stevefulme1.storage.vm - Manage virtual machines
+- stevefulme1.truenas.acme - Manage ACME DNS authenticators
+- stevefulme1.truenas.activedirectory - Configure Active Directory
+- stevefulme1.truenas.alert_info - Get current system alerts
+- stevefulme1.truenas.alert_policy - Manage alert policies
+- stevefulme1.truenas.alert_service - Manage alert notification services
+- stevefulme1.truenas.app - Manage applications (SCALE)
+- stevefulme1.truenas.ca - Manage Certificate Authorities
+- stevefulme1.truenas.certificate - Manage TLS certificates
+- stevefulme1.truenas.cloud_credential - Manage cloud credentials
+- stevefulme1.truenas.cloud_sync - Manage cloud sync tasks
+- stevefulme1.truenas.config_backup - System config backup/restore
+- stevefulme1.truenas.dataset - Manage ZFS datasets
+- stevefulme1.truenas.dataset_inherit - Reset dataset properties to inherited
+- stevefulme1.truenas.dataset_mount - Mount/unmount datasets
+- stevefulme1.truenas.dataset_permission - Manage dataset permissions and ACLs
+- stevefulme1.truenas.dataset_promote - Promote cloned datasets
+- stevefulme1.truenas.dataset_unlock - Unlock encrypted datasets
+- stevefulme1.truenas.disk_info - Get disk information
+- stevefulme1.truenas.dns - Manage DNS configuration
+- stevefulme1.truenas.docker_image - Manage Docker images
+- stevefulme1.truenas.facts - Gather TrueNAS system facts
+- stevefulme1.truenas.failover - Initiate HA failover
+- stevefulme1.truenas.group - Manage local groups
+- stevefulme1.truenas.ha_config - Manage HA configuration
+- stevefulme1.truenas.init_script - Manage init/shutdown scripts
+- stevefulme1.truenas.interface - Manage network interfaces
+- stevefulme1.truenas.iscsi_extent - Manage iSCSI extents
+- stevefulme1.truenas.iscsi_initiator - Manage iSCSI initiators
+- stevefulme1.truenas.iscsi_portal - Manage iSCSI portals
+- stevefulme1.truenas.iscsi_target - Manage iSCSI targets
+- stevefulme1.truenas.iscsi_targetextent - Manage iSCSI target-extent associations
+- stevefulme1.truenas.kerberos_keytab - Manage Kerberos keytabs
+- stevefulme1.truenas.kerberos_realm - Manage Kerberos realms
+- stevefulme1.truenas.lag - Manage link aggregation (LAGG)
+- stevefulme1.truenas.ldap - Configure LDAP directory service
+- stevefulme1.truenas.mail - Manage mail/SMTP configuration
+- stevefulme1.truenas.nfs_config - Configure global NFS settings
+- stevefulme1.truenas.nfs_kerberos - Configure NFS Kerberos settings
+- stevefulme1.truenas.nfs_share - Manage NFS exports
+- stevefulme1.truenas.ntp - Manage NTP servers
+- stevefulme1.truenas.pool - Manage ZFS storage pools
+- stevefulme1.truenas.pool_export - Export/disconnect a ZFS pool
+- stevefulme1.truenas.pool_resilver - Configure pool resilver priority
+- stevefulme1.truenas.pool_scrub - Configure pool scrub schedules
+- stevefulme1.truenas.pool_upgrade - Upgrade ZFS pool feature flags
+- stevefulme1.truenas.privilege - Manage user privileges
+- stevefulme1.truenas.replication - Manage replication tasks
+- stevefulme1.truenas.replication_restore - Restore from a replication
+- stevefulme1.truenas.replication_run - Trigger a replication run
+- stevefulme1.truenas.reporting - Configure reporting/graphing settings
+- stevefulme1.truenas.rsync_task - Manage rsync tasks
+- stevefulme1.truenas.service - Manage system services
+- stevefulme1.truenas.shell_info - Get available user shells
+- stevefulme1.truenas.smb_acl - Manage SMB share ACLs
+- stevefulme1.truenas.smb_config - Configure global SMB settings
+- stevefulme1.truenas.smb_share - Manage SMB/CIFS shares
+- stevefulme1.truenas.smb_status_info - Get SMB service status
+- stevefulme1.truenas.snapshot - Manage ZFS snapshots
+- stevefulme1.truenas.snapshot_clone - Clone a ZFS snapshot
+- stevefulme1.truenas.snapshot_rollback - Rollback to a ZFS snapshot
+- stevefulme1.truenas.snapshot_task - Manage periodic snapshot tasks
+- stevefulme1.truenas.snmp - Configure SNMP service
+- stevefulme1.truenas.ssh - Configure SSH service
+- stevefulme1.truenas.ssh_connection - Manage SSH connections/keypairs
+- stevefulme1.truenas.static_route - Manage static routes
+- stevefulme1.truenas.syslog - Configure remote syslog
+- stevefulme1.truenas.system - Manage system general settings
+- stevefulme1.truenas.tunable - Manage system tunables
+- stevefulme1.truenas.user - Manage local users
+- stevefulme1.truenas.vlan - Manage VLAN interfaces
+- stevefulme1.truenas.vm - Manage virtual machines

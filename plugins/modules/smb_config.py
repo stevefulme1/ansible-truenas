@@ -42,14 +42,14 @@ options:
     type: str
     choices: ['NONE', 'MINIMUM', 'NORMAL', 'FULL', 'DEBUG']
 extends_documentation_fragment:
-  - stevefulme1.storage.truenas
+  - stevefulme1.truenas.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage configure global smb service settings
-  stevefulme1.storage.smb_config:
+  stevefulme1.truenas.smb_config:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     state: present
@@ -63,7 +63,7 @@ config:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

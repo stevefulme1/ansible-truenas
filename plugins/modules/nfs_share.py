@@ -15,7 +15,7 @@ version_added: "1.0.0"
 description:
   - Manage NFS exports on a TrueNAS system via the middleware API.
   - This module manages share configuration only, not filesystem permissions.
-    Use C(stevefulme1.storage.dataset_permission) to manage mount point permissions.
+    Use C(stevefulme1.truenas.dataset_permission) to manage mount point permissions.
   - Supports both legacy (pre-25.04) and modern TrueNAS API formats.
     In TrueNAS 25.04+, the API may use C(paths) (list) instead of C(path) (string).
 options:
@@ -67,14 +67,14 @@ options:
     choices: [present, absent]
     default: present
 extends_documentation_fragment:
-  - stevefulme1.storage.truenas
+  - stevefulme1.truenas.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage manage nfs exports
-  stevefulme1.storage.nfs_share:
+  stevefulme1.truenas.nfs_share:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     state: present
@@ -88,7 +88,7 @@ nfs_share:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

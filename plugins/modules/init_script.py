@@ -48,14 +48,14 @@ options:
     choices: [present, absent]
     default: present
 extends_documentation_fragment:
-  - stevefulme1.storage.truenas
+  - stevefulme1.truenas.truenas
 author:
   - Steve Fulmer (@sfulmer)
 """
 
 EXAMPLES = r"""
 - name: Manage manage init and shutdown scripts
-  stevefulme1.storage.init_script:
+  stevefulme1.truenas.init_script:
     api_url: https://truenas.example.com
     api_key: "{{ vault_truenas_api_key }}"
     when: example_value
@@ -69,7 +69,7 @@ init_script:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.stevefulme1.storage.plugins.module_utils.truenas_api import (
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
     truenas_argument_spec,

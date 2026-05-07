@@ -138,7 +138,7 @@ def main():
         shell=dict(type="str"),
         sshpubkey=dict(type="str"),
         sudo_commands=dict(type="list", elements="str"),
-        sudo_commands_nopasswd=dict(type="list", elements="str"),
+        sudo_commands_nopasswd=dict(type="list", elements="str", no_log=False),
         locked=dict(type="bool", default=False),
         microsoft_account=dict(type="bool"),
         roles=dict(type="list", elements="str"),

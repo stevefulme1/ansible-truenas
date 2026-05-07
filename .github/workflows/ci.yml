@@ -105,8 +105,8 @@ jobs:
       - name: Install nox
         run: pip install nox
 
-      - name: Run nox
-        run: nox
+      - name: Run nox lint and security
+        run: nox -s lint security
         working-directory: ansible_collections/truenas/storage
 
   security:

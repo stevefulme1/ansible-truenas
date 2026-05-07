@@ -4,7 +4,11 @@ version: 1.0.0
 readme: README.md
 authors:
   - Steve Fulmer <sfulmer@redhat.com>
-description: Ansible collection for managing TrueNAS storage systems via the middleware API.
+description: >-
+  Ansible collection for managing TrueNAS CORE and SCALE storage systems.
+  Provides 71 modules covering ZFS pools, datasets, snapshots, SMB/NFS/iSCSI sharing,
+  networking, services, certificates, replication, cloud sync, virtualization,
+  high availability, and monitoring via the TrueNAS middleware REST API.
 license:
   - GPL-3.0-or-later
 license_file: LICENSE
@@ -15,12 +19,21 @@ tags:
   - nas
   - ixsystems
   - freenas
-repository: https://github.com/sfulmer/ansible-truenas
-documentation: https://github.com/sfulmer/ansible-truenas/blob/main/README.md
-homepage: https://github.com/sfulmer/ansible-truenas
-issues: https://github.com/sfulmer/ansible-truenas/issues
+  - smb
+  - nfs
+  - iscsi
+  - infrastructure
+  - networking
+  - backup
+  - replication
+repository: https://github.com/stevefulme1/ansible-truenas
+documentation: https://github.com/stevefulme1/ansible-truenas/blob/main/README.md
+homepage: https://github.com/stevefulme1/ansible-truenas
+issues: https://github.com/stevefulme1/ansible-truenas/issues
 build_ignore:
   - .github
   - tests
   - docs
+  - noxfile.py
+  - tox.ini
   - "*.tar.gz"

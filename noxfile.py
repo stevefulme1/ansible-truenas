@@ -20,13 +20,13 @@ def _install_collection(session):
     )
 
 
-@nox.session(python=["3.12", "3.13"])
+@nox.session(python=False)
 def lint(session):
     session.install("ansible-lint")
     session.run("ansible-lint", ".")
 
 
-@nox.session(python=["3.12", "3.13"])
+@nox.session(python=False)
 def sanity(session):
     session.install("ansible-core>=2.16")
     _install_collection(session)
@@ -37,7 +37,7 @@ def sanity(session):
     )
 
 
-@nox.session(python=["3.12", "3.13"])
+@nox.session(python=False)
 def security(session):
     session.install("bandit")
     session.run("bandit", "-r", "plugins/", "-ll", "-ii")

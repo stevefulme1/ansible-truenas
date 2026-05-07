@@ -47,11 +47,24 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage set posix or nfsv4 acl permissions on a dataset
+- name: Set POSIX permissions on a shared dataset
   stevefulme1.truenas.dataset_permission:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    path: example_value
+    path: /mnt/tank/shares/documents
+    owner: smbuser
+    group: developers
+    mode: "0775"
+    recursive: true
+
+- name: Set ownership on a media dataset
+  stevefulme1.truenas.dataset_permission:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    path: /mnt/tank/shares/media
+    owner: john
+    group: media
+    mode: "0755"
 """
 
 RETURN = r"""

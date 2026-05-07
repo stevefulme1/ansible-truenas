@@ -30,12 +30,19 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage clone a zfs snapshot into a new dataset
+- name: Clone a snapshot into a new dataset
   stevefulme1.truenas.snapshot_clone:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    snapshot: example_value
-    target: example_value
+    snapshot: tank/datasets/media@daily-2024-01-15
+    target: tank/datasets/media-clone
+
+- name: Clone a snapshot for testing purposes
+  stevefulme1.truenas.snapshot_clone:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    snapshot: tank/datasets/database@pre-upgrade
+    target: tank/datasets/database-test
 """
 
 RETURN = r"""

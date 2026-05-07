@@ -48,13 +48,37 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage create or modify link aggregation groups
+- name: Create an LACP link aggregation group
   stevefulme1.truenas.lag:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: bond0
+    protocol: LACP
     members:
-      - item1
+      - eno1
+      - eno2
+    ipv4_addresses:
+      - "192.168.1.100/24"
+    mtu: 9000
+    state: present
+
+- name: Create a failover LAG
+  stevefulme1.truenas.lag:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: bond1
+    protocol: FAILOVER
+    members:
+      - eno3
+      - eno4
+    state: present
+
+- name: Remove a link aggregation group
+  stevefulme1.truenas.lag:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: bond1
+    state: absent
 """
 
 RETURN = r"""

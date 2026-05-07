@@ -34,12 +34,21 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage backup or restore system configuration
+- name: Backup system configuration
   stevefulme1.truenas.config_backup:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    action: example_value
-    path: example_value
+    action: backup
+    path: /mnt/tank/backups/truenas-config.tar
+    secret: "{{ vault_backup_passphrase }}"
+
+- name: Restore system configuration from backup
+  stevefulme1.truenas.config_backup:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    action: restore
+    path: /mnt/tank/backups/truenas-config.tar
+    secret: "{{ vault_backup_passphrase }}"
 """
 
 RETURN = r"""

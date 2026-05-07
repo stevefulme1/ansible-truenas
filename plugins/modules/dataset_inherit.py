@@ -31,13 +31,23 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage reset dataset properties to inherited values
+- name: Reset dataset compression to inherited value
   stevefulme1.truenas.dataset_inherit:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: tank/datasets/media
     properties:
-      - item1
+      - compression
+
+- name: Reset multiple dataset properties to inherited values
+  stevefulme1.truenas.dataset_inherit:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: tank/datasets/documents
+    properties:
+      - compression
+      - atime
+      - recordsize
 """
 
 RETURN = r"""

@@ -34,11 +34,20 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage kerberos principals for nfs
+- name: Upload a Kerberos keytab for NFS
   stevefulme1.truenas.nfs_kerberos:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: NFS-KEYTAB
+    file: "{{ lookup('file', 'nfs-krb5.keytab') | b64encode }}"
+    state: present
+
+- name: Remove a Kerberos keytab for NFS
+  stevefulme1.truenas.nfs_kerberos:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: NFS-KEYTAB
+    state: absent
 """
 
 RETURN = r"""

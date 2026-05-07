@@ -34,11 +34,20 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage kerberos keytabs
+- name: Upload a Kerberos keytab
   stevefulme1.truenas.kerberos_keytab:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: AD-KEYTAB
+    file: "{{ lookup('file', 'krb5.keytab') | b64encode }}"
+    state: present
+
+- name: Remove a Kerberos keytab
+  stevefulme1.truenas.kerberos_keytab:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: AD-KEYTAB
+    state: absent
 """
 
 RETURN = r"""

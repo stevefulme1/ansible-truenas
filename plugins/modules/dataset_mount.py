@@ -30,12 +30,19 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage mount or unmount a dataset
+- name: Mount an encrypted dataset after unlock
   stevefulme1.truenas.dataset_mount:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: tank/datasets/secure
     mounted: true
+
+- name: Unmount a dataset for maintenance
+  stevefulme1.truenas.dataset_mount:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: tank/datasets/archive
+    mounted: false
 """
 
 RETURN = r"""

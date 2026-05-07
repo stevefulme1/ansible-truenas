@@ -42,11 +42,28 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure pool scrub schedules
+- name: Configure weekly pool scrub schedule
   stevefulme1.truenas.pool_scrub:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    pool: example_value
+    pool: tank
+    threshold: 35
+    schedule:
+      minute: "0"
+      hour: "3"
+      dom: "*"
+      month: "*"
+      dow: "0"
+    enabled: true
+    state: present
+
+- name: Disable a pool scrub schedule
+  stevefulme1.truenas.pool_scrub:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    pool: backup
+    enabled: false
+    state: present
 """
 
 RETURN = r"""

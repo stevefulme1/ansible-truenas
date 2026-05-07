@@ -54,11 +54,27 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage init and shutdown scripts
+- name: Run a command after system initialization
   stevefulme1.truenas.init_script:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    when: example_value
+    type: COMMAND
+    command: /usr/local/bin/notify-startup.sh
+    when: POSTINIT
+    comment: Send startup notification
+    enabled: true
+    state: present
+
+- name: Run a shutdown cleanup script
+  stevefulme1.truenas.init_script:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    type: COMMAND
+    command: /usr/local/bin/cleanup-temp.sh
+    when: SHUTDOWN
+    comment: Clean temporary files before shutdown
+    timeout: 30
+    state: present
 """
 
 RETURN = r"""

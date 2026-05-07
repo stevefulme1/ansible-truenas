@@ -43,12 +43,30 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure acme (let's encrypt) registration
+- name: Register with Let's Encrypt production
   stevefulme1.truenas.acme:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
-    email: example_value
+    name: letsencrypt-prod
+    email: admin@example.com
+    directory_uri: https://acme-v02.api.letsencrypt.org/directory
+    state: present
+
+- name: Register with Let's Encrypt staging for testing
+  stevefulme1.truenas.acme:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: letsencrypt-staging
+    email: admin@example.com
+    directory_uri: https://acme-staging-v02.api.letsencrypt.org/directory
+    state: present
+
+- name: Remove an ACME registration
+  stevefulme1.truenas.acme:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: letsencrypt-staging
+    state: absent
 """
 
 RETURN = r"""

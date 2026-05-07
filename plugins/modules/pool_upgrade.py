@@ -26,11 +26,17 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage upgrade a zfs pool to the latest feature flags
+- name: Upgrade a ZFS pool to the latest feature flags
   stevefulme1.truenas.pool_upgrade:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    pool: example_value
+    pool: tank
+
+- name: Upgrade the backup pool feature flags
+  stevefulme1.truenas.pool_upgrade:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    pool: backup
 """
 
 RETURN = r"""

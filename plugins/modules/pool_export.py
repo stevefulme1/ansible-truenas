@@ -35,12 +35,28 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage export or import a zfs pool
+- name: Export a ZFS pool for migration
   stevefulme1.truenas.pool_export:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    pool: example_value
-    action: example_value
+    pool: backup
+    action: export
+    cascade: false
+
+- name: Export a pool and destroy associated shares
+  stevefulme1.truenas.pool_export:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    pool: data
+    action: export
+    cascade: true
+
+- name: Import an existing ZFS pool
+  stevefulme1.truenas.pool_export:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    pool: tank
+    action: import
 """
 
 RETURN = r"""

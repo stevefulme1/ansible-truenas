@@ -69,11 +69,37 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage smb/cifs shares
+- name: Create an SMB share for documents
   stevefulme1.truenas.smb_share:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: documents
+    path: /mnt/tank/shares/documents
+    comment: Shared documents
+    browsable: true
+    recyclebin: true
+    shadowcopy: true
+    state: present
+
+- name: Create a read-only SMB share with access restrictions
+  stevefulme1.truenas.smb_share:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: media
+    path: /mnt/tank/shares/media
+    comment: Media library (read-only)
+    readonly: true
+    guestok: false
+    hostsallow:
+      - 192.168.1.0/24
+    state: present
+
+- name: Remove an SMB share
+  stevefulme1.truenas.smb_share:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-share
+    state: absent
 """
 
 RETURN = r"""

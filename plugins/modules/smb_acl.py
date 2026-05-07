@@ -31,13 +31,31 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage smb share-level acls
+- name: Set SMB share-level ACLs for a share
   stevefulme1.truenas.smb_acl:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    share: example_value
+    share: documents
     acl_entries:
-      - item1
+      - principal: developers
+        permission: FULL
+        type: ALLOWED
+      - principal: Everyone
+        permission: READ
+        type: ALLOWED
+
+- name: Restrict SMB share access to specific groups
+  stevefulme1.truenas.smb_acl:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    share: finance
+    acl_entries:
+      - principal: finance-team
+        permission: FULL
+        type: ALLOWED
+      - principal: Everyone
+        permission: FULL
+        type: DENIED
 """
 
 RETURN = r"""

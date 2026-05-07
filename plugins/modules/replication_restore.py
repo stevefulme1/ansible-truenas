@@ -30,12 +30,19 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage restore from a replication target
+- name: Restore from a replication target
   stevefulme1.truenas.replication_restore:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
     task_id: 1
-    target_dataset: example_value
+    target_dataset: tank/datasets/restored
+
+- name: Restore a database backup from replication
+  stevefulme1.truenas.replication_restore:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    task_id: 3
+    target_dataset: data/databases/restored
 """
 
 RETURN = r"""

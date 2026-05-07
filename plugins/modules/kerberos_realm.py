@@ -43,11 +43,24 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage kerberos realms
+- name: Create a Kerberos realm
   stevefulme1.truenas.kerberos_realm:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    realm: example_value
+    realm: CORP.EXAMPLE.COM
+    kdc:
+      - dc01.corp.example.com
+      - dc02.corp.example.com
+    admin_server:
+      - dc01.corp.example.com
+    state: present
+
+- name: Remove a Kerberos realm
+  stevefulme1.truenas.kerberos_realm:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    realm: OLD.EXAMPLE.COM
+    state: absent
 """
 
 RETURN = r"""

@@ -48,11 +48,24 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure network interfaces
+- name: Configure a network interface with a static IP
   stevefulme1.truenas.interface:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: eno1
+    ipv4_dhcp: false
+    ipv4_addresses:
+      - "192.168.1.100/24"
+    mtu: 9000
+    state: present
+
+- name: Configure a network interface with DHCP
+  stevefulme1.truenas.interface:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: eno1
+    ipv4_dhcp: true
+    state: present
 """
 
 RETURN = r"""

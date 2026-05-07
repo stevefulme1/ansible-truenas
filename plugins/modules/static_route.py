@@ -38,12 +38,31 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage static routes
+- name: Create a static route to a remote network
   stevefulme1.truenas.static_route:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    destination: example_value
-    gateway: example_value
+    destination: 10.10.0.0/16
+    gateway: 192.168.1.1
+    description: Route to branch office network
+    state: present
+
+- name: Create a static route for iSCSI traffic
+  stevefulme1.truenas.static_route:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    destination: 172.16.0.0/24
+    gateway: 192.168.1.254
+    description: iSCSI storage network
+    state: present
+
+- name: Remove a static route
+  stevefulme1.truenas.static_route:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    destination: 10.10.0.0/16
+    gateway: 192.168.1.1
+    state: absent
 """
 
 RETURN = r"""

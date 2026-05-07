@@ -100,11 +100,40 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage local users
+- name: Create a local user for SMB access
   stevefulme1.truenas.user:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    username: example_value
+    username: john
+    full_name: John Smith
+    email: john@example.com
+    password: "{{ vault_user_password }}"
+    group: developers
+    groups:
+      - media
+    home: /mnt/tank/home/john
+    shell: /usr/bin/bash
+    smb: true
+    state: present
+
+- name: Create a service account without password login
+  stevefulme1.truenas.user:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    username: backupuser
+    full_name: Backup Service Account
+    password_disabled: true
+    group: backup-operators
+    sshpubkey: "{{ lookup('file', '~/.ssh/backup_key.pub') }}"
+    shell: /usr/sbin/nologin
+    state: present
+
+- name: Remove a user
+  stevefulme1.truenas.user:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    username: former-employee
+    state: absent
 """
 
 RETURN = r"""

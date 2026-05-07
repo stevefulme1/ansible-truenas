@@ -70,14 +70,45 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure cloud sync tasks
+- name: Create a cloud sync task to push backups to S3
   stevefulme1.truenas.cloud_sync:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    description: example_value
+    description: Daily backup to S3
     credential: 1
-    direction: example_value
-    path: example_value
+    direction: PUSH
+    transfer_mode: SYNC
+    path: /mnt/tank/backups
+    bucket: truenas-backups
+    folder: /daily
+    schedule:
+      minute: "0"
+      hour: "2"
+      dom: "*"
+      month: "*"
+      dow: "*"
+    enabled: true
+    state: present
+
+- name: Create a cloud sync task to pull data from S3
+  stevefulme1.truenas.cloud_sync:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    description: Pull shared assets from S3
+    credential: 1
+    direction: PULL
+    transfer_mode: COPY
+    path: /mnt/data/shared-assets
+    bucket: company-assets
+    folder: /media
+    state: present
+
+- name: Remove a cloud sync task
+  stevefulme1.truenas.cloud_sync:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    description: Daily backup to S3
+    state: absent
 """
 
 RETURN = r"""

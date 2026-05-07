@@ -51,11 +51,34 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage virtual machines
+- name: Create a virtual machine
   stevefulme1.truenas.vm:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: ubuntu-server
+    vcpus: 2
+    memory: 4096
+    bootloader: UEFI
+    autostart: true
+    state: present
+
+- name: Create a lightweight VM for testing
+  stevefulme1.truenas.vm:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: test-vm
+    vcpus: 1
+    memory: 1024
+    bootloader: UEFI
+    autostart: false
+    state: present
+
+- name: Remove a virtual machine
+  stevefulme1.truenas.vm:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-vm
+    state: absent
 """
 
 RETURN = r"""

@@ -53,13 +53,28 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure ldap directory service
+- name: Configure LDAP directory service
   stevefulme1.truenas.ldap:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
     hostname:
-      - item1
-    basedn: example_value
+      - ldap01.example.com
+      - ldap02.example.com
+    basedn: dc=example,dc=com
+    binddn: cn=readonly,dc=example,dc=com
+    bindpw: "{{ vault_ldap_bind_password }}"
+    ssl: "ON"
+    schema: RFC2307
+    enable: true
+
+- name: Disable LDAP directory service
+  stevefulme1.truenas.ldap:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    hostname:
+      - ldap01.example.com
+    basedn: dc=example,dc=com
+    enable: false
 """
 
 RETURN = r"""

@@ -76,11 +76,37 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage certificate authorities
+- name: Create an internal Certificate Authority
   stevefulme1.truenas.ca:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: internal-ca
+    create_type: CA_CREATE_INTERNAL
+    key_length: 4096
+    digest_algorithm: SHA256
+    lifetime: 3650
+    country: US
+    state_value: California
+    city: San Francisco
+    organization: Example Corp
+    state: present
+
+- name: Import an existing Certificate Authority
+  stevefulme1.truenas.ca:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: imported-ca
+    create_type: CA_CREATE_IMPORTED
+    certificate: "{{ lookup('file', 'ca-cert.pem') }}"
+    privatekey: "{{ vault_ca_private_key }}"
+    state: present
+
+- name: Remove a Certificate Authority
+  stevefulme1.truenas.ca:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-ca
+    state: absent
 """
 
 RETURN = r"""

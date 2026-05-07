@@ -58,11 +58,33 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage iscsi extents (luns)
+- name: Create a zvol-backed iSCSI extent
   stevefulme1.truenas.iscsi_extent:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: vmware-datastore
+    type: DISK
+    disk: zvol/tank/iscsi/vmware-lun0
+    blocksize: 512
+    rpm: SSD
+    state: present
+
+- name: Create a file-backed iSCSI extent
+  stevefulme1.truenas.iscsi_extent:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: test-extent
+    type: FILE
+    path: /mnt/tank/iscsi/test-lun.img
+    filesize: 50G
+    state: present
+
+- name: Remove an iSCSI extent
+  stevefulme1.truenas.iscsi_extent:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: test-extent
+    state: absent
 """
 
 RETURN = r"""

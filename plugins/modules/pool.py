@@ -51,11 +51,44 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage zfs storage pools
+- name: Create a mirrored ZFS storage pool
   stevefulme1.truenas.pool:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: tank
+    topology:
+      data:
+        - type: MIRROR
+          disks:
+            - sda
+            - sdb
+    state: present
+
+- name: Create an encrypted storage pool
+  stevefulme1.truenas.pool:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: secure
+    encryption: true
+    encryption_algorithm: AES-256-GCM
+    topology:
+      data:
+        - type: RAIDZ2
+          disks:
+            - sda
+            - sdb
+            - sdc
+            - sdd
+            - sde
+            - sdf
+    state: present
+
+- name: Remove a storage pool
+  stevefulme1.truenas.pool:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-pool
+    state: absent
 """
 
 RETURN = r"""

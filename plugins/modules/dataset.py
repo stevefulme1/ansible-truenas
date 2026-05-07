@@ -80,11 +80,33 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage zfs datasets
+- name: Create a dataset for media storage
   stevefulme1.truenas.dataset:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: tank/datasets/media
+    compression: LZ4
+    quota: 500G
+    atime: "OFF"
+    state: present
+
+- name: Create an encrypted dataset for sensitive data
+  stevefulme1.truenas.dataset:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: tank/datasets/secure
+    encryption: true
+    compression: ZSTD
+    copies: 2
+    comments: Encrypted storage for confidential files
+    state: present
+
+- name: Remove a dataset
+  stevefulme1.truenas.dataset:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: tank/datasets/old-project
+    state: absent
 """
 
 RETURN = r"""

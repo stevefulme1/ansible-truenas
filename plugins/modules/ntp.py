@@ -51,11 +51,31 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage ntp servers
+- name: Add an NTP server
   stevefulme1.truenas.ntp:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    address: example_value
+    address: time.nist.gov
+    prefer: true
+    iburst: true
+    state: present
+
+- name: Add a local NTP server
+  stevefulme1.truenas.ntp:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    address: 10.0.0.1
+    iburst: true
+    minpoll: 4
+    maxpoll: 8
+    state: present
+
+- name: Remove an NTP server
+  stevefulme1.truenas.ntp:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    address: old-ntp.example.com
+    state: absent
 """
 
 RETURN = r"""

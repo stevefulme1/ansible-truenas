@@ -38,11 +38,31 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage iscsi targets
+- name: Create an iSCSI target
   stevefulme1.truenas.iscsi_target:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: iqn.2024-01.com.example:vmware-storage
+    alias: VMware Datastore Target
+    state: present
+
+- name: Create an iSCSI target with portal groups
+  stevefulme1.truenas.iscsi_target:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: iqn.2024-01.com.example:backup-target
+    alias: Backup Target
+    groups:
+      - portal: 1
+        initiator: 1
+    state: present
+
+- name: Remove an iSCSI target
+  stevefulme1.truenas.iscsi_target:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: iqn.2024-01.com.example:old-target
+    state: absent
 """
 
 RETURN = r"""

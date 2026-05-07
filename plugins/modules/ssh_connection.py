@@ -49,12 +49,34 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage ssh connections for replication
+- name: Create an SSH connection for replication
   stevefulme1.truenas.ssh_connection:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
-    host: example_value
+    name: offsite-nas
+    host: nas-dr.example.com
+    port: 22
+    username: root
+    private_key: "{{ vault_replication_ssh_key }}"
+    state: present
+
+- name: Create an SSH connection on a non-standard port
+  stevefulme1.truenas.ssh_connection:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: branch-office-nas
+    host: 10.0.0.50
+    port: 2222
+    username: root
+    private_key: "{{ vault_branch_ssh_key }}"
+    state: present
+
+- name: Remove an SSH connection
+  stevefulme1.truenas.ssh_connection:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-connection
+    state: absent
 """
 
 RETURN = r"""

@@ -55,11 +55,46 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure periodic snapshot tasks
+- name: Create a daily snapshot task with 14-day retention
   stevefulme1.truenas.snapshot_task:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    dataset: example_value
+    dataset: tank/datasets/documents
+    schedule:
+      minute: "0"
+      hour: "0"
+      dom: "*"
+      month: "*"
+      dow: "*"
+    lifetime_value: 14
+    lifetime_unit: DAY
+    naming_schema: "auto-%Y-%m-%d_%H-%M"
+    recursive: true
+    enabled: true
+    state: present
+
+- name: Create an hourly snapshot task for databases
+  stevefulme1.truenas.snapshot_task:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    dataset: tank/datasets/database
+    schedule:
+      minute: "0"
+      hour: "*"
+      dom: "*"
+      month: "*"
+      dow: "*"
+    lifetime_value: 48
+    lifetime_unit: HOUR
+    naming_schema: "hourly-%Y-%m-%d_%H-%M"
+    state: present
+
+- name: Remove a snapshot task
+  stevefulme1.truenas.snapshot_task:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    dataset: tank/datasets/old
+    state: absent
 """
 
 RETURN = r"""

@@ -47,11 +47,38 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage admin privileges and roles
+- name: Create a read-only admin privilege
   stevefulme1.truenas.privilege:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: monitoring-access
+    local_groups:
+      - developers
+    roles:
+      - READONLY_ADMIN
+    web_shell: false
+    state: present
+
+- name: Create a full admin privilege for operators
+  stevefulme1.truenas.privilege:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: operator-access
+    local_groups:
+      - backup-operators
+    ds_groups:
+      - Domain Admins
+    roles:
+      - FULL_ADMIN
+    web_shell: true
+    state: present
+
+- name: Remove a privilege
+  stevefulme1.truenas.privilege:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-privilege
+    state: absent
 """
 
 RETURN = r"""

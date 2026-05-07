@@ -32,11 +32,29 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage truenas services
+- name: Enable and start the SMB service
   stevefulme1.truenas.service:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    service: example_value
+    service: smb
+    enabled: true
+    started: true
+
+- name: Enable and start the NFS service
+  stevefulme1.truenas.service:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    service: nfs
+    enabled: true
+    started: true
+
+- name: Stop and disable the SSH service
+  stevefulme1.truenas.service:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    service: ssh
+    enabled: false
+    started: false
 """
 
 RETURN = r"""

@@ -39,13 +39,34 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage cloud storage credentials
+- name: Create AWS S3 cloud credentials
   stevefulme1.truenas.cloud_credential:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
-    provider: example_value
-    attributes: {}
+    name: aws-backup
+    provider: S3
+    attributes:
+      access_key_id: "{{ vault_aws_access_key }}"
+      secret_access_key: "{{ vault_aws_secret_key }}"
+    state: present
+
+- name: Create Backblaze B2 cloud credentials
+  stevefulme1.truenas.cloud_credential:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: b2-offsite
+    provider: B2
+    attributes:
+      account: "{{ vault_b2_account_id }}"
+      key: "{{ vault_b2_app_key }}"
+    state: present
+
+- name: Remove cloud credentials
+  stevefulme1.truenas.cloud_credential:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-credentials
+    state: absent
 """
 
 RETURN = r"""

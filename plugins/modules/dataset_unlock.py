@@ -36,11 +36,20 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage unlock an encrypted dataset
+- name: Unlock an encrypted dataset with a passphrase
   stevefulme1.truenas.dataset_unlock:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: tank/datasets/secure
+    passphrase: "{{ vault_dataset_passphrase }}"
+
+- name: Unlock an encrypted dataset and all children
+  stevefulme1.truenas.dataset_unlock:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: tank/encrypted
+    key_file: /mnt/usb/encryption.key
+    recursive: true
 """
 
 RETURN = r"""

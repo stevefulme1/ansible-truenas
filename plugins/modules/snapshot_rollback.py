@@ -38,12 +38,22 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage rollback a dataset to a specific snapshot
+- name: Rollback a dataset to a specific snapshot
   stevefulme1.truenas.snapshot_rollback:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    dataset: example_value
-    snapshot: example_value
+    dataset: tank/datasets/database
+    snapshot: pre-upgrade
+    force: false
+
+- name: Force rollback a dataset and destroy newer snapshots
+  stevefulme1.truenas.snapshot_rollback:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    dataset: tank/datasets/media
+    snapshot: last-known-good
+    recursive: true
+    force: true
 """
 
 RETURN = r"""

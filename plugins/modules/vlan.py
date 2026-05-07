@@ -49,13 +49,35 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage create or modify vlan interfaces
+- name: Create a VLAN interface for storage traffic
   stevefulme1.truenas.vlan:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
-    parent_interface: example_value
-    tag: 1
+    name: vlan100
+    parent_interface: eno1
+    tag: 100
+    ipv4_addresses:
+      - "10.100.0.10/24"
+    mtu: 9000
+    state: present
+
+- name: Create a VLAN for management network
+  stevefulme1.truenas.vlan:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: vlan50
+    parent_interface: eno1
+    tag: 50
+    ipv4_addresses:
+      - "192.168.50.10/24"
+    state: present
+
+- name: Remove a VLAN interface
+  stevefulme1.truenas.vlan:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: vlan100
+    state: absent
 """
 
 RETURN = r"""

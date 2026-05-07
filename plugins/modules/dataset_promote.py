@@ -26,11 +26,17 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage promote a zfs clone to an independent dataset
+- name: Promote a ZFS clone to an independent dataset
   stevefulme1.truenas.dataset_promote:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: tank/datasets/media-clone
+
+- name: Promote a restored clone as the new primary dataset
+  stevefulme1.truenas.dataset_promote:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: tank/datasets/db-restored
 """
 
 RETURN = r"""

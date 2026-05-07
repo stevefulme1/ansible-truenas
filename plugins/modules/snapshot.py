@@ -38,11 +38,30 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage zfs snapshots
+- name: Create a manual snapshot before maintenance
   stevefulme1.truenas.snapshot:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    dataset: example_value
+    dataset: tank/datasets/database
+    name: pre-upgrade
+    state: present
+
+- name: Create a recursive snapshot of a dataset tree
+  stevefulme1.truenas.snapshot:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    dataset: tank/datasets
+    name: full-backup
+    recursive: true
+    state: present
+
+- name: Remove a snapshot
+  stevefulme1.truenas.snapshot:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    dataset: tank/datasets/database
+    name: pre-upgrade
+    state: absent
 """
 
 RETURN = r"""

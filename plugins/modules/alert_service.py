@@ -49,13 +49,36 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure alert notification services
+- name: Configure email alert notifications
   stevefulme1.truenas.alert_service:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
-    type: example_value
-    attributes: {}
+    name: email-alerts
+    type: Mail
+    attributes:
+      email: sysadmin@example.com
+    level: WARNING
+    enabled: true
+    state: present
+
+- name: Configure Slack alert notifications
+  stevefulme1.truenas.alert_service:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: slack-critical
+    type: Slack
+    attributes:
+      url: "{{ vault_slack_webhook_url }}"
+    level: CRITICAL
+    enabled: true
+    state: present
+
+- name: Remove an alert service
+  stevefulme1.truenas.alert_service:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: slack-critical
+    state: absent
 """
 
 RETURN = r"""

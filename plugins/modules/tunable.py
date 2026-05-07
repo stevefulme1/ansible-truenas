@@ -47,12 +47,33 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage system tunables
+- name: Set a sysctl tunable for network performance
   stevefulme1.truenas.tunable:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    var: example_value
-    value: example_value
+    var: net.core.rmem_max
+    value: "16777216"
+    type: SYSCTL
+    comment: Increase receive buffer size for NFS performance
+    state: present
+
+- name: Set a ZFS tunable
+  stevefulme1.truenas.tunable:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    var: zfs.zfs_arc_max
+    value: "8589934592"
+    type: SYSCTL
+    comment: Limit ARC to 8GB
+    state: present
+
+- name: Remove a tunable
+  stevefulme1.truenas.tunable:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    var: net.core.rmem_max
+    value: "16777216"
+    state: absent
 """
 
 RETURN = r"""

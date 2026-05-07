@@ -69,12 +69,43 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure rsync tasks
+- name: Create an rsync push task to a remote server
   stevefulme1.truenas.rsync_task:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    path: example_value
-    remotehost: example_value
+    path: /mnt/tank/backups
+    remotehost: backup-server.example.com
+    remotepath: /srv/backups/truenas
+    direction: PUSH
+    recursive: true
+    compress: true
+    archive: true
+    schedule:
+      minute: "0"
+      hour: "4"
+      dom: "*"
+      month: "*"
+      dow: "*"
+    state: present
+
+- name: Create an rsync pull task using a remote module
+  stevefulme1.truenas.rsync_task:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    path: /mnt/data/shared
+    remotehost: fileserver.example.com
+    remotemodule: public
+    direction: PULL
+    delete: false
+    state: present
+
+- name: Remove an rsync task
+  stevefulme1.truenas.rsync_task:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    path: /mnt/tank/old-sync
+    remotehost: old-server.example.com
+    state: absent
 """
 
 RETURN = r"""

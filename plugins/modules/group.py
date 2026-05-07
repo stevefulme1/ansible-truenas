@@ -50,11 +50,34 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage local groups
+- name: Create a group for developers
   stevefulme1.truenas.group:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: developers
+    smb: true
+    users:
+      - john
+      - smbuser
+    state: present
+
+- name: Create a group with sudo access
+  stevefulme1.truenas.group:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: backup-operators
+    smb: false
+    sudo_commands:
+      - /usr/local/bin/rsync
+      - /sbin/zfs
+    state: present
+
+- name: Remove a group
+  stevefulme1.truenas.group:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-team
+    state: absent
 """
 
 RETURN = r"""

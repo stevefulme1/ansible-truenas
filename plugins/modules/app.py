@@ -45,11 +45,33 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage deploy or manage applications
+- name: Deploy Plex media server application
   stevefulme1.truenas.app:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: plex
+    catalog: TRUENAS
+    train: stable
+    state: present
+
+- name: Deploy an application with custom configuration
+  stevefulme1.truenas.app:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: nextcloud
+    catalog: TRUENAS
+    train: stable
+    values:
+      nextcloud:
+        host: cloud.example.com
+    state: present
+
+- name: Remove an application
+  stevefulme1.truenas.app:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: plex
+    state: absent
 """
 
 RETURN = r"""

@@ -35,11 +35,29 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage pull or remove docker images
+- name: Pull the latest nginx Docker image
   stevefulme1.truenas.docker_image:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    image: example_value
+    image: nginx
+    tag: latest
+    state: present
+
+- name: Pull a specific version of PostgreSQL
+  stevefulme1.truenas.docker_image:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    image: postgres
+    tag: "16-alpine"
+    state: present
+
+- name: Remove an unused Docker image
+  stevefulme1.truenas.docker_image:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    image: nginx
+    tag: "1.24"
+    state: absent
 """
 
 RETURN = r"""

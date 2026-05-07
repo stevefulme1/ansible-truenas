@@ -45,11 +45,32 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage join or leave an active directory domain
+- name: Join an Active Directory domain
   stevefulme1.truenas.activedirectory:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    domainname: example_value
+    domainname: corp.example.com
+    bindname: administrator
+    bindpw: "{{ vault_ad_bind_password }}"
+    enable: true
+
+- name: Join AD with Kerberos realm and site
+  stevefulme1.truenas.activedirectory:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    domainname: corp.example.com
+    bindname: svc-truenas
+    bindpw: "{{ vault_ad_bind_password }}"
+    site: US-East
+    kerberos_realm: CORP.EXAMPLE.COM
+    enable: true
+
+- name: Disable Active Directory
+  stevefulme1.truenas.activedirectory:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    domainname: corp.example.com
+    enable: false
 """
 
 RETURN = r"""

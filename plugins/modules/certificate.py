@@ -71,11 +71,38 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage manage tls certificates
+- name: Create an internal TLS certificate
   stevefulme1.truenas.certificate:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: truenas-webui
+    create_type: CERTIFICATE_CREATE_INTERNAL
+    key_length: 2048
+    digest_algorithm: SHA256
+    lifetime: 365
+    country: US
+    organization: Example Corp
+    san:
+      - truenas.example.com
+      - nas01.example.com
+    state: present
+
+- name: Import an existing TLS certificate
+  stevefulme1.truenas.certificate:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: wildcard-cert
+    create_type: CERTIFICATE_CREATE_IMPORTED
+    certificate: "{{ lookup('file', 'cert.pem') }}"
+    privatekey: "{{ vault_cert_private_key }}"
+    state: present
+
+- name: Remove a certificate
+  stevefulme1.truenas.certificate:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: expired-cert
+    state: absent
 """
 
 RETURN = r"""

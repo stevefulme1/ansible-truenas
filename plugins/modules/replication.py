@@ -75,14 +75,48 @@ author:
 """
 
 EXAMPLES = r"""
-- name: Manage configure zfs replication tasks
+- name: Create a local replication task
   stevefulme1.truenas.replication:
-    api_url: https://truenas.example.com
+    api_url: "https://truenas.example.com"
     api_key: "{{ vault_truenas_api_key }}"
-    name: example_value
+    name: local-backup
     source_datasets:
-      - item1
-    target_dataset: example_value
+      - tank/datasets/media
+      - tank/datasets/documents
+    target_dataset: backup/replicated
+    transport: LOCAL
+    recursive: true
+    retention_policy: SOURCE
+    schedule:
+      minute: "0"
+      hour: "1"
+      dom: "*"
+      month: "*"
+      dow: "*"
+    state: present
+
+- name: Create a remote SSH replication task
+  stevefulme1.truenas.replication:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: offsite-replication
+    source_datasets:
+      - tank/datasets/critical
+    target_dataset: backup/offsite
+    direction: PUSH
+    transport: SSH
+    ssh_credentials: 1
+    recursive: true
+    speed_limit: 10485760
+    enabled: true
+    state: present
+
+- name: Remove a replication task
+  stevefulme1.truenas.replication:
+    api_url: "https://truenas.example.com"
+    api_key: "{{ vault_truenas_api_key }}"
+    name: old-replication
+    state: absent
 """
 
 RETURN = r"""

@@ -11,7 +11,6 @@ description: >-
   high availability, and monitoring via the TrueNAS middleware REST API.
 license:
   - GPL-3.0-or-later
-license_file: LICENSE
 tags:
   - truenas
   - storage

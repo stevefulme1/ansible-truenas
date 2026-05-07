@@ -1,0 +1,26 @@
+namespace: truenas
+name: storage
+version: 1.0.0
+readme: README.md
+authors:
+  - Steve Fulmer <sfulmer@redhat.com>
+description: Ansible collection for managing TrueNAS storage systems via the middleware API.
+license:
+  - GPL-3.0-or-later
+license_file: LICENSE
+tags:
+  - truenas
+  - storage
+  - zfs
+  - nas
+  - ixsystems
+  - freenas
+repository: https://github.com/sfulmer/ansible-truenas
+documentation: https://github.com/sfulmer/ansible-truenas/blob/main/README.md
+homepage: https://github.com/sfulmer/ansible-truenas
+issues: https://github.com/sfulmer/ansible-truenas/issues
+build_ignore:
+  - .github
+  - tests
+  - docs
+  - "*.tar.gz"

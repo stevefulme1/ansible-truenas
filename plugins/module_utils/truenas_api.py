@@ -4,6 +4,20 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+DOCUMENTATION = r"""
+---
+module_utils: truenas_api
+short_description: TrueNAS REST API client and common argument spec
+description:
+  - Provides the TrueNASClient class for communicating with the TrueNAS middleware
+    REST API v2.0, supporting both API key and username/password authentication.
+  - Includes convenience methods for GET, POST, PUT, and DELETE requests, as well
+    as async job polling via job_wait. Also exports truenas_argument_spec for
+    shared module parameters.
+author:
+  - Steve Fulmer (@stevefulme1)
+"""
+
 import json
 
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError

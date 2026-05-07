@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: ansible_collections/truenas/storage
+          path: ansible_collections/stevefulme1/truenas
 
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
@@ -38,7 +38,7 @@ jobs:
 
       - name: Run sanity tests
         run: ansible-test sanity --docker -v --color --python ${{ matrix.python }}
-        working-directory: ansible_collections/truenas/storage
+        working-directory: ansible_collections/stevefulme1/truenas
 
   lint:
     name: Ansible Lint
@@ -69,7 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: ansible_collections/truenas/storage
+          path: ansible_collections/stevefulme1/truenas
 
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
@@ -81,7 +81,7 @@ jobs:
 
       - name: Run tox
         run: tox
-        working-directory: ansible_collections/truenas/storage
+        working-directory: ansible_collections/stevefulme1/truenas
 
   nox:
     name: Nox (Python ${{ matrix.python }})
@@ -95,7 +95,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: ansible_collections/truenas/storage
+          path: ansible_collections/stevefulme1/truenas
 
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
@@ -107,7 +107,7 @@ jobs:
 
       - name: Run nox lint and security
         run: nox -s lint security
-        working-directory: ansible_collections/truenas/storage
+        working-directory: ansible_collections/stevefulme1/truenas
 
   security:
     name: Security Scan

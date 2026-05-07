@@ -52,9 +52,11 @@ options:
   hostsallow:
     description: Allowed hosts
     type: list
+    elements: str
   hostsdeny:
     description: Denied hosts
     type: list
+    elements: str
   state:
     description: Desired state of the resource.
     type: str
@@ -101,8 +103,8 @@ def main():
         recyclebin=dict(type="bool", default=False),
         shadowcopy=dict(type="bool", default=True),
         audit_logging=dict(type="bool", default=False),
-        hostsallow=dict(type="list"),
-        hostsdeny=dict(type="list"),
+        hostsallow=dict(type="list", elements="str"),
+        hostsdeny=dict(type="list", elements="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 

@@ -25,6 +25,7 @@ options:
   groups:
     description: Portal and initiator group associations
     type: list
+    elements: str
   state:
     description: Desired state of the resource.
     type: str
@@ -64,7 +65,7 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=True),
         alias=dict(type="str"),
-        groups=dict(type="list"),
+        groups=dict(type="list", elements="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 

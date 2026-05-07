@@ -29,6 +29,7 @@ options:
   disabled_reasons:
     description: Reasons to display when disabled
     type: list
+    elements: str
 extends_documentation_fragment:
   - truenas.storage.truenas
 author:
@@ -64,7 +65,7 @@ def main():
         action=dict(type="str", choices=['enable', 'disable', 'trigger']),
         master=dict(type="bool"),
         timeout=dict(type="int", default=60),
-        disabled_reasons=dict(type="list"),
+        disabled_reasons=dict(type="list", elements="str"),
     )
 
     module = AnsibleModule(
@@ -78,7 +79,12 @@ def main():
 
     try:
         if not module.check_mode:
-            response = client.post("failover", {"action": module.params["action"], "master": module.params["master"], "timeout": module.params["timeout"], "disabled_reasons": module.params["disabled_reasons"]})
+            response = client.post("failover", {
+                "action": module.params["action"],
+                "master": module.params["master"],
+                "timeout": module.params["timeout"],
+                "disabled_reasons": module.params["disabled_reasons"],
+            })
             result["result"] = response
         result["changed"] = True
     except TrueNASError as e:

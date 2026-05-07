@@ -81,7 +81,12 @@ def main():
 
     try:
         if not module.check_mode:
-            response = client.post("zfs/snapshot", {"dataset": module.params["dataset"], "snapshot": module.params["snapshot"], "recursive": module.params["recursive"], "force": module.params["force"]})
+            response = client.post("zfs/snapshot", {
+                "dataset": module.params["dataset"],
+                "snapshot": module.params["snapshot"],
+                "recursive": module.params["recursive"],
+                "force": module.params["force"],
+            })
             result["result"] = response
         result["changed"] = True
     except TrueNASError as e:

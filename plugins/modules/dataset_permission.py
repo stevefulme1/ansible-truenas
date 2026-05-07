@@ -35,6 +35,7 @@ options:
   acl_entries:
     description: List of ACL entries
     type: list
+    elements: str
   recursive:
     description: Apply recursively
     type: bool
@@ -76,7 +77,7 @@ def main():
         group=dict(type="str"),
         mode=dict(type="str"),
         acl_type=dict(type="str", choices=['POSIX', 'NFS4']),
-        acl_entries=dict(type="list"),
+        acl_entries=dict(type="list", elements="str"),
         recursive=dict(type="bool", default=False),
     )
 
@@ -91,7 +92,15 @@ def main():
 
     try:
         if not module.check_mode:
-            response = client.post("pool/dataset", {"path": module.params["path"], "owner": module.params["owner"], "group": module.params["group"], "mode": module.params["mode"], "acl_type": module.params["acl_type"], "acl_entries": module.params["acl_entries"], "recursive": module.params["recursive"]})
+            response = client.post("pool/dataset", {
+                "path": module.params["path"],
+                "owner": module.params["owner"],
+                "group": module.params["group"],
+                "mode": module.params["mode"],
+                "acl_type": module.params["acl_type"],
+                "acl_entries": module.params["acl_entries"],
+                "recursive": module.params["recursive"],
+            })
             result["result"] = response
         result["changed"] = True
     except TrueNASError as e:

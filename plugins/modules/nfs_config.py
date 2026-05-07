@@ -21,6 +21,7 @@ options:
   protocols:
     description: Enabled NFS protocols (NFSv3, NFSv4)
     type: list
+    elements: str
   v4_domain:
     description: NFSv4 domain
     type: str
@@ -33,6 +34,7 @@ options:
   bindip:
     description: IP addresses to bind to
     type: list
+    elements: str
 extends_documentation_fragment:
   - truenas.storage.truenas
 author:
@@ -66,11 +68,11 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         servers=dict(type="int"),
-        protocols=dict(type="list"),
+        protocols=dict(type="list", elements="str"),
         v4_domain=dict(type="str"),
         mountd_port=dict(type="int"),
         allow_nonroot=dict(type="bool"),
-        bindip=dict(type="list"),
+        bindip=dict(type="list", elements="str"),
     )
 
     module = AnsibleModule(

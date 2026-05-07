@@ -37,6 +37,7 @@ options:
   groups:
     description: Additional group names
     type: list
+    elements: str
   home:
     description: Home directory path
     type: str
@@ -49,6 +50,7 @@ options:
   sudo_commands:
     description: Allowed sudo commands
     type: list
+    elements: str
   locked:
     description: Lock the account
     type: bool
@@ -96,11 +98,11 @@ def main():
         password=dict(type="str", no_log=True),
         uid=dict(type="int"),
         group=dict(type="str"),
-        groups=dict(type="list"),
+        groups=dict(type="list", elements="str"),
         home=dict(type="str"),
         shell=dict(type="str"),
         sshpubkey=dict(type="str"),
-        sudo_commands=dict(type="list"),
+        sudo_commands=dict(type="list", elements="str"),
         locked=dict(type="bool", default=False),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

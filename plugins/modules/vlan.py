@@ -33,6 +33,7 @@ options:
   ipv4_addresses:
     description: IPv4 addresses
     type: list
+    elements: str
   mtu:
     description: MTU size
     type: int
@@ -79,7 +80,7 @@ def main():
         parent_interface=dict(type="str", required=True),
         tag=dict(type="int", required=True),
         pcp=dict(type="int"),
-        ipv4_addresses=dict(type="list"),
+        ipv4_addresses=dict(type="list", elements="str"),
         mtu=dict(type="int"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

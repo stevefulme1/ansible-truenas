@@ -22,12 +22,15 @@ options:
   local_groups:
     description: Local groups with this privilege
     type: list
+    elements: str
   ds_groups:
     description: Directory service groups with this privilege
     type: list
+    elements: str
   roles:
     description: Roles to assign
     type: list
+    elements: str
   web_shell:
     description: Allow web shell access
     type: bool
@@ -70,9 +73,9 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         name=dict(type="str", required=True),
-        local_groups=dict(type="list"),
-        ds_groups=dict(type="list"),
-        roles=dict(type="list"),
+        local_groups=dict(type="list", elements="str"),
+        ds_groups=dict(type="list", elements="str"),
+        roles=dict(type="list", elements="str"),
         web_shell=dict(type="bool", default=False),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

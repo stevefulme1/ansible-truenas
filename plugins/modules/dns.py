@@ -30,6 +30,7 @@ options:
   search_domains:
     description: DNS search domains
     type: list
+    elements: str
 extends_documentation_fragment:
   - truenas.storage.truenas
 author:
@@ -66,7 +67,7 @@ def main():
         nameserver2=dict(type="str"),
         nameserver3=dict(type="str"),
         domain=dict(type="str"),
-        search_domains=dict(type="list"),
+        search_domains=dict(type="list", elements="str"),
     )
 
     module = AnsibleModule(

@@ -47,7 +47,6 @@ from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import
 def main():
     argument_spec = truenas_argument_spec()
 
-
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,

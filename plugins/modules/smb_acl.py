@@ -22,6 +22,7 @@ options:
   acl_entries:
     description: ACL entries (principal, permission, type)
     type: list
+    elements: str
     required: true
 extends_documentation_fragment:
   - truenas.storage.truenas
@@ -58,7 +59,7 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         share=dict(type="str", required=True),
-        acl_entries=dict(type="list", required=True),
+        acl_entries=dict(type="list", elements="str", required=True),
     )
 
     module = AnsibleModule(

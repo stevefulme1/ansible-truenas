@@ -25,6 +25,7 @@ options:
   sudo_commands:
     description: Allowed sudo commands
     type: list
+    elements: str
   smb:
     description: SMB group
     type: bool
@@ -68,7 +69,7 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=True),
         gid=dict(type="int"),
-        sudo_commands=dict(type="list"),
+        sudo_commands=dict(type="list", elements="str"),
         smb=dict(type="bool", default=True),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

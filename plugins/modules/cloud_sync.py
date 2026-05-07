@@ -53,6 +53,7 @@ options:
   bandwidth_limit:
     description: Bandwidth limit rules
     type: list
+    elements: str
   enabled:
     description: Enable the task
     type: bool
@@ -106,7 +107,7 @@ def main():
         folder=dict(type="str"),
         schedule=dict(type="dict"),
         encryption=dict(type="bool", default=False),
-        bandwidth_limit=dict(type="list"),
+        bandwidth_limit=dict(type="list", elements="str"),
         enabled=dict(type="bool", default=True),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
@@ -137,7 +138,11 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            for key in ['description', 'credential', 'direction', 'transfer_mode', 'path', 'bucket', 'folder', 'schedule', 'encryption', 'bandwidth_limit', 'enabled']:
+            _fields = [
+                'description', 'credential', 'direction', 'transfer_mode', 'path', 'bucket', 'folder', 'schedule', 'encryption', 'bandwidth_limit',
+                'enabled',
+            ]
+            for key in _fields:
                 if module.params.get(key) is not None:
                     payload[key] = module.params[key]
 

@@ -22,12 +22,15 @@ options:
   kdc:
     description: KDC servers
     type: list
+    elements: str
   admin_server:
     description: Admin servers
     type: list
+    elements: str
   kpasswd_server:
     description: Password change servers
     type: list
+    elements: str
   state:
     description: Desired state of the resource.
     type: str
@@ -66,9 +69,9 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         realm=dict(type="str", required=True),
-        kdc=dict(type="list"),
-        admin_server=dict(type="list"),
-        kpasswd_server=dict(type="list", no_log=False),
+        kdc=dict(type="list", elements="str"),
+        admin_server=dict(type="list", elements="str"),
+        kpasswd_server=dict(type="list", elements="str", no_log=False),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 

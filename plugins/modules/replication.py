@@ -22,6 +22,7 @@ options:
   source_datasets:
     description: Source datasets to replicate
     type: list
+    elements: str
     required: true
   target_dataset:
     description: Target dataset path
@@ -103,7 +104,7 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         name=dict(type="str", required=True),
-        source_datasets=dict(type="list", required=True),
+        source_datasets=dict(type="list", elements="str", required=True),
         target_dataset=dict(type="str", required=True),
         direction=dict(type="str", default="PUSH", choices=['PUSH', 'PULL']),
         transport=dict(type="str", default="SSH", choices=['SSH', 'LOCAL']),
@@ -143,7 +144,11 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            for key in ['name', 'source_datasets', 'target_dataset', 'direction', 'transport', 'ssh_credentials', 'schedule', 'recursive', 'retention_policy', 'retention_count', 'speed_limit', 'enabled']:
+            _fields = [
+                'name', 'source_datasets', 'target_dataset', 'direction', 'transport', 'ssh_credentials', 'schedule', 'recursive', 'retention_policy',
+                'retention_count', 'speed_limit', 'enabled',
+            ]
+            for key in _fields:
                 if module.params.get(key) is not None:
                     payload[key] = module.params[key]
 

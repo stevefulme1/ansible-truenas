@@ -27,10 +27,12 @@ options:
   members:
     description: Member interface names
     type: list
+    elements: str
     required: true
   ipv4_addresses:
     description: IPv4 addresses
     type: list
+    elements: str
   mtu:
     description: MTU size
     type: int
@@ -75,8 +77,8 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=True),
         protocol=dict(type="str", default="LACP", choices=['LACP', 'FAILOVER', 'LOADBALANCE', 'ROUNDROBIN', 'NONE']),
-        members=dict(type="list", required=True),
-        ipv4_addresses=dict(type="list"),
+        members=dict(type="list", elements="str", required=True),
+        ipv4_addresses=dict(type="list", elements="str"),
         mtu=dict(type="int"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

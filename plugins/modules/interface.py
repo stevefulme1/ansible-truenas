@@ -25,12 +25,14 @@ options:
   ipv4_addresses:
     description: IPv4 addresses with netmask
     type: list
+    elements: str
   ipv6_auto:
     description: Enable IPv6 auto-configuration
     type: bool
   ipv6_addresses:
     description: IPv6 addresses with prefix length
     type: list
+    elements: str
   mtu:
     description: MTU size
     type: int
@@ -73,9 +75,9 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=True),
         ipv4_dhcp=dict(type="bool"),
-        ipv4_addresses=dict(type="list"),
+        ipv4_addresses=dict(type="list", elements="str"),
         ipv6_auto=dict(type="bool"),
-        ipv6_addresses=dict(type="list"),
+        ipv6_addresses=dict(type="list", elements="str"),
         mtu=dict(type="int"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )

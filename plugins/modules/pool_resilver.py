@@ -30,6 +30,7 @@ options:
   weekday:
     description: Days of the week (1-7)
     type: list
+    elements: str
 extends_documentation_fragment:
   - truenas.storage.truenas
 author:
@@ -65,7 +66,7 @@ def main():
         enabled=dict(type="bool", default=False),
         begin=dict(type="str", default="18:00"),
         end=dict(type="str", default="09:00"),
-        weekday=dict(type="list"),
+        weekday=dict(type="list", elements="str"),
     )
 
     module = AnsibleModule(

@@ -33,7 +33,7 @@ options:
     description: Country code
     type: str
   cert_state:
-    description: State/province for the certificate
+    description: State/province
     type: str
   city:
     description: City
@@ -44,6 +44,7 @@ options:
   san:
     description: Subject Alternative Names
     type: list
+    elements: str
   key_length:
     description: Key length
     type: int
@@ -103,7 +104,7 @@ def main():
         cert_state=dict(type="str"),
         city=dict(type="str"),
         organization=dict(type="str"),
-        san=dict(type="list"),
+        san=dict(type="list", elements="str"),
         key_length=dict(type="int", default=2048, choices=[1024, 2048, 4096]),
         digest_algorithm=dict(type="str", default="SHA256", choices=['SHA224', 'SHA256', 'SHA384', 'SHA512']),
         lifetime=dict(type="int", default=3650),
@@ -136,11 +137,14 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            param_map = {'cert_state': 'state'}
-            for key in ['name', 'create_type', 'certificate', 'privatekey', 'country', 'cert_state', 'city', 'organization', 'san', 'key_length', 'digest_algorithm', 'lifetime']:
+            _field_map = {'cert_state': 'state'}
+            _fields = [
+                'name', 'create_type', 'certificate', 'privatekey', 'country', 'cert_state', 'city', 'organization', 'san', 'key_length',
+                'digest_algorithm', 'lifetime',
+            ]
+            for key in _fields:
                 if module.params.get(key) is not None:
-                    api_key = param_map.get(key, key)
-                    payload[api_key] = module.params[key]
+                    payload[_field_map.get(key, key)] = module.params[key]
 
             if existing:
                 changes = {}

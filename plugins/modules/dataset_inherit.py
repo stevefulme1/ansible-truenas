@@ -22,6 +22,7 @@ options:
   properties:
     description: List of properties to reset to inherited
     type: list
+    elements: str
     required: true
 extends_documentation_fragment:
   - truenas.storage.truenas
@@ -58,7 +59,7 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         name=dict(type="str", required=True),
-        properties=dict(type="list", required=True),
+        properties=dict(type="list", elements="str", required=True),
     )
 
     module = AnsibleModule(

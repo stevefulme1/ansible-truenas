@@ -149,7 +149,11 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            for key in ['name', 'type', 'quota', 'refquota', 'reservation', 'compression', 'recordsize', 'atime', 'sync', 'copies', 'deduplication', 'encryption', 'volsize', 'volblocksize', 'comments']:
+            _fields = [
+                'name', 'type', 'quota', 'refquota', 'reservation', 'compression', 'recordsize', 'atime', 'sync', 'copies', 'deduplication', 'encryption',
+                'volsize', 'volblocksize', 'comments',
+            ]
+            for key in _fields:
                 if module.params.get(key) is not None:
                     payload[key] = module.params[key]
 

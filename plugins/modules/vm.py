@@ -38,6 +38,7 @@ options:
   devices:
     description: VM devices (disks, NICs, CDROMs)
     type: list
+    elements: str
   state:
     description: Desired state of the resource.
     type: str
@@ -80,7 +81,7 @@ def main():
         memory=dict(type="int"),
         autostart=dict(type="bool", default=False),
         bootloader=dict(type="str", default="UEFI", choices=['UEFI', 'UEFI_CSM']),
-        devices=dict(type="list"),
+        devices=dict(type="list", elements="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 

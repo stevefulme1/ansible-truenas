@@ -21,6 +21,7 @@ options:
   listen:
     description: List of IP:port pairs to listen on
     type: list
+    elements: str
     required: true
   discovery_authmethod:
     description: Discovery auth method
@@ -69,7 +70,7 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         comment=dict(type="str"),
-        listen=dict(type="list", required=True),
+        listen=dict(type="list", elements="str", required=True),
         discovery_authmethod=dict(type="str", default="NONE", choices=['NONE', 'CHAP', 'CHAP_MUTUAL']),
         discovery_authgroup=dict(type="int"),
         state=dict(type="str", choices=["present", "absent"], default="present"),

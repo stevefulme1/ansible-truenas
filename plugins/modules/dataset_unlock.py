@@ -78,7 +78,12 @@ def main():
 
     try:
         if not module.check_mode:
-            response = client.post("pool/dataset", {"name": module.params["name"], "passphrase": module.params["passphrase"], "key_file": module.params["key_file"], "recursive": module.params["recursive"]})
+            response = client.post("pool/dataset", {
+                "name": module.params["name"],
+                "passphrase": module.params["passphrase"],
+                "key_file": module.params["key_file"],
+                "recursive": module.params["recursive"],
+            })
             result["result"] = response
         result["changed"] = True
     except TrueNASError as e:

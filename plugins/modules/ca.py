@@ -130,7 +130,11 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            for key in ['name', 'create_type', 'certificate', 'privatekey', 'key_length', 'digest_algorithm', 'lifetime', 'country', 'state_value', 'city', 'organization']:
+            _fields = [
+                'name', 'create_type', 'certificate', 'privatekey', 'key_length', 'digest_algorithm', 'lifetime', 'country', 'state_value', 'city',
+                'organization',
+            ]
+            for key in _fields:
                 if module.params.get(key) is not None:
                     payload[key] = module.params[key]
 

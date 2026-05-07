@@ -21,15 +21,18 @@ options:
   paths:
     description: List of paths to export
     type: list
+    elements: str
   comment:
     description: Export description
     type: str
   networks:
     description: Authorized networks (CIDR)
     type: list
+    elements: str
   hosts:
     description: Authorized hosts
     type: list
+    elements: str
   maproot_user:
     description: Map root to this user
     type: str
@@ -45,6 +48,7 @@ options:
   security:
     description: Security flavors (SYS, KRB5, KRB5I, KRB5P)
     type: list
+    elements: str
   readonly:
     description: Read-only export
     type: bool
@@ -91,15 +95,15 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         path=dict(type="str"),
-        paths=dict(type="list"),
+        paths=dict(type="list", elements="str"),
         comment=dict(type="str"),
-        networks=dict(type="list"),
-        hosts=dict(type="list"),
+        networks=dict(type="list", elements="str"),
+        hosts=dict(type="list", elements="str"),
         maproot_user=dict(type="str"),
         maproot_group=dict(type="str"),
         mapall_user=dict(type="str"),
         mapall_group=dict(type="str"),
-        security=dict(type="list"),
+        security=dict(type="list", elements="str"),
         readonly=dict(type="bool", default=False),
         enabled=dict(type="bool", default=True),
         state=dict(type="str", choices=["present", "absent"], default="present"),
@@ -131,7 +135,11 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            for key in ['path', 'paths', 'comment', 'networks', 'hosts', 'maproot_user', 'maproot_group', 'mapall_user', 'mapall_group', 'security', 'readonly', 'enabled']:
+            _fields = [
+                'path', 'paths', 'comment', 'networks', 'hosts', 'maproot_user', 'maproot_group', 'mapall_user', 'mapall_group', 'security', 'readonly',
+                'enabled',
+            ]
+            for key in _fields:
                 if module.params.get(key) is not None:
                     payload[key] = module.params[key]
 

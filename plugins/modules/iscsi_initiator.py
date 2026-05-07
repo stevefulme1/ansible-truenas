@@ -21,9 +21,11 @@ options:
   initiators:
     description: List of initiator IQNs (empty = allow all)
     type: list
+    elements: str
   auth_network:
     description: Authorized networks (CIDR)
     type: list
+    elements: str
   state:
     description: Desired state of the resource.
     type: str
@@ -62,8 +64,8 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         comment=dict(type="str"),
-        initiators=dict(type="list"),
-        auth_network=dict(type="list"),
+        initiators=dict(type="list", elements="str"),
+        auth_network=dict(type="list", elements="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 

@@ -18,6 +18,7 @@ options:
   hostname:
     description: LDAP server hostnames
     type: list
+    elements: str
     required: true
   basedn:
     description: Base DN
@@ -79,7 +80,7 @@ from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import
 def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
-        hostname=dict(type="list", required=True),
+        hostname=dict(type="list", elements="str", required=True),
         basedn=dict(type="str", required=True),
         binddn=dict(type="str"),
         bindpw=dict(type="str", no_log=True),

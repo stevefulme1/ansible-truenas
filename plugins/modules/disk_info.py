@@ -49,7 +49,7 @@ from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import
 def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
-    name=dict(type="str"),
+        name=dict(type="str"),
     )
 
     module = AnsibleModule(

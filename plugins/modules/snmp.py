@@ -113,11 +113,11 @@ def main():
             payload["v3_username"] = module.params["v3_username"]
         if module.params["v3_authtype"] is not None and current.get("v3_authtype") != module.params["v3_authtype"]:
             payload["v3_authtype"] = module.params["v3_authtype"]
-        if module.params["v3_password"] is not None and current.get("v3_password") != module.params["v3_password"]:
+        if module.params["v3_password"] is not None:
             payload["v3_password"] = module.params["v3_password"]
         if module.params["v3_privproto"] is not None and current.get("v3_privproto") != module.params["v3_privproto"]:
             payload["v3_privproto"] = module.params["v3_privproto"]
-        if module.params["v3_privpassphrase"] is not None and current.get("v3_privpassphrase") != module.params["v3_privpassphrase"]:
+        if module.params["v3_privpassphrase"] is not None:
             payload["v3_privpassphrase"] = module.params["v3_privpassphrase"]
         if payload:
             if not module.check_mode:

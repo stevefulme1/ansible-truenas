@@ -105,7 +105,7 @@ def main():
             payload["smtp"] = module.params["smtp"]
         if module.params["user"] is not None and current.get("user") != module.params["user"]:
             payload["user"] = module.params["user"]
-        if module.params["pass_value"] is not None and current.get("pass_value") != module.params["pass_value"]:
+        if module.params["pass_value"] is not None:
             payload["pass_value"] = module.params["pass_value"]
         if payload:
             if not module.check_mode:

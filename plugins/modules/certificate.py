@@ -162,7 +162,9 @@ def main():
                 if not module.check_mode:
                     existing = client.post("certificate", payload)
                 result["changed"] = True
-                result["certificate"] = existing or payload
+                _sensitive_keys = {'privatekey'}
+                safe_payload = {k: v for k, v in payload.items() if k not in _sensitive_keys}
+                result["certificate"] = existing or safe_payload
     except TrueNASError as e:
         module.fail_json(msg=str(e))
 

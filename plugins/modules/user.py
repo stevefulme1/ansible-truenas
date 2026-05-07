@@ -80,6 +80,14 @@ options:
       - "Example roles: FULL_ADMIN, READONLY_ADMIN, SHARING_ADMIN."
     type: list
     elements: str
+  update_password:
+    description:
+      - When to update the password.
+      - C(always) updates password every run if provided.
+      - C(on_create) only sets password when creating a new user.
+    type: str
+    choices: [always, on_create]
+    default: always
   state:
     description: Desired state of the resource.
     type: str
@@ -134,12 +142,16 @@ def main():
         locked=dict(type="bool", default=False),
         microsoft_account=dict(type="bool"),
         roles=dict(type="list", elements="str"),
+        update_password=dict(
+            type="str", choices=["always", "on_create"], default="always",
+        ),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
+        mutually_exclusive=[["password", "password_disabled"]],
     )
 
     client = TrueNASClient(module)
@@ -177,19 +189,20 @@ def main():
                 if module.params.get(key) is not None:
                     payload[key] = module.params[key]
 
-            # Handle password separately: never compare, always include if provided
-            if not password_disabled and module.params.get("password") is not None:
-                payload["password"] = module.params["password"]
+            update_password = module.params.get("update_password", "always")
 
             if existing:
                 changes = {}
                 for key, value in payload.items():
-                    # Never compare password -- always treat as changed if provided
-                    if key == "password":
-                        changes[key] = value
-                        continue
                     if existing.get(key) != value:
                         changes[key] = value
+                # Only include password on update when update_password=always
+                if (
+                    not password_disabled
+                    and module.params.get("password") is not None
+                    and update_password == "always"
+                ):
+                    changes["password"] = module.params["password"]
                 if changes:
                     if not module.check_mode:
                         existing = client.put(
@@ -201,7 +214,9 @@ def main():
                 if not module.check_mode:
                     existing = client.post("user", payload)
                 result["changed"] = True
-                result["user"] = existing or payload
+                _sensitive_keys = {'password'}
+                safe_payload = {k: v for k, v in payload.items() if k not in _sensitive_keys}
+                result["user"] = existing or safe_payload
     except TrueNASError as e:
         module.fail_json(msg=str(e))
 

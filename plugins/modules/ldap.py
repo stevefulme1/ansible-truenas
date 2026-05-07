@@ -108,7 +108,7 @@ def main():
             payload["basedn"] = module.params["basedn"]
         if module.params["binddn"] is not None and current.get("binddn") != module.params["binddn"]:
             payload["binddn"] = module.params["binddn"]
-        if module.params["bindpw"] is not None and current.get("bindpw") != module.params["bindpw"]:
+        if module.params["bindpw"] is not None:
             payload["bindpw"] = module.params["bindpw"]
         if module.params["ssl"] is not None and current.get("ssl") != module.params["ssl"]:
             payload["ssl"] = module.params["ssl"]

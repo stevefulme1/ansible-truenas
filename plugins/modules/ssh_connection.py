@@ -130,7 +130,9 @@ def main():
                 if not module.check_mode:
                     existing = client.post("keychaincredential", payload)
                 result["changed"] = True
-                result["ssh_connection"] = existing or payload
+                _sensitive_keys = {'private_key'}
+                safe_payload = {k: v for k, v in payload.items() if k not in _sensitive_keys}
+                result["ssh_connection"] = existing or safe_payload
     except TrueNASError as e:
         module.fail_json(msg=str(e))
 

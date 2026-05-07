@@ -68,7 +68,7 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=True),
         provider=dict(type="str", required=True),
-        attributes=dict(type="dict", required=True),
+        attributes=dict(type="dict", required=True, no_log=True),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 
@@ -118,7 +118,9 @@ def main():
                 if not module.check_mode:
                     existing = client.post("cloudsync/credentials", payload)
                 result["changed"] = True
-                result["cloud_credential"] = existing or payload
+                _sensitive_keys = {'attributes'}
+                safe_payload = {k: v for k, v in payload.items() if k not in _sensitive_keys}
+                result["cloud_credential"] = existing or safe_payload
     except TrueNASError as e:
         module.fail_json(msg=str(e))
 

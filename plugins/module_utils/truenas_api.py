@@ -6,6 +6,7 @@ __metaclass__ = type
 
 import json
 
+from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
 from ansible.module_utils.urls import open_url
 
 
@@ -65,16 +66,20 @@ class TrueNASClient:
             if content:
                 return json.loads(content)
             return None
-        except Exception as e:
-            error_msg = str(e)
-            if hasattr(e, "read"):
-                try:
-                    error_body = json.loads(e.read())
-                    error_msg = error_body.get("message", str(e))
-                except Exception:
-                    pass
+        except HTTPError as e:
+            try:
+                error_body = json.loads(e.read())
+                error_msg = error_body.get("message", str(error_body))
+            except Exception:
+                raw = e.read() if hasattr(e, "read") else b""
+                error_msg = raw.decode("utf-8", errors="replace")[:500] if raw else str(e)
             raise TrueNASError(
-                "API request failed: {0} {1} - {2}".format(method, url, error_msg)
+                "API request failed: {0} {1} - {2}".format(method, url, error_msg),
+                status_code=e.code,
+            )
+        except URLError as e:
+            raise TrueNASError(
+                "API connection failed: {0} {1} - {2}".format(method, url, e.reason)
             )
 
     def get(self, endpoint, params=None):
@@ -102,6 +107,8 @@ class TrueNASClient:
         interval = 2
         while elapsed < timeout:
             job = self.get("core/get_jobs", params={"id": job_id})
+            if job is None or (isinstance(job, list) and not job):
+                raise TrueNASError("Job {0} not found".format(job_id))
             if isinstance(job, list) and job:
                 job = job[0]
             if job and job.get("state") in ("SUCCESS", "FAILED", "ABORTED"):

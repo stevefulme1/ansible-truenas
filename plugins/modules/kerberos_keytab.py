@@ -60,7 +60,7 @@ def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         name=dict(type="str", required=True),
-        file=dict(type="str"),
+        file=dict(type="str", no_log=True),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 

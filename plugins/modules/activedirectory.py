@@ -95,7 +95,7 @@ def main():
             payload["domainname"] = module.params["domainname"]
         if module.params["bindname"] is not None and current.get("bindname") != module.params["bindname"]:
             payload["bindname"] = module.params["bindname"]
-        if module.params["bindpw"] is not None and current.get("bindpw") != module.params["bindpw"]:
+        if module.params["bindpw"] is not None:
             payload["bindpw"] = module.params["bindpw"]
         if module.params["site"] is not None and current.get("site") != module.params["site"]:
             payload["site"] = module.params["site"]

@@ -33,12 +33,12 @@ options:
   deduplication:
     description: Deduplication setting
     type: str
-    default: OFF
+    default: "OFF"
     choices: ['ON', 'OFF', 'VERIFY']
   checksum:
     description: Checksum algorithm
     type: str
-    default: ON
+    default: "ON"
   state:
     description: Desired state of the resource.
     type: str

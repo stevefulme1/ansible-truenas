@@ -32,8 +32,8 @@ options:
   country:
     description: Country code
     type: str
-  state:
-    description: State/province
+  cert_state:
+    description: State/province for the certificate
     type: str
   city:
     description: City
@@ -100,7 +100,7 @@ def main():
         certificate=dict(type="str"),
         privatekey=dict(type="str", no_log=True),
         country=dict(type="str"),
-        state=dict(type="str"),
+        cert_state=dict(type="str"),
         city=dict(type="str"),
         organization=dict(type="str"),
         san=dict(type="list"),
@@ -136,9 +136,11 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            for key in ['name', 'create_type', 'certificate', 'privatekey', 'country', 'state', 'city', 'organization', 'san', 'key_length', 'digest_algorithm', 'lifetime']:
+            param_map = {'cert_state': 'state'}
+            for key in ['name', 'create_type', 'certificate', 'privatekey', 'country', 'cert_state', 'city', 'organization', 'san', 'key_length', 'digest_algorithm', 'lifetime']:
                 if module.params.get(key) is not None:
-                    payload[key] = module.params[key]
+                    api_key = param_map.get(key, key)
+                    payload[api_key] = module.params[key]
 
             if existing:
                 changes = {}

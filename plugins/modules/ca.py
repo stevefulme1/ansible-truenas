@@ -94,7 +94,7 @@ def main():
         create_type=dict(type="str", choices=['CA_CREATE_INTERNAL', 'CA_CREATE_IMPORTED', 'CA_CREATE_INTERMEDIATE']),
         certificate=dict(type="str"),
         privatekey=dict(type="str", no_log=True),
-        key_length=dict(type="int", default=2048),
+        key_length=dict(type="int", default=2048, no_log=False),
         digest_algorithm=dict(type="str", default="SHA256"),
         lifetime=dict(type="int", default=3650),
         country=dict(type="str"),

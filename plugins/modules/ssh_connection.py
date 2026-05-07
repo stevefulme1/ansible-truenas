@@ -80,7 +80,7 @@ def main():
         port=dict(type="int", default=22),
         username=dict(type="str", default="root"),
         private_key=dict(type="str", no_log=True),
-        remote_host_key=dict(type="str"),
+        remote_host_key=dict(type="str", no_log=False),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 

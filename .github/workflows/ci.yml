@@ -49,9 +49,28 @@ jobs:
       - name: Run ansible-lint
         run: ansible-lint
 
-  cve-scan:
-    name: CVE & Security Scan
+  security:
+    name: Security Scan
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install security tools
+        run: pip install bandit
+
+      - name: Run bandit security scan
+        run: bandit -r plugins/ -ll -ii
+
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     steps:
       - uses: actions/checkout@v4
 
@@ -62,21 +81,3 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install safety
-        run: pip install safety bandit
-
-      - name: Run bandit security scan
-        run: bandit -r plugins/ -f json -o bandit-report.json || true
-
-      - name: Upload bandit report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: bandit-report
-          path: bandit-report.json

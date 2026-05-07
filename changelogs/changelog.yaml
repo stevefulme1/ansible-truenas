@@ -1,0 +1,11 @@
+ancestor: null
+releases:
+  1.0.0:
+    release_date: "2026-05-07"
+    changes:
+      release_summary: Initial release of the TrueNAS Storage collection.
+      major_changes:
+        - Initial release with 71 modules covering storage, sharing, networking,
+          services, directory services, certificates, data protection, virtualization,
+          high availability, and monitoring.
+        - Shared API client (truenas_api.py) supporting API key and basic auth.

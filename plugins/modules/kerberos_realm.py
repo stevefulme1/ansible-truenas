@@ -68,7 +68,7 @@ def main():
         realm=dict(type="str", required=True),
         kdc=dict(type="list"),
         admin_server=dict(type="list"),
-        kpasswd_server=dict(type="list"),
+        kpasswd_server=dict(type="list", no_log=False),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 

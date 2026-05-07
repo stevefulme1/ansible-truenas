@@ -22,11 +22,11 @@ options:
   begin:
     description: Start time for priority resilver
     type: str
-    default: 18:00
+    default: "18:00"
   end:
     description: End time for priority resilver
     type: str
-    default: 09:00
+    default: "09:00"
   weekday:
     description: Days of the week (1-7)
     type: list

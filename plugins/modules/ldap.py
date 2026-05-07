@@ -32,7 +32,7 @@ options:
   ssl:
     description: SSL mode
     type: str
-    default: ON
+    default: "ON"
     choices: ['OFF', 'ON', 'START_TLS']
   certificate:
     description: Certificate ID

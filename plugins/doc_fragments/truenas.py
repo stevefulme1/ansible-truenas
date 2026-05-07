@@ -33,7 +33,6 @@ options:
       - Must be used together with I(username).
     type: str
     required: false
-    no_log: true
   validate_certs:
     description:
       - Whether to validate SSL/TLS certificates.

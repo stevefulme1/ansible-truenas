@@ -1,8 +1,11 @@
 import nox
 import os
 import shutil
+import sys
 
 nox.options.sessions = ["lint", "sanity"]
+
+_python = os.environ.get("NOX_PYTHON", f"{sys.version_info.major}.{sys.version_info.minor}")
 
 COLLECTION_PATH = os.path.join(
     os.path.expanduser("~"),
@@ -20,13 +23,13 @@ def _install_collection(session):
     )
 
 
-@nox.session(python=False)
+@nox.session(python=_python)
 def lint(session):
     session.install("ansible-lint")
     session.run("ansible-lint", ".")
 
 
-@nox.session(python=False)
+@nox.session(python=_python)
 def sanity(session):
     session.install("ansible-core>=2.16")
     _install_collection(session)
@@ -37,7 +40,7 @@ def sanity(session):
     )
 
 
-@nox.session(python=False)
+@nox.session(python=_python)
 def security(session):
     session.install("bandit")
     session.run("bandit", "-r", "plugins/", "-ll", "-ii")

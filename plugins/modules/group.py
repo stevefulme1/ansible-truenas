@@ -29,7 +29,15 @@ options:
   smb:
     description: SMB group
     type: bool
-    default: True
+    default: true
+  allow_duplicate_gid:
+    description: Allow creating groups with non-unique GIDs
+    type: bool
+    default: false
+  users:
+    description: List of usernames to add to the group
+    type: list
+    elements: str
   state:
     description: Desired state of the resource.
     type: str
@@ -71,13 +79,14 @@ def main():
         gid=dict(type="int"),
         sudo_commands=dict(type="list", elements="str"),
         smb=dict(type="bool", default=True),
+        allow_duplicate_gid=dict(type="bool", default=False),
+        users=dict(type="list", elements="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        required_one_of=[["api_key", "username"]],
     )
 
     client = TrueNASClient(module)
@@ -89,7 +98,7 @@ def main():
         items = client.get("group")
         if isinstance(items, list):
             for item in items:
-                if item.get("group") == module.params.get("group"):
+                if item.get("group") == module.params.get("name"):
                     existing = item
                     break
 
@@ -100,7 +109,11 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            for key in ['name', 'gid', 'sudo_commands', 'smb']:
+            _fields = [
+                'name', 'gid', 'sudo_commands', 'smb',
+                'allow_duplicate_gid', 'users',
+            ]
+            for key in _fields:
                 if module.params.get(key) is not None:
                     payload[key] = module.params[key]
 

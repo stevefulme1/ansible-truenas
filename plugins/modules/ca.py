@@ -14,6 +14,7 @@ short_description: Manage Certificate Authorities
 version_added: "1.0.0"
 description:
   - Manage Certificate Authorities on a TrueNAS system via the middleware API.
+  - Supports both legacy and TrueNAS SCALE 25.10+ API formats.
 options:
   name:
     description: CA name
@@ -22,7 +23,13 @@ options:
   create_type:
     description: Creation method
     type: str
-    choices: ['CA_CREATE_INTERNAL', 'CA_CREATE_IMPORTED', 'CA_CREATE_INTERMEDIATE']
+    choices:
+      - CA_CREATE_INTERNAL
+      - CA_CREATE_IMPORTED
+      - CA_CREATE_INTERMEDIATE
+      - INTERNAL
+      - IMPORTED
+      - INTERMEDIATE
   certificate:
     description: PEM-encoded CA certificate
     type: str
@@ -53,6 +60,10 @@ options:
   organization:
     description: Organization
     type: str
+  add_to_trusted_store:
+    description: Add the CA to the system trusted certificate store
+    type: bool
+    default: false
   state:
     description: Desired state of the resource.
     type: str
@@ -86,12 +97,23 @@ from ansible_collections.truenas.storage.plugins.module_utils.truenas_api import
     truenas_argument_spec,
 )
 
+# Map module params to API field names
+_field_map = {
+    'state_value': 'state',
+}
+
 
 def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
         name=dict(type="str", required=True),
-        create_type=dict(type="str", choices=['CA_CREATE_INTERNAL', 'CA_CREATE_IMPORTED', 'CA_CREATE_INTERMEDIATE']),
+        create_type=dict(
+            type="str",
+            choices=[
+                'CA_CREATE_INTERNAL', 'CA_CREATE_IMPORTED', 'CA_CREATE_INTERMEDIATE',
+                'INTERNAL', 'IMPORTED', 'INTERMEDIATE',
+            ],
+        ),
         certificate=dict(type="str"),
         privatekey=dict(type="str", no_log=True),
         key_length=dict(type="int", default=2048, no_log=False),
@@ -101,6 +123,7 @@ def main():
         state_value=dict(type="str"),
         city=dict(type="str"),
         organization=dict(type="str"),
+        add_to_trusted_store=dict(type="bool", default=False),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 
@@ -131,12 +154,14 @@ def main():
         else:
             payload = {}
             _fields = [
-                'name', 'create_type', 'certificate', 'privatekey', 'key_length', 'digest_algorithm', 'lifetime', 'country', 'state_value', 'city',
-                'organization',
+                'name', 'create_type', 'certificate', 'privatekey',
+                'key_length', 'digest_algorithm', 'lifetime', 'country',
+                'state_value', 'city', 'organization', 'add_to_trusted_store',
             ]
             for key in _fields:
                 if module.params.get(key) is not None:
-                    payload[key] = module.params[key]
+                    api_key = _field_map.get(key, key)
+                    payload[api_key] = module.params[key]
 
             if existing:
                 changes = {}

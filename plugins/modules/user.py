@@ -28,6 +28,18 @@ options:
   password:
     description: User password
     type: str
+  password_disabled:
+    description:
+      - When true, the user has no password and cannot log in with one.
+      - Mutually exclusive with providing a password.
+    type: bool
+    default: false
+  smb:
+    description:
+      - Enable Samba authentication for this user.
+      - Automatically set to false when I(password_disabled=true).
+    type: bool
+    default: true
   uid:
     description: User ID
     type: int
@@ -51,10 +63,23 @@ options:
     description: Allowed sudo commands
     type: list
     elements: str
+  sudo_commands_nopasswd:
+    description: Commands the user can sudo without a password
+    type: list
+    elements: str
   locked:
     description: Lock the account
     type: bool
-    default: False
+    default: false
+  microsoft_account:
+    description: Link to a Microsoft account (SCALE)
+    type: bool
+  roles:
+    description:
+      - List of RBAC roles to assign to the user (TrueNAS SCALE 24.10+).
+      - "Example roles: FULL_ADMIN, READONLY_ADMIN, SHARING_ADMIN."
+    type: list
+    elements: str
   state:
     description: Desired state of the resource.
     type: str
@@ -96,6 +121,8 @@ def main():
         full_name=dict(type="str"),
         email=dict(type="str"),
         password=dict(type="str", no_log=True),
+        password_disabled=dict(type="bool", default=False),
+        smb=dict(type="bool", default=True),
         uid=dict(type="int"),
         group=dict(type="str"),
         groups=dict(type="list", elements="str"),
@@ -103,19 +130,26 @@ def main():
         shell=dict(type="str"),
         sshpubkey=dict(type="str"),
         sudo_commands=dict(type="list", elements="str"),
+        sudo_commands_nopasswd=dict(type="list", elements="str"),
         locked=dict(type="bool", default=False),
+        microsoft_account=dict(type="bool"),
+        roles=dict(type="list", elements="str"),
         state=dict(type="str", choices=["present", "absent"], default="present"),
     )
 
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        required_one_of=[["api_key", "username"]],
     )
 
     client = TrueNASClient(module)
     state = module.params["state"]
     result = dict(changed=False)
+
+    # When password_disabled is true, smb must be false and password must not be sent
+    password_disabled = module.params.get("password_disabled")
+    if password_disabled:
+        module.params["smb"] = False
 
     try:
         existing = None
@@ -133,13 +167,27 @@ def main():
                 result["changed"] = True
         else:
             payload = {}
-            for key in ['username', 'full_name', 'email', 'password', 'uid', 'group', 'groups', 'home', 'shell', 'sshpubkey', 'sudo_commands', 'locked']:
+            _fields = [
+                'username', 'full_name', 'email', 'uid', 'group', 'groups',
+                'home', 'shell', 'sshpubkey', 'sudo_commands',
+                'sudo_commands_nopasswd', 'locked', 'password_disabled',
+                'smb', 'microsoft_account', 'roles',
+            ]
+            for key in _fields:
                 if module.params.get(key) is not None:
                     payload[key] = module.params[key]
+
+            # Handle password separately: never compare, always include if provided
+            if not password_disabled and module.params.get("password") is not None:
+                payload["password"] = module.params["password"]
 
             if existing:
                 changes = {}
                 for key, value in payload.items():
+                    # Never compare password -- always treat as changed if provided
+                    if key == "password":
+                        changes[key] = value
+                        continue
                     if existing.get(key) != value:
                         changes[key] = value
                 if changes:

@@ -1,5 +1,30 @@
 ancestor: null
 releases:
+  1.2.0:
+    release_date: "2026-05-08"
+    changes:
+      release_summary: >-
+        Security and reliability fixes. URL encoding for dataset and snapshot
+        IDs containing slashes, HTTP error handler double-read bug, keytab
+        content leak prevention, and authentication validation improvements.
+      bugfixes:
+        - truenas_api - Fix double-read bug in HTTP error handler where
+          ``e.read()`` was called twice, causing the second call to return
+          empty content.
+        - truenas_api - Fix query parameter encoding to use ``urlencode``
+          instead of manual string formatting.
+        - dataset - URL-encode dataset IDs containing slashes to prevent
+          broken API URL routing.
+        - snapshot - URL-encode snapshot IDs containing slashes to prevent
+          broken API URL routing.
+      security_fixes:
+        - kerberos_keytab - Strip keytab file content from return data to
+          prevent sensitive material from appearing in playbook output.
+      minor_changes:
+        - user - Add ``required_one_of`` validation for authentication
+          parameters (``api_key`` or ``username``).
+        - group - Add ``required_one_of`` validation for authentication
+          parameters (``api_key`` or ``username``).
   1.0.0:
     release_date: "2026-05-07"
     changes:

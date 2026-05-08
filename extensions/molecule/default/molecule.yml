@@ -1,0 +1,34 @@
+---
+# Molecule configuration for stevefulme1.truenas collection.
+#
+# Uses the delegated driver because TrueNAS appliances must pre-exist;
+# they cannot be provisioned by Molecule itself.
+#
+# Required environment variables:
+#   TRUENAS_API_URL  - e.g. https://truenas.local/api/v2.0
+#   TRUENAS_API_KEY  - API key from TrueNAS Credentials > API Keys
+
+driver:
+  name: delegated
+  options:
+    managed: false
+
+platforms:
+  - name: truenas
+    groups:
+      - truenas_hosts
+
+provisioner:
+  name: ansible
+  env:
+    TRUENAS_API_URL: ${TRUENAS_API_URL}
+    TRUENAS_API_KEY: ${TRUENAS_API_KEY}
+  inventory:
+    hosts:
+      truenas_hosts:
+        hosts:
+          truenas:
+            ansible_connection: local
+
+verifier:
+  name: ansible

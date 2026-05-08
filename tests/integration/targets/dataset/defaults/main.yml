@@ -1,0 +1,6 @@
+---
+truenas_api_url: "{{ lookup('env', 'TRUENAS_API_URL') }}"
+truenas_api_key: "{{ lookup('env', 'TRUENAS_API_KEY') }}"
+truenas_validate_certs: false
+test_pool: tank
+test_dataset: "{{ test_pool }}/integration_test"

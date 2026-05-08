@@ -1,0 +1,78 @@
+---
+- name: Create a test dataset
+  stevefulme1.truenas.dataset:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    name: "{{ test_dataset }}"
+    compression: LZ4
+    quota: 1G
+    atime: "OFF"
+    state: present
+  register: create_result
+
+- name: Verify dataset was created
+  ansible.builtin.assert:
+    that:
+      - create_result.changed
+      - create_result.dataset.name == test_dataset
+
+- name: Create the same dataset again (idempotent)
+  stevefulme1.truenas.dataset:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    name: "{{ test_dataset }}"
+    compression: LZ4
+    quota: 1G
+    atime: "OFF"
+    state: present
+  register: idem_result
+
+- name: Verify no change on second run
+  ansible.builtin.assert:
+    that:
+      - not idem_result.changed
+
+- name: Update dataset compression
+  stevefulme1.truenas.dataset:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    name: "{{ test_dataset }}"
+    compression: ZSTD
+    state: present
+  register: update_result
+
+- name: Verify dataset was updated
+  ansible.builtin.assert:
+    that:
+      - update_result.changed
+
+- name: Delete the test dataset
+  stevefulme1.truenas.dataset:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    name: "{{ test_dataset }}"
+    state: absent
+  register: delete_result
+
+- name: Verify dataset was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result.changed
+
+- name: Delete the same dataset again (idempotent)
+  stevefulme1.truenas.dataset:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    name: "{{ test_dataset }}"
+    state: absent
+  register: delete_idem_result
+
+- name: Verify no change on second delete
+  ansible.builtin.assert:
+    that:
+      - not delete_idem_result.changed

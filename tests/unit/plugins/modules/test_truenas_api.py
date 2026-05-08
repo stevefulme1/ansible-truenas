@@ -6,7 +6,7 @@ __metaclass__ = type
 
 import json
 from io import BytesIO
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -117,7 +117,7 @@ class TestRequest:
 
         client.get("core/get_jobs", params={"id": 42})
 
-        args, _ = mock_open_url.call_args
+        args, kwargs = mock_open_url.call_args
         assert "id=42" in args[0]
 
     @patch(f"{CLIENT_PATH}.open_url")
@@ -133,7 +133,7 @@ class TestRequest:
         result = client.post("pool/dataset", {"name": "tank/test"})
 
         assert result == {"id": 5}
-        _, kwargs = mock_open_url.call_args
+        call_args, kwargs = mock_open_url.call_args
         assert kwargs["method"] == "POST"
         body = json.loads(kwargs["data"])
         assert body["name"] == "tank/test"
@@ -150,7 +150,7 @@ class TestRequest:
 
         result = client.put("pool/dataset/id/5", {"compression": "ZSTD"})
 
-        _, kwargs = mock_open_url.call_args
+        call_args, kwargs = mock_open_url.call_args
         assert kwargs["method"] == "PUT"
 
     @patch(f"{CLIENT_PATH}.open_url")
@@ -165,7 +165,7 @@ class TestRequest:
 
         result = client.delete("pool/dataset/id/5")
 
-        _, kwargs = mock_open_url.call_args
+        call_args, kwargs = mock_open_url.call_args
         assert kwargs["method"] == "DELETE"
         assert result is None
 

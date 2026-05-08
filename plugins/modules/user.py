@@ -180,6 +180,7 @@ def main():
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
+        required_one_of=[["api_key", "username"]],
         mutually_exclusive=[["password", "password_disabled"]],
     )
 

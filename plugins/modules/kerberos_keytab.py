@@ -114,12 +114,17 @@ def main():
                             "kerberos/keytab/id/{0}".format(existing["id"]), changes
                         )
                     result["changed"] = True
-                result["kerberos_keytab"] = existing
+                _sensitive_keys = {"file"}
+                safe_existing = {k: v for k, v in existing.items() if k not in _sensitive_keys}
+                result["kerberos_keytab"] = safe_existing
             else:
                 if not module.check_mode:
                     existing = client.post("kerberos/keytab", payload)
                 result["changed"] = True
-                result["kerberos_keytab"] = existing or payload
+                _sensitive_keys = {"file"}
+                safe_data = existing or payload
+                safe_data = {k: v for k, v in safe_data.items() if k not in _sensitive_keys}
+                result["kerberos_keytab"] = safe_data
     except TrueNASError as e:
         module.fail_json(msg=str(e))
 

@@ -21,6 +21,7 @@ author:
 import json
 
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
+from ansible.module_utils.six.moves.urllib.parse import quote, urlencode
 from ansible.module_utils.urls import open_url
 
 
@@ -81,11 +82,11 @@ class TrueNASClient:
                 return json.loads(content)
             return None
         except HTTPError as e:
+            raw = e.read()
             try:
-                error_body = json.loads(e.read())
+                error_body = json.loads(raw)
                 error_msg = error_body.get("message", str(error_body))
             except Exception:
-                raw = e.read() if hasattr(e, "read") else b""
                 error_msg = raw.decode("utf-8", errors="replace")[:500] if raw else str(e)
             raise TrueNASError(
                 "API request failed: {0} {1} - {2}".format(method, url, error_msg),
@@ -98,9 +99,7 @@ class TrueNASClient:
 
     def get(self, endpoint, params=None):
         if params:
-            query = "&".join(
-                "{0}={1}".format(k, v) for k, v in params.items() if v is not None
-            )
+            query = urlencode({k: v for k, v in params.items() if v is not None})
             endpoint = "{0}?{1}".format(endpoint, query)
         return self.request("GET", endpoint)
 

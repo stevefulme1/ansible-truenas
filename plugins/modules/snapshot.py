@@ -72,6 +72,7 @@ snapshot:
 """
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.six.moves.urllib.parse import quote
 from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
     TrueNASClient,
     TrueNASError,
@@ -110,7 +111,7 @@ def main():
         if state == "absent":
             if existing:
                 if not module.check_mode:
-                    client.delete("zfs/snapshot/id/{0}".format(existing["id"]))
+                    client.delete("zfs/snapshot/id/{0}".format(quote(str(existing["id"]), safe="")))
                 result["changed"] = True
         else:
             payload = {}
@@ -126,7 +127,7 @@ def main():
                 if changes:
                     if not module.check_mode:
                         existing = client.put(
-                            "zfs/snapshot/id/{0}".format(existing["id"]), changes
+                            "zfs/snapshot/id/{0}".format(quote(str(existing["id"]), safe="")), changes
                         )
                     result["changed"] = True
                 result["snapshot"] = existing

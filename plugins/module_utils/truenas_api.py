@@ -21,7 +21,7 @@ author:
 import json
 
 from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
-from ansible.module_utils.six.moves.urllib.parse import quote, urlencode
+from ansible.module_utils.six.moves.urllib.parse import urlencode
 from ansible.module_utils.urls import open_url
 
 

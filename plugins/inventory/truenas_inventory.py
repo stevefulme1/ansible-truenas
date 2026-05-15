@@ -6,8 +6,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-name: stevefulme1.truenas.truenas_inventory
-plugin_type: inventory
+name: truenas_inventory
 short_description: Dynamic inventory for TrueNAS VMs
 version_added: "1.3.0"
 description:

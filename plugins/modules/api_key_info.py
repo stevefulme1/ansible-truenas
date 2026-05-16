@@ -57,7 +57,7 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-keys:
+api_keys:
     description: List of resource details.
     returned: always
     type: list
@@ -79,7 +79,7 @@ def main():
         ),
         supports_check_mode=True,
     )
-    module.exit_json(changed=False, keys=[])
+    module.exit_json(changed=False, api_keys=[])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,26 @@
+---
+- name: Gather alert information (read-only)
+  stevefulme1.truenas.alert_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+  register: alert_result
+
+- name: Verify alert info returned data
+  ansible.builtin.assert:
+    that:
+      - not alert_result.changed
+      - alert_result.data is defined
+
+- name: Gather disk information (read-only)
+  stevefulme1.truenas.disk_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+  register: disk_result
+
+- name: Verify disk info returned data
+  ansible.builtin.assert:
+    that:
+      - not disk_result.changed
+      - disk_result.data is defined

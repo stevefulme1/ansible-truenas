@@ -1,0 +1,59 @@
+---
+# Molecule verify playbook - confirms resources were created and cleaned up.
+- name: Verify
+  hosts: truenas_hosts
+  connection: local
+  gather_facts: false
+
+  vars:
+    truenas_api_url: "{{ lookup('env', 'TRUENAS_API_URL') }}"
+    truenas_api_key: "{{ lookup('env', 'TRUENAS_API_KEY') }}"
+    truenas_validate_certs: false
+    test_dataset: tank/molecule_test
+    test_nfs_path: /mnt/tank/molecule_nfs
+
+  tasks:
+    - name: Verify test dataset was cleaned up
+      stevefulme1.truenas.dataset:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        name: "{{ test_dataset }}"
+        state: absent
+      register: ds_verify
+      check_mode: true
+
+    - name: Assert dataset no longer exists
+      ansible.builtin.assert:
+        that:
+          - not ds_verify.changed
+        fail_msg: "Test dataset {{ test_dataset }} was not cleaned up"
+
+    - name: Verify NFS share was cleaned up
+      stevefulme1.truenas.nfs_share:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        path: "{{ test_nfs_path }}"
+        state: absent
+      register: nfs_verify
+      check_mode: true
+
+    - name: Assert NFS share no longer exists
+      ansible.builtin.assert:
+        that:
+          - not nfs_verify.changed
+        fail_msg: "Test NFS share at {{ test_nfs_path }} was not cleaned up"
+
+    - name: Gather system info (read-only sanity check)
+      stevefulme1.truenas.alert_info:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+      register: info_result
+
+    - name: Assert info module works
+      ansible.builtin.assert:
+        that:
+          - not info_result.changed
+          - info_result.data is defined

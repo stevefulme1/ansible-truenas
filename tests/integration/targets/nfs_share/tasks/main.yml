@@ -1,0 +1,65 @@
+---
+- name: Create NFS share
+  stevefulme1.truenas.nfs_share:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    path: "{{ test_nfs_path }}"
+    networks:
+      - "{{ test_nfs_network }}"
+    maproot_user: root
+    enabled: true
+    state: present
+  register: create_result
+
+- name: Verify NFS share was created
+  ansible.builtin.assert:
+    that:
+      - create_result.changed
+
+- name: Create the same NFS share again (idempotent)
+  stevefulme1.truenas.nfs_share:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    path: "{{ test_nfs_path }}"
+    networks:
+      - "{{ test_nfs_network }}"
+    maproot_user: root
+    enabled: true
+    state: present
+  register: idem_result
+
+- name: Verify no change on second run
+  ansible.builtin.assert:
+    that:
+      - not idem_result.changed
+
+- name: Update NFS share readonly setting
+  stevefulme1.truenas.nfs_share:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    path: "{{ test_nfs_path }}"
+    readonly: true
+    state: present
+  register: update_result
+
+- name: Verify NFS share was updated
+  ansible.builtin.assert:
+    that:
+      - update_result.changed
+
+- name: Delete NFS share
+  stevefulme1.truenas.nfs_share:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    path: "{{ test_nfs_path }}"
+    state: absent
+  register: delete_result
+
+- name: Verify NFS share was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result.changed

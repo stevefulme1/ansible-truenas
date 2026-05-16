@@ -1,0 +1,11 @@
+# TrueNAS integration test configuration template
+#
+# Copy this file to cloud-config-truenas.ini and set the values.
+# These can also be provided as environment variables.
+#
+# TRUENAS_API_URL  - Full URL to the TrueNAS API (e.g. https://truenas.local/api/v2.0)
+# TRUENAS_API_KEY  - API key generated in TrueNAS UI under Credentials > API Keys
+#
+[default]
+truenas_api_url = {{ TRUENAS_API_URL }}
+truenas_api_key = {{ TRUENAS_API_KEY }}

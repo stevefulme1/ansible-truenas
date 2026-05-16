@@ -1,0 +1,53 @@
+---
+# WARNING: This test requires spare unformatted disks. It may not run in all
+# environments. Set test_pool_disks to available disk device names.
+
+- name: Create a mirrored test pool
+  stevefulme1.truenas.pool:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    name: "{{ test_pool_name }}"
+    topology:
+      data:
+        - type: MIRROR
+          disks: "{{ test_pool_disks }}"
+    state: present
+  register: create_result
+
+- name: Verify pool was created
+  ansible.builtin.assert:
+    that:
+      - create_result.changed
+
+- name: Create the same pool again (idempotent)
+  stevefulme1.truenas.pool:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    name: "{{ test_pool_name }}"
+    topology:
+      data:
+        - type: MIRROR
+          disks: "{{ test_pool_disks }}"
+    state: present
+  register: idem_result
+
+- name: Verify no change on second run
+  ansible.builtin.assert:
+    that:
+      - not idem_result.changed
+
+- name: Delete the test pool
+  stevefulme1.truenas.pool:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    name: "{{ test_pool_name }}"
+    state: absent
+  register: delete_result
+
+- name: Verify pool was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result.changed

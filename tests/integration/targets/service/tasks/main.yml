@@ -1,0 +1,30 @@
+---
+- name: Enable and start SSH service
+  stevefulme1.truenas.service:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    service: "{{ test_service }}"
+    enabled: true
+    started: true
+  register: enable_result
+
+- name: Verify SSH service was enabled
+  ansible.builtin.assert:
+    that:
+      - enable_result.changed
+
+- name: Disable SSH service (cleanup)
+  stevefulme1.truenas.service:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs }}"
+    service: "{{ test_service }}"
+    enabled: false
+    started: false
+  register: disable_result
+
+- name: Verify SSH service was disabled
+  ansible.builtin.assert:
+    that:
+      - disable_result.changed

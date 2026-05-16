@@ -1,0 +1,88 @@
+---
+# Molecule converge playbook - exercises dataset, service, and NFS share CRUD.
+- name: Converge
+  hosts: truenas_hosts
+  connection: local
+  gather_facts: false
+
+  vars:
+    truenas_api_url: "{{ lookup('env', 'TRUENAS_API_URL') }}"
+    truenas_api_key: "{{ lookup('env', 'TRUENAS_API_KEY') }}"
+    truenas_validate_certs: false
+    test_dataset: tank/molecule_test
+    test_nfs_path: /mnt/tank/molecule_nfs
+
+  tasks:
+    # --- Dataset CRUD ---
+    - name: Create test dataset
+      stevefulme1.truenas.dataset:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        name: "{{ test_dataset }}"
+        compression: LZ4
+        quota: 1G
+        state: present
+      register: ds_create
+
+    - name: Update dataset compression
+      stevefulme1.truenas.dataset:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        name: "{{ test_dataset }}"
+        compression: ZSTD
+        state: present
+      register: ds_update
+
+    # --- Service toggle ---
+    - name: Enable SSH service
+      stevefulme1.truenas.service:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        service: ssh
+        enabled: true
+        started: true
+      register: svc_enable
+
+    - name: Disable SSH service
+      stevefulme1.truenas.service:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        service: ssh
+        enabled: false
+        started: false
+      register: svc_disable
+
+    # --- NFS share CRUD ---
+    - name: Create NFS share
+      stevefulme1.truenas.nfs_share:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        path: "{{ test_nfs_path }}"
+        networks:
+          - "10.0.0.0/24"
+        enabled: true
+        state: present
+      register: nfs_create
+
+    - name: Delete NFS share
+      stevefulme1.truenas.nfs_share:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        path: "{{ test_nfs_path }}"
+        state: absent
+      register: nfs_delete
+
+    # --- Cleanup dataset ---
+    - name: Delete test dataset
+      stevefulme1.truenas.dataset:
+        api_url: "{{ truenas_api_url }}"
+        api_key: "{{ truenas_api_key }}"
+        validate_certs: "{{ truenas_validate_certs }}"
+        name: "{{ test_dataset }}"
+        state: absent

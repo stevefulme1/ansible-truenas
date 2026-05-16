@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for truenas_user_management
+
+# Target host
+truenas_user_management_host: ""
+
+# Authentication
+truenas_user_management_username: ""
+truenas_user_management_password: ""
+truenas_user_management_api_key: ""
+
+# Behavior
+truenas_user_management_validate_certs: true
+truenas_user_management_state: present

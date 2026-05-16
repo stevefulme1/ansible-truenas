@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_storage_setup
+# Create pools, datasets, and shares
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_storage_setup_host is defined
+    fail_msg: "truenas_storage_setup_host must be defined"
+    quiet: true
+
+- name: Execute truenas storage setup
+  ansible.builtin.debug:
+    msg: >-
+      Create pools, datasets, and shares.
+      Target: {{ truenas_storage_setup_host }}

@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_iscsi_setup
+# Configure iSCSI targets and extents
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_iscsi_setup_host is defined
+    fail_msg: "truenas_iscsi_setup_host must be defined"
+    quiet: true
+
+- name: Execute truenas iscsi setup
+  ansible.builtin.debug:
+    msg: >-
+      Configure iSCSI targets and extents.
+      Target: {{ truenas_iscsi_setup_host }}

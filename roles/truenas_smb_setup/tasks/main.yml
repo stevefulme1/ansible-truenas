@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_smb_setup
+# Deploy SMB shares with permissions
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_smb_setup_host is defined
+    fail_msg: "truenas_smb_setup_host must be defined"
+    quiet: true
+
+- name: Execute truenas smb setup
+  ansible.builtin.debug:
+    msg: >-
+      Deploy SMB shares with permissions.
+      Target: {{ truenas_smb_setup_host }}

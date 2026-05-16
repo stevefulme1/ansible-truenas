@@ -1,0 +1,27 @@
+---
+argument_specs:
+  main:
+    short_description: "Bulk user and group provisioning"
+    options:
+      truenas_user_management_host:
+        description: Target host address
+        type: str
+        required: true
+      truenas_user_management_username:
+        description: Authentication username
+        type: str
+      truenas_user_management_password:
+        description: Authentication password
+        type: str
+      truenas_user_management_api_key:
+        description: API key for authentication
+        type: str
+      truenas_user_management_validate_certs:
+        description: Validate SSL certificates
+        type: bool
+        default: true
+      truenas_user_management_state:
+        description: Desired state
+        type: str
+        default: present
+        choices: [present, absent]

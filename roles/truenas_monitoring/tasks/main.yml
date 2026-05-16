@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_monitoring
+# Set up alerts and SNMP monitoring
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_monitoring_host is defined
+    fail_msg: "truenas_monitoring_host must be defined"
+    quiet: true
+
+- name: Execute truenas monitoring
+  ansible.builtin.debug:
+    msg: >-
+      Set up alerts and SNMP monitoring.
+      Target: {{ truenas_monitoring_host }}

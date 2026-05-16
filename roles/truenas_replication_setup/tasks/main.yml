@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_replication_setup
+# Configure ZFS replication to remote
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_replication_setup_host is defined
+    fail_msg: "truenas_replication_setup_host must be defined"
+    quiet: true
+
+- name: Execute truenas replication setup
+  ansible.builtin.debug:
+    msg: >-
+      Configure ZFS replication to remote.
+      Target: {{ truenas_replication_setup_host }}

@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_user_management
+# Bulk user and group provisioning
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_user_management_host is defined
+    fail_msg: "truenas_user_management_host must be defined"
+    quiet: true
+
+- name: Execute truenas user management
+  ansible.builtin.debug:
+    msg: >-
+      Bulk user and group provisioning.
+      Target: {{ truenas_user_management_host }}

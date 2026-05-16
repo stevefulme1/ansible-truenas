@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_nfs_setup
+# Deploy NFS shares with access control
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_nfs_setup_host is defined
+    fail_msg: "truenas_nfs_setup_host must be defined"
+    quiet: true
+
+- name: Execute truenas nfs setup
+  ansible.builtin.debug:
+    msg: >-
+      Deploy NFS shares with access control.
+      Target: {{ truenas_nfs_setup_host }}

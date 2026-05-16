@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_upgrade
+# System update and upgrade management
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_upgrade_host is defined
+    fail_msg: "truenas_upgrade_host must be defined"
+    quiet: true
+
+- name: Execute truenas upgrade
+  ansible.builtin.debug:
+    msg: >-
+      System update and upgrade management.
+      Target: {{ truenas_upgrade_host }}

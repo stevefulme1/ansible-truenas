@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_security_hardening
+# Apply security best practices
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_security_hardening_host is defined
+    fail_msg: "truenas_security_hardening_host must be defined"
+    quiet: true
+
+- name: Execute truenas security hardening
+  ansible.builtin.debug:
+    msg: >-
+      Apply security best practices.
+      Target: {{ truenas_security_hardening_host }}

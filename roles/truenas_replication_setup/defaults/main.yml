@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for truenas_replication_setup
+
+# Target host
+truenas_replication_setup_host: ""
+
+# Authentication
+truenas_replication_setup_username: ""
+truenas_replication_setup_password: ""
+truenas_replication_setup_api_key: ""
+
+# Behavior
+truenas_replication_setup_validate_certs: true
+truenas_replication_setup_state: present

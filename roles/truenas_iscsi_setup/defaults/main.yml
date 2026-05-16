@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for truenas_iscsi_setup
+
+# Target host
+truenas_iscsi_setup_host: ""
+
+# Authentication
+truenas_iscsi_setup_username: ""
+truenas_iscsi_setup_password: ""
+truenas_iscsi_setup_api_key: ""
+
+# Behavior
+truenas_iscsi_setup_validate_certs: true
+truenas_iscsi_setup_state: present

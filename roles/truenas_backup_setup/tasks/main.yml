@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for truenas_backup_setup
+# Configure ZFS snapshots and replication
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_backup_setup_host is defined
+    fail_msg: "truenas_backup_setup_host must be defined"
+    quiet: true
+
+- name: Execute truenas backup setup
+  ansible.builtin.debug:
+    msg: >-
+      Configure ZFS snapshots and replication.
+      Target: {{ truenas_backup_setup_host }}

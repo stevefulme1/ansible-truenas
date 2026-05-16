@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for truenas_storage_setup
+
+# Target host
+truenas_storage_setup_host: ""
+
+# Authentication
+truenas_storage_setup_username: ""
+truenas_storage_setup_password: ""
+truenas_storage_setup_api_key: ""
+
+# Behavior
+truenas_storage_setup_validate_certs: true
+truenas_storage_setup_state: present

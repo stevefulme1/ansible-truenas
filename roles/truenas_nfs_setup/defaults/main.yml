@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for truenas_nfs_setup
+
+# Target host
+truenas_nfs_setup_host: ""
+
+# Authentication
+truenas_nfs_setup_username: ""
+truenas_nfs_setup_password: ""
+truenas_nfs_setup_api_key: ""
+
+# Behavior
+truenas_nfs_setup_validate_certs: true
+truenas_nfs_setup_state: present

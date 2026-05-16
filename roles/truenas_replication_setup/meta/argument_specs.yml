@@ -1,0 +1,27 @@
+---
+argument_specs:
+  main:
+    short_description: "Configure ZFS replication to remote"
+    options:
+      truenas_replication_setup_host:
+        description: Target host address
+        type: str
+        required: true
+      truenas_replication_setup_username:
+        description: Authentication username
+        type: str
+      truenas_replication_setup_password:
+        description: Authentication password
+        type: str
+      truenas_replication_setup_api_key:
+        description: API key for authentication
+        type: str
+      truenas_replication_setup_validate_certs:
+        description: Validate SSL certificates
+        type: bool
+        default: true
+      truenas_replication_setup_state:
+        description: Desired state
+        type: str
+        default: present
+        choices: [present, absent]

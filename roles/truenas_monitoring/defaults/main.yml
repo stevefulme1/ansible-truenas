@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for truenas_monitoring
+
+# Target host
+truenas_monitoring_host: ""
+
+# Authentication
+truenas_monitoring_username: ""
+truenas_monitoring_password: ""
+truenas_monitoring_api_key: ""
+
+# Behavior
+truenas_monitoring_validate_certs: true
+truenas_monitoring_state: present

@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for truenas_security_hardening
+
+# Target host
+truenas_security_hardening_host: ""
+
+# Authentication
+truenas_security_hardening_username: ""
+truenas_security_hardening_password: ""
+truenas_security_hardening_api_key: ""
+
+# Behavior
+truenas_security_hardening_validate_certs: true
+truenas_security_hardening_state: present

@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for truenas_backup_setup
+
+# Target host
+truenas_backup_setup_host: ""
+
+# Authentication
+truenas_backup_setup_username: ""
+truenas_backup_setup_password: ""
+truenas_backup_setup_api_key: ""
+
+# Behavior
+truenas_backup_setup_validate_certs: true
+truenas_backup_setup_state: present

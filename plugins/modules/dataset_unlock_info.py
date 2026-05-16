@@ -70,7 +70,7 @@ from ansible.module_utils.basic import AnsibleModule
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            passphrase=dict(type="str"),
+            passphrase=dict(type="str", no_log=True),
             host=dict(type="str", required=True),
             username=dict(type="str"),
             password=dict(type="str", no_log=True),

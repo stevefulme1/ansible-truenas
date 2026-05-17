@@ -6,16 +6,6 @@ description:
     - Retrieve details about acltemplates.
     - Read-only module.
 version_added: "1.0.0"
-    limit:
-        description:
-            - Maximum number of results to return.
-        type: int
-        default: 100
-    offset:
-        description:
-            - Number of results to skip for pagination.
-        type: int
-        default: 0
 author:
     - Steve Fulmer (@stevefulme1)
 options:
@@ -39,14 +29,14 @@ options:
         description: Validate SSL certificates.
         type: bool
         default: true
-    limit:
-        description:
-          - Maximum number of results to return.
-        type: int
-        default: 100
-    offset:
-        description:
-          - Number of results to skip for pagination.
-        type: int
-        default: 0
+  limit:
+    description:
+      - Maximum number of results to return.
+    type: int
+    default: 100
+  offset:
+    description:
+      - Number of results to skip for pagination.
+    type: int
+    default: 0
 """

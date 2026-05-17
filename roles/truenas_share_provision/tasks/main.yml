@@ -13,7 +13,7 @@
 
 - name: Build authentication parameters
   ansible.builtin.set_fact:
-    _tn_auth:
+    truenas_share_provision_auth:
       host: "{{ truenas_share_provision_host }}"
       api_key: "{{ truenas_share_provision_api_key }}"
       validate_certs: "{{ truenas_share_provision_validate_certs }}"
@@ -23,9 +23,9 @@
   block:
     - name: Configure SMB global settings
       stevefulme1.truenas.smb_config:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         netbiosname: "{{ truenas_share_provision_smb_config.netbiosname | default(omit) }}"
         workgroup: "{{ truenas_share_provision_smb_config.workgroup | default(omit) }}"
         description: "{{ truenas_share_provision_smb_config.description | default(omit) }}"
@@ -36,9 +36,9 @@
 
     - name: Create SMB shares
       stevefulme1.truenas.smb_share:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         name: "{{ item.name }}"
         path: "{{ item.path }}"
         purpose: "{{ item.purpose | default('DEFAULT_SHARE') }}"
@@ -59,9 +59,9 @@
 
     - name: Configure NFS global settings
       stevefulme1.truenas.nfs_config:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         v4: "{{ truenas_share_provision_nfs_config.v4 | default(true) }}"
         v4_v4owner: "{{ truenas_share_provision_nfs_config.v4_v4owner | default(true) }}"
         mountd_port: "{{ truenas_share_provision_nfs_config.mountd_port | default(omit) }}"
@@ -71,9 +71,9 @@
 
     - name: Create NFS exports
       stevefulme1.truenas.nfs_share:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         path: "{{ item.path }}"
         comment: "{{ item.comment | default(omit) }}"
         hosts: "{{ item.hosts | default([]) }}"
@@ -88,9 +88,9 @@
 
     - name: Create iSCSI portals
       stevefulme1.truenas.iscsi_portal:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         comment: "{{ item.comment }}"
         listen: "{{ item.listen }}"
         state: present
@@ -99,9 +99,9 @@
 
     - name: Create iSCSI initiator groups
       stevefulme1.truenas.iscsi_initiator:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         comment: "{{ item.comment }}"
         initiators: "{{ item.initiators | default([]) }}"
         auth_network: "{{ item.auth_network | default([]) }}"
@@ -111,9 +111,9 @@
 
     - name: Create iSCSI targets
       stevefulme1.truenas.iscsi_target:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         name: "{{ item.name }}"
         alias: "{{ item.alias | default(omit) }}"
         mode: "{{ item.mode | default('ISCSI') }}"
@@ -123,9 +123,9 @@
 
     - name: Create iSCSI extents
       stevefulme1.truenas.iscsi_extent:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         name: "{{ item.name }}"
         type: "{{ item.type | default('DISK') }}"
         disk: "{{ item.disk }}"
@@ -137,9 +137,9 @@
 
     - name: Map iSCSI targets to extents
       stevefulme1.truenas.iscsi_targetextent:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         target: "{{ item.target }}"
         extent: "{{ item.extent }}"
         lunid: "{{ item.lunid | default(0) }}"
@@ -149,9 +149,9 @@
 
     - name: Enable required services
       stevefulme1.truenas.service:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_share_provision_auth.host }}"
+        api_key: "{{ truenas_share_provision_auth.api_key }}"
+        validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         service: "{{ item.service }}"
         enabled: "{{ item.enabled | default(true) }}"
         state: started

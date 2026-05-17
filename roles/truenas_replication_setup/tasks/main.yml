@@ -13,7 +13,7 @@
 
 - name: Build authentication parameters
   ansible.builtin.set_fact:
-    _tn_auth:
+    truenas_replication_setup_auth:
       host: "{{ truenas_replication_setup_host }}"
       api_key: "{{ truenas_replication_setup_api_key }}"
       validate_certs: "{{ truenas_replication_setup_validate_certs }}"
@@ -23,9 +23,9 @@
   block:
     - name: Create periodic snapshot tasks
       stevefulme1.truenas.snapshot_task:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_replication_setup_auth.host }}"
+        api_key: "{{ truenas_replication_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_replication_setup_auth.validate_certs }}"
         dataset: "{{ item.dataset }}"
         recursive: "{{ item.recursive | default(true) }}"
         lifetime_value: "{{ item.lifetime_value | default(2) }}"
@@ -39,9 +39,9 @@
 
     - name: Configure SSH connections for replication
       stevefulme1.truenas.ssh_connection:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_replication_setup_auth.host }}"
+        api_key: "{{ truenas_replication_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_replication_setup_auth.validate_certs }}"
         name: "{{ item.name }}"
         setup_type: "MANUAL"
         connection_host: "{{ item.host }}"
@@ -56,9 +56,9 @@
 
     - name: Create replication tasks
       stevefulme1.truenas.replication:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_replication_setup_auth.host }}"
+        api_key: "{{ truenas_replication_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_replication_setup_auth.validate_certs }}"
         name: "{{ item.name }}"
         direction: "{{ item.direction | default('PUSH') }}"
         transport: "{{ item.transport | default('SSH') }}"
@@ -78,9 +78,9 @@
 
     - name: Create cloud sync tasks
       stevefulme1.truenas.cloud_sync:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_replication_setup_auth.host }}"
+        api_key: "{{ truenas_replication_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_replication_setup_auth.validate_certs }}"
         description: "{{ item.description }}"
         direction: "{{ item.direction | default('PUSH') }}"
         transfer_mode: "{{ item.transfer_mode | default('SYNC') }}"
@@ -95,9 +95,9 @@
 
     - name: Create rsync tasks
       stevefulme1.truenas.rsync_task:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_replication_setup_auth.host }}"
+        api_key: "{{ truenas_replication_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_replication_setup_auth.validate_certs }}"
         path: "{{ item.path }}"
         remotehost: "{{ item.remotehost }}"
         remoteport: "{{ item.remoteport | default(22) }}"

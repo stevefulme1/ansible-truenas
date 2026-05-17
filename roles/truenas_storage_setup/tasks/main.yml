@@ -13,7 +13,7 @@
 
 - name: Build authentication parameters
   ansible.builtin.set_fact:
-    _tn_auth:
+    truenas_storage_setup_auth:
       host: "{{ truenas_storage_setup_host }}"
       api_key: "{{ truenas_storage_setup_api_key }}"
       validate_certs: "{{ truenas_storage_setup_validate_certs }}"
@@ -23,16 +23,16 @@
   block:
     - name: Gather disk information
       stevefulme1.truenas.disk_info:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
-      register: _disk_info
+        host: "{{ truenas_storage_setup_auth.host }}"
+        api_key: "{{ truenas_storage_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
+      register: truenas_storage_setup_disk_info
 
     - name: Create ZFS pools
       stevefulme1.truenas.pool:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_storage_setup_auth.host }}"
+        api_key: "{{ truenas_storage_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         name: "{{ item.name }}"
         topology: "{{ item.topology }}"
         encryption: "{{ item.encryption | default(false) }}"
@@ -42,9 +42,9 @@
 
     - name: Create datasets
       stevefulme1.truenas.dataset:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_storage_setup_auth.host }}"
+        api_key: "{{ truenas_storage_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         name: "{{ item.name }}"
         compression: "{{ item.compression | default('lz4') }}"
         atime: "{{ item.atime | default('off') }}"
@@ -63,9 +63,9 @@
 
     - name: Create zvols
       stevefulme1.truenas.zvol:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_storage_setup_auth.host }}"
+        api_key: "{{ truenas_storage_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         name: "{{ item.name }}"
         volsize: "{{ item.volsize }}"
         blocksize: "{{ item.blocksize | default('16K') }}"
@@ -77,9 +77,9 @@
 
     - name: Configure pool scrub schedules
       stevefulme1.truenas.pool_scrub:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_storage_setup_auth.host }}"
+        api_key: "{{ truenas_storage_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         pool: "{{ item.pool }}"
         threshold: "{{ item.threshold | default(35) }}"
         schedule: "{{ item.schedule }}"
@@ -89,9 +89,9 @@
 
     - name: Configure resilver priority
       stevefulme1.truenas.pool_resilver:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_storage_setup_auth.host }}"
+        api_key: "{{ truenas_storage_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         enabled: "{{ truenas_storage_setup_resilver.enabled }}"
         begin: "{{ truenas_storage_setup_resilver.begin }}"
         end: "{{ truenas_storage_setup_resilver.end }}"
@@ -100,9 +100,9 @@
 
     - name: Configure ZFS tunables
       stevefulme1.truenas.tunable:
-        host: "{{ _tn_auth.host }}"
-        api_key: "{{ _tn_auth.api_key }}"
-        validate_certs: "{{ _tn_auth.validate_certs }}"
+        host: "{{ truenas_storage_setup_auth.host }}"
+        api_key: "{{ truenas_storage_setup_auth.api_key }}"
+        validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         var: "{{ item.var }}"
         value: "{{ item.value }}"
         type: "{{ item.type | default('sysctl') }}"

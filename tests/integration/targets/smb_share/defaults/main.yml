@@ -1,0 +1,2 @@
+---
+truenas_test_smb_share_name: test-smb_share-{{ tiny_prefix }}

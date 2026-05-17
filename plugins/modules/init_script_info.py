@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get init script information
+  stevefulme1.truenas.init_script_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

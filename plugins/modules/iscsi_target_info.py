@@ -32,3 +32,10 @@ extends_documentation_fragment:
 author:
   - Steve Fulmer (@sfulmer)
 """
+EXAMPLES = r"""
+- name: Get iscsi target information
+  stevefulme1.truenas.iscsi_target_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

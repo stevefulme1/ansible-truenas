@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get smart test information
+  stevefulme1.truenas.smart_test_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

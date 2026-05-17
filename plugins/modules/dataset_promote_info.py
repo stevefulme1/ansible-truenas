@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get dataset promote information
+  stevefulme1.truenas.dataset_promote_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

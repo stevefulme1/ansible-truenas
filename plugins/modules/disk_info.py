@@ -32,3 +32,10 @@ extends_documentation_fragment:
 author:
   - Steve Fulmer (@sfulmer)
 """
+EXAMPLES = r"""
+- name: Get disk information
+  stevefulme1.truenas.disk_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

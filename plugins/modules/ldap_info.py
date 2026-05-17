@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get ldap information
+  stevefulme1.truenas.ldap_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

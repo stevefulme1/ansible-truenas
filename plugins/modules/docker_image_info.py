@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get docker image information
+  stevefulme1.truenas.docker_image_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

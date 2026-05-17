@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get failover information
+  stevefulme1.truenas.failover_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

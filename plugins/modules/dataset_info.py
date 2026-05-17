@@ -32,3 +32,10 @@ extends_documentation_fragment:
 author:
   - Steve Fulmer (@sfulmer)
 """
+EXAMPLES = r"""
+- name: Get dataset information
+  stevefulme1.truenas.dataset_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

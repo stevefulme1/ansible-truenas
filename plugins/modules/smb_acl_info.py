@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get smb acl information
+  stevefulme1.truenas.smb_acl_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

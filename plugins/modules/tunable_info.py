@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get tunable information
+  stevefulme1.truenas.tunable_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

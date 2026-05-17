@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get certificate information
+  stevefulme1.truenas.certificate_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

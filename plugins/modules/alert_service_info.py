@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get alert service information
+  stevefulme1.truenas.alert_service_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

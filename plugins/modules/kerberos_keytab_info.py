@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get kerberos keytab information
+  stevefulme1.truenas.kerberos_keytab_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

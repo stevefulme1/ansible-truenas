@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get nfs kerberos information
+  stevefulme1.truenas.nfs_kerberos_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

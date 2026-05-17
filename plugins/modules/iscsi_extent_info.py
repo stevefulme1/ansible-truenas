@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get iscsi extent information
+  stevefulme1.truenas.iscsi_extent_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

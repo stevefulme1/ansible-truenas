@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get config backup information
+  stevefulme1.truenas.config_backup_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

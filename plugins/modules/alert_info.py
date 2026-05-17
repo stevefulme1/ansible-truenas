@@ -29,3 +29,10 @@ extends_documentation_fragment:
 author:
   - Steve Fulmer (@sfulmer)
 """
+EXAMPLES = r"""
+- name: Get alert information
+  stevefulme1.truenas.alert_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

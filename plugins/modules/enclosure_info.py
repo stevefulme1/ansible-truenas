@@ -32,3 +32,10 @@ extends_documentation_fragment:
 author:
   - Steve Fulmer (@sfulmer)
 """
+EXAMPLES = r"""
+- name: Get enclosure information
+  stevefulme1.truenas.enclosure_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

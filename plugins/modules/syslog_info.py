@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get syslog information
+  stevefulme1.truenas.syslog_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

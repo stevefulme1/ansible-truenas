@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get static route information
+  stevefulme1.truenas.static_route_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

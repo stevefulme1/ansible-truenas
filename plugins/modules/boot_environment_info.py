@@ -32,3 +32,10 @@ extends_documentation_fragment:
 author:
   - Steve Fulmer (@sfulmer)
 """
+EXAMPLES = r"""
+- name: Get boot environment information
+  stevefulme1.truenas.boot_environment_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

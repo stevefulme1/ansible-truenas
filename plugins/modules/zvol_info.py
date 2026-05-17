@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get zvol information
+  stevefulme1.truenas.zvol_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

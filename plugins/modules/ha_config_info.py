@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get ha config information
+  stevefulme1.truenas.ha_config_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

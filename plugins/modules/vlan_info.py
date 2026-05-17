@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get vlan information
+  stevefulme1.truenas.vlan_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

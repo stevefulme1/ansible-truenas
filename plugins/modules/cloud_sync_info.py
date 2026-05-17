@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get cloud sync information
+  stevefulme1.truenas.cloud_sync_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get reporting information
+  stevefulme1.truenas.reporting_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

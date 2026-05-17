@@ -32,3 +32,10 @@ extends_documentation_fragment:
 author:
   - Steve Fulmer (@sfulmer)
 """
+EXAMPLES = r"""
+- name: Get nfs share information
+  stevefulme1.truenas.nfs_share_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

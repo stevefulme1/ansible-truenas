@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get snapshot task information
+  stevefulme1.truenas.snapshot_task_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

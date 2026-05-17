@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get api key information
+  stevefulme1.truenas.api_key_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get rsync task information
+  stevefulme1.truenas.rsync_task_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

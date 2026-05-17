@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get snmp information
+  stevefulme1.truenas.snmp_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

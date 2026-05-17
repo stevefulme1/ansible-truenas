@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get pool export information
+  stevefulme1.truenas.pool_export_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

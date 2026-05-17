@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get iscsi initiator information
+  stevefulme1.truenas.iscsi_initiator_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

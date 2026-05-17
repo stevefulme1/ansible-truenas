@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get ssh information
+  stevefulme1.truenas.ssh_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

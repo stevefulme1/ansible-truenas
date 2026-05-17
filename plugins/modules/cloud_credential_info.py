@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get cloud credential information
+  stevefulme1.truenas.cloud_credential_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

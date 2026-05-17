@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get ntp information
+  stevefulme1.truenas.ntp_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

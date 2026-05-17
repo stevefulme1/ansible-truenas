@@ -47,3 +47,10 @@ options:
         type: int
         default: 0
 """
+EXAMPLES = r"""
+- name: Get kerberos realm information
+  stevefulme1.truenas.kerberos_realm_info:
+    host: "{{ truenas_host }}"
+  register: result
+"""
+

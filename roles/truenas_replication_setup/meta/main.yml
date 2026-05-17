@@ -1,8 +1,9 @@
 ---
 galaxy_info:
   author: Steve Fulmer
-  description: "Configure ZFS replication to remote"
-  license: Apache-2.0
+  description: >-
+    Configure TrueNAS snapshot tasks, ZFS replication, cloud sync, and rsync
+  license: GPL-3.0-or-later
   min_ansible_version: "2.16"
   platforms:
     - name: GenericLinux
@@ -10,4 +11,7 @@ galaxy_info:
         - all
   galaxy_tags:
     - truenas
+    - backup
+    - replication
+    - snapshots
 dependencies: []

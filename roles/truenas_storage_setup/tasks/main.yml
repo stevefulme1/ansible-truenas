@@ -1,16 +1,118 @@
 ---
 # tasks/main.yml for truenas_storage_setup
-# Create pools, datasets, and shares
+# Create ZFS pools, datasets, zvols, and configure scrub/resilver
 
 - name: Validate required variables
   ansible.builtin.assert:
     that:
-      - truenas_storage_setup_host is defined
-    fail_msg: "truenas_storage_setup_host must be defined"
+      - truenas_storage_setup_host | length > 0
+      - truenas_storage_setup_api_key | length > 0
+    fail_msg: >-
+      truenas_storage_setup_host and truenas_storage_setup_api_key must be defined.
     quiet: true
 
-- name: Execute truenas storage setup
-  ansible.builtin.debug:
-    msg: >-
-      Create pools, datasets, and shares.
-      Target: {{ truenas_storage_setup_host }}
+- name: Build authentication parameters
+  ansible.builtin.set_fact:
+    _tn_auth:
+      host: "{{ truenas_storage_setup_host }}"
+      api_key: "{{ truenas_storage_setup_api_key }}"
+      validate_certs: "{{ truenas_storage_setup_validate_certs }}"
+  no_log: true
+
+- name: Configure storage
+  block:
+    - name: Gather disk information
+      stevefulme1.truenas.disk_info:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+      register: _disk_info
+
+    - name: Create ZFS pools
+      stevefulme1.truenas.pool:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        topology: "{{ item.topology }}"
+        encryption: "{{ item.encryption | default(false) }}"
+        state: present
+      loop: "{{ truenas_storage_setup_pools }}"
+      when: truenas_storage_setup_pools | length > 0
+
+    - name: Create datasets
+      stevefulme1.truenas.dataset:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        compression: "{{ item.compression | default('lz4') }}"
+        atime: "{{ item.atime | default('off') }}"
+        recordsize: "{{ item.recordsize | default('128K') }}"
+        quota: "{{ item.quota | default(omit) }}"
+        refquota: "{{ item.refquota | default(omit) }}"
+        deduplication: "{{ item.deduplication | default('off') }}"
+        sync: "{{ item.sync | default('standard') }}"
+        copies: "{{ item.copies | default(1) }}"
+        snapdir: "{{ item.snapdir | default('visible') }}"
+        aclmode: "{{ item.aclmode | default('passthrough') }}"
+        acltype: "{{ item.acltype | default('nfsv4') }}"
+        state: present
+      loop: "{{ truenas_storage_setup_datasets }}"
+      when: truenas_storage_setup_datasets | length > 0
+
+    - name: Create zvols
+      stevefulme1.truenas.zvol:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        volsize: "{{ item.volsize }}"
+        blocksize: "{{ item.blocksize | default('16K') }}"
+        compression: "{{ item.compression | default('lz4') }}"
+        sparse: "{{ item.sparse | default(true) }}"
+        state: present
+      loop: "{{ truenas_storage_setup_zvols }}"
+      when: truenas_storage_setup_zvols | length > 0
+
+    - name: Configure pool scrub schedules
+      stevefulme1.truenas.pool_scrub:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        pool: "{{ item.pool }}"
+        threshold: "{{ item.threshold | default(35) }}"
+        schedule: "{{ item.schedule }}"
+        state: present
+      loop: "{{ truenas_storage_setup_scrub_schedules }}"
+      when: truenas_storage_setup_scrub_schedules | length > 0
+
+    - name: Configure resilver priority
+      stevefulme1.truenas.pool_resilver:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        enabled: "{{ truenas_storage_setup_resilver.enabled }}"
+        begin: "{{ truenas_storage_setup_resilver.begin }}"
+        end: "{{ truenas_storage_setup_resilver.end }}"
+        weekday: "{{ truenas_storage_setup_resilver.weekday | default([]) }}"
+        state: present
+
+    - name: Configure ZFS tunables
+      stevefulme1.truenas.tunable:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        var: "{{ item.var }}"
+        value: "{{ item.value }}"
+        type: "{{ item.type | default('sysctl') }}"
+        state: present
+      loop: "{{ truenas_storage_setup_tunables }}"
+      when: truenas_storage_setup_tunables | length > 0
+
+  rescue:
+    - name: Storage setup failed
+      ansible.builtin.fail:
+        msg: >-
+          TrueNAS storage setup failed:
+          {{ ansible_failed_result.msg | default('unknown error') }}

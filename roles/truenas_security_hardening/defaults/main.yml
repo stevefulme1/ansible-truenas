@@ -1,14 +1,106 @@
 ---
 # defaults/main.yml for truenas_security_hardening
 
-# Target host
+# Connection
 truenas_security_hardening_host: ""
-
-# Authentication
-truenas_security_hardening_username: ""
-truenas_security_hardening_password: ""
 truenas_security_hardening_api_key: ""
-
-# Behavior
 truenas_security_hardening_validate_certs: true
-truenas_security_hardening_state: present
+
+# SSH hardening
+truenas_security_hardening_ssh:
+  enabled: true
+  port: 22
+  password_login: false
+  root_login: false
+  tcp_forwarding: false
+  compression: false
+
+# TLS certificates
+truenas_security_hardening_certificates:
+  []
+  # - name: "web-cert"
+  #   certificate: |
+  #     -----BEGIN CERTIFICATE-----
+  #     ...
+  #     -----END CERTIFICATE-----
+  #   privatekey: |
+  #     -----BEGIN PRIVATE KEY-----
+  #     ...
+  #     -----END PRIVATE KEY-----
+  #   type: "CERTIFICATE_CREATE_IMPORTED"
+
+# Certificate Authorities
+truenas_security_hardening_cas:
+  []
+  # - name: "internal-ca"
+  #   certificate: |
+  #     -----BEGIN CERTIFICATE-----
+  #     ...
+  #     -----END CERTIFICATE-----
+  #   type: "CA_CREATE_IMPORTED"
+
+# ACME (Let's Encrypt) certificates
+truenas_security_hardening_acme:
+  []
+  # - name: "le-cert"
+  #   domain: "truenas.example.com"
+  #   dns_mapping:
+  #     authenticator: "cloudflare"
+  #     credentials:
+  #       api_token: ""
+
+# User accounts
+truenas_security_hardening_users:
+  []
+  # - username: "admin"
+  #   full_name: "Administrator"
+  #   password: ""
+  #   groups: ["wheel"]
+  #   shell: "/usr/bin/bash"
+  #   sudo: true
+  #   sudo_nopasswd: false
+  #   ssh_pubkey: ""
+  #   locked: false
+
+# Group management
+truenas_security_hardening_groups:
+  []
+  # - name: "admins"
+  #   gid: 1001
+  #   sudo: true
+
+# API keys
+truenas_security_hardening_api_keys:
+  []
+  # - name: "automation"
+  #   allowlist:
+  #     - method: "GET"
+  #       resource: "*"
+
+# System security settings
+truenas_security_hardening_system:
+  timezone: "UTC"
+  language: "en"
+  syslog_level: "WARNING"
+  syslog_transport: "UDP"
+  syslog_server: ""
+
+# NTP configuration
+truenas_security_hardening_ntp_servers:
+  []
+  # - address: "0.pool.ntp.org"
+  #   burst: true
+  #   iburst: true
+  #   prefer: true
+
+# SNMP (disable or configure)
+truenas_security_hardening_snmp:
+  community: ""
+  v3: true
+  v3_username: ""
+  v3_authtype: "SHA"
+  v3_password: ""
+  v3_privproto: "AES"
+  v3_privpassphrase: ""
+  contact: ""
+  location: ""

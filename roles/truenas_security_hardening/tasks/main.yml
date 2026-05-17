@@ -1,16 +1,162 @@
 ---
 # tasks/main.yml for truenas_security_hardening
-# Apply security best practices
+# Configure SSH, TLS, user accounts, and security policies
 
 - name: Validate required variables
   ansible.builtin.assert:
     that:
-      - truenas_security_hardening_host is defined
-    fail_msg: "truenas_security_hardening_host must be defined"
+      - truenas_security_hardening_host | length > 0
+      - truenas_security_hardening_api_key | length > 0
+    fail_msg: >-
+      truenas_security_hardening_host and truenas_security_hardening_api_key must be defined.
     quiet: true
 
-- name: Execute truenas security hardening
-  ansible.builtin.debug:
-    msg: >-
-      Apply security best practices.
-      Target: {{ truenas_security_hardening_host }}
+- name: Build authentication parameters
+  ansible.builtin.set_fact:
+    _tn_auth:
+      host: "{{ truenas_security_hardening_host }}"
+      api_key: "{{ truenas_security_hardening_api_key }}"
+      validate_certs: "{{ truenas_security_hardening_validate_certs }}"
+  no_log: true
+
+- name: Apply security hardening
+  block:
+    - name: Configure system settings
+      stevefulme1.truenas.system:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        timezone: "{{ truenas_security_hardening_system.timezone }}"
+        language: "{{ truenas_security_hardening_system.language | default('en') }}"
+        syslog_level: "{{ truenas_security_hardening_system.syslog_level | default('WARNING') }}"
+        syslog_transport: "{{ truenas_security_hardening_system.syslog_transport | default('UDP') }}"
+        syslog_server: "{{ truenas_security_hardening_system.syslog_server | default(omit) }}"
+        state: present
+
+    - name: Harden SSH configuration
+      stevefulme1.truenas.ssh:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        tcpport: "{{ truenas_security_hardening_ssh.port | default(22) }}"
+        passwordauth: "{{ truenas_security_hardening_ssh.password_login | default(false) }}"
+        rootlogin: "{{ truenas_security_hardening_ssh.root_login | default(false) }}"
+        tcpfwd: "{{ truenas_security_hardening_ssh.tcp_forwarding | default(false) }}"
+        compression: "{{ truenas_security_hardening_ssh.compression | default(false) }}"
+        state: present
+
+    - name: Enable or disable SSH service
+      stevefulme1.truenas.service:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        service: "ssh"
+        enabled: "{{ truenas_security_hardening_ssh.enabled }}"
+        state: "{{ 'started' if truenas_security_hardening_ssh.enabled else 'stopped' }}"
+
+    - name: Import Certificate Authorities
+      stevefulme1.truenas.ca:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        certificate: "{{ item.certificate }}"
+        type: "{{ item.type | default('CA_CREATE_IMPORTED') }}"
+        state: present
+      loop: "{{ truenas_security_hardening_cas }}"
+      when: truenas_security_hardening_cas | length > 0
+      no_log: true
+
+    - name: Import TLS certificates
+      stevefulme1.truenas.certificate:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        certificate: "{{ item.certificate }}"
+        privatekey: "{{ item.privatekey }}"
+        type: "{{ item.type | default('CERTIFICATE_CREATE_IMPORTED') }}"
+        state: present
+      loop: "{{ truenas_security_hardening_certificates }}"
+      when: truenas_security_hardening_certificates | length > 0
+      no_log: true
+
+    - name: Create groups
+      stevefulme1.truenas.group:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        gid: "{{ item.gid | default(omit) }}"
+        sudo: "{{ item.sudo | default(false) }}"
+        state: present
+      loop: "{{ truenas_security_hardening_groups }}"
+      when: truenas_security_hardening_groups | length > 0
+
+    - name: Create user accounts
+      stevefulme1.truenas.user:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        username: "{{ item.username }}"
+        full_name: "{{ item.full_name | default(item.username) }}"
+        password: "{{ item.password }}"
+        groups: "{{ item.groups | default([]) }}"
+        shell: "{{ item.shell | default('/usr/bin/bash') }}"
+        sudo: "{{ item.sudo | default(false) }}"
+        sudo_nopasswd: "{{ item.sudo_nopasswd | default(false) }}"
+        sshpubkey: "{{ item.ssh_pubkey | default(omit) }}"
+        locked: "{{ item.locked | default(false) }}"
+        state: present
+      loop: "{{ truenas_security_hardening_users }}"
+      when: truenas_security_hardening_users | length > 0
+      no_log: true
+
+    - name: Create API keys
+      stevefulme1.truenas.api_key:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        allowlist: "{{ item.allowlist | default(omit) }}"
+        state: present
+      loop: "{{ truenas_security_hardening_api_keys }}"
+      when: truenas_security_hardening_api_keys | length > 0
+
+    - name: Configure NTP servers
+      stevefulme1.truenas.ntp:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        address: "{{ item.address }}"
+        burst: "{{ item.burst | default(true) }}"
+        iburst: "{{ item.iburst | default(true) }}"
+        prefer: "{{ item.prefer | default(false) }}"
+        state: present
+      loop: "{{ truenas_security_hardening_ntp_servers }}"
+      when: truenas_security_hardening_ntp_servers | length > 0
+
+    - name: Configure SNMP
+      stevefulme1.truenas.snmp:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        community: "{{ truenas_security_hardening_snmp.community | default(omit) }}"
+        v3: "{{ truenas_security_hardening_snmp.v3 | default(true) }}"
+        v3_username: "{{ truenas_security_hardening_snmp.v3_username | default(omit) }}"
+        v3_authtype: "{{ truenas_security_hardening_snmp.v3_authtype | default('SHA') }}"
+        v3_password: "{{ truenas_security_hardening_snmp.v3_password | default(omit) }}"
+        v3_privproto: "{{ truenas_security_hardening_snmp.v3_privproto | default('AES') }}"
+        v3_privpassphrase: "{{ truenas_security_hardening_snmp.v3_privpassphrase | default(omit) }}"
+        contact: "{{ truenas_security_hardening_snmp.contact | default(omit) }}"
+        location: "{{ truenas_security_hardening_snmp.location | default(omit) }}"
+        state: present
+      when: truenas_security_hardening_snmp.v3_username | default('') | length > 0
+      no_log: true
+
+  rescue:
+    - name: Security hardening failed
+      ansible.builtin.fail:
+        msg: >-
+          TrueNAS security hardening failed:
+          {{ ansible_failed_result.msg | default('unknown error') }}

@@ -1,14 +1,72 @@
 ---
 # defaults/main.yml for truenas_storage_setup
 
-# Target host
+# Connection
 truenas_storage_setup_host: ""
-
-# Authentication
-truenas_storage_setup_username: ""
-truenas_storage_setup_password: ""
 truenas_storage_setup_api_key: ""
-
-# Behavior
 truenas_storage_setup_validate_certs: true
-truenas_storage_setup_state: present
+
+# ZFS pools
+truenas_storage_setup_pools:
+  []
+  # - name: "tank"
+  #   topology:
+  #     data:
+  #       - type: RAIDZ2
+  #         disks: ["da0", "da1", "da2", "da3", "da4", "da5"]
+  #     cache:
+  #       - type: STRIPE
+  #         disks: ["nvme0"]
+  #     log:
+  #       - type: MIRROR
+  #         disks: ["nvme1", "nvme2"]
+  #   encryption: false
+
+# Datasets
+truenas_storage_setup_datasets:
+  []
+  # - name: "tank/data"
+  #   compression: "lz4"
+  #   atime: "off"
+  #   recordsize: "128K"
+  #   quota: "500G"
+  #   refquota: "400G"
+  #   deduplication: "off"
+  #   sync: "standard"
+  #   copies: 1
+  #   snapdir: "visible"
+  #   aclmode: "passthrough"
+  #   acltype: "nfsv4"
+
+# Zvols (block devices)
+truenas_storage_setup_zvols:
+  []
+  # - name: "tank/iscsi-vol1"
+  #   volsize: "100G"
+  #   blocksize: "16K"
+  #   compression: "lz4"
+  #   sparse: true
+
+# Pool scrub schedules
+truenas_storage_setup_scrub_schedules:
+  []
+  # - pool: "tank"
+  #   threshold: 35
+  #   schedule:
+  #     dow: "7"
+  #     hour: "2"
+  #     minute: "0"
+
+# Pool resilver priority
+truenas_storage_setup_resilver:
+  enabled: true
+  begin: "18:00"
+  end: "06:00"
+  weekday: []
+
+# Tunables
+truenas_storage_setup_tunables:
+  []
+  # - var: "vfs.zfs.arc_max"
+  #   value: "17179869184"
+  #   type: "sysctl"

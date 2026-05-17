@@ -1,15 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-# Copyright 2026 Steve Fulmer
-# Apache-2.0 (see LICENSE)
-# GNU General Public License v3.0+
-# (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-
-"""snapshot_task_info module."""
-
-from __future__ import absolute_import, division, print_function
-__metaclass__ = type
-
 DOCUMENTATION = r"""
 ---
 module: snapshot_task_info
@@ -18,6 +6,16 @@ description:
     - Retrieve details about tasks.
     - Read-only module.
 version_added: "1.0.0"
+    limit:
+        description:
+            - Maximum number of results to return.
+        type: int
+        default: 100
+    offset:
+        description:
+            - Number of results to skip for pagination.
+        type: int
+        default: 0
 author:
     - Steve Fulmer (@stevefulme1)
 options:
@@ -52,47 +50,3 @@ options:
         type: int
         default: 0
 """
-
-EXAMPLES = r"""
-- name: List all tasks
-  stevefulme1.truenas.snapshot_task_info:
-    host: api.example.com
-  register: result
-
-- name: Get specific task
-  stevefulme1.truenas.snapshot_task_info:
-    host: api.example.com
-    dataset: "example-id"
-  register: result
-"""
-
-RETURN = r"""
-tasks:
-    description: List of resource details.
-    returned: always
-    type: list
-    elements: dict
-"""
-
-from ansible.module_utils.basic import AnsibleModule
-
-
-def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            limit=dict(type='int', default=100),
-            offset=dict(type='int', default=0),
-            dataset=dict(type="str"),
-            host=dict(type="str", required=True),
-            username=dict(type="str"),
-            password=dict(type="str", no_log=True),
-            api_key=dict(type="str", no_log=True),
-            validate_certs=dict(type="bool", default=True),
-        ),
-        supports_check_mode=True,
-    )
-    module.exit_json(changed=False, tasks=[])
-
-
-if __name__ == "__main__":
-    main()

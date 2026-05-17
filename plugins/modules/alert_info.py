@@ -1,12 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-# GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
-
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-
 DOCUMENTATION = r"""
 ---
 module: alert_info
@@ -15,7 +6,6 @@ version_added: "1.0.0"
 description:
   - List active alerts from a TrueNAS system via the middleware API.
 options:
-  {}
 
     limit:
         description:
@@ -32,50 +22,3 @@ extends_documentation_fragment:
 author:
   - Steve Fulmer (@sfulmer)
 """
-
-EXAMPLES = r"""
-- name: Manage list active alerts
-  stevefulme1.truenas.alert_info:
-    api_url: https://truenas.example.com
-    api_key: "{{ vault_truenas_api_key }}"
-"""
-
-RETURN = r"""
-data:
-  description: Retrieved information.
-  returned: success
-  type: dict
-"""
-
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
-    TrueNASClient,
-    TrueNASError,
-    truenas_argument_spec,
-)
-
-
-def main():
-    argument_spec = truenas_argument_spec()
-    argument_spec.update(
-        limit=dict(type='int', default=100),
-        offset=dict(type='int', default=0),
-    )
-
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=[["api_key", "username"]],
-    )
-
-    client = TrueNASClient(module)
-
-    try:
-        data = client.get("alert/list")
-        module.exit_json(changed=False, data=data)
-    except TrueNASError as e:
-        module.fail_json(msg=str(e))
-
-
-if __name__ == "__main__":
-    main()

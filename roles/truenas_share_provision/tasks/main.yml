@@ -1,0 +1,166 @@
+---
+# tasks/main.yml for truenas_share_provision
+# Configure SMB, NFS, and iSCSI shares
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - truenas_share_provision_host | length > 0
+      - truenas_share_provision_api_key | length > 0
+    fail_msg: >-
+      truenas_share_provision_host and truenas_share_provision_api_key must be defined.
+    quiet: true
+
+- name: Build authentication parameters
+  ansible.builtin.set_fact:
+    _tn_auth:
+      host: "{{ truenas_share_provision_host }}"
+      api_key: "{{ truenas_share_provision_api_key }}"
+      validate_certs: "{{ truenas_share_provision_validate_certs }}"
+  no_log: true
+
+- name: Provision shares
+  block:
+    - name: Configure SMB global settings
+      stevefulme1.truenas.smb_config:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        netbiosname: "{{ truenas_share_provision_smb_config.netbiosname | default(omit) }}"
+        workgroup: "{{ truenas_share_provision_smb_config.workgroup | default(omit) }}"
+        description: "{{ truenas_share_provision_smb_config.description | default(omit) }}"
+        enable_smb1: "{{ truenas_share_provision_smb_config.enable_smb1 | default(false) }}"
+        guest: "{{ truenas_share_provision_smb_config.guest | default(omit) }}"
+        state: present
+      when: truenas_share_provision_smb_config | length > 0
+
+    - name: Create SMB shares
+      stevefulme1.truenas.smb_share:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        path: "{{ item.path }}"
+        purpose: "{{ item.purpose | default('DEFAULT_SHARE') }}"
+        comment: "{{ item.comment | default(omit) }}"
+        browsable: "{{ item.browsable | default(true) }}"
+        ro: "{{ item.ro | default(false) }}"
+        guestok: "{{ item.guestok | default(false) }}"
+        abe: "{{ item.abe | default(false) }}"
+        hostsallow: "{{ item.hostsallow | default([]) }}"
+        hostsdeny: "{{ item.hostsdeny | default([]) }}"
+        recyclebin: "{{ item.recyclebin | default(true) }}"
+        shadowcopy: "{{ item.shadowcopy | default(true) }}"
+        acl: "{{ item.acl | default(true) }}"
+        durablehandle: "{{ item.durablehandle | default(true) }}"
+        state: present
+      loop: "{{ truenas_share_provision_smb_shares }}"
+      when: truenas_share_provision_smb_shares | length > 0
+
+    - name: Configure NFS global settings
+      stevefulme1.truenas.nfs_config:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        v4: "{{ truenas_share_provision_nfs_config.v4 | default(true) }}"
+        v4_v4owner: "{{ truenas_share_provision_nfs_config.v4_v4owner | default(true) }}"
+        mountd_port: "{{ truenas_share_provision_nfs_config.mountd_port | default(omit) }}"
+        bindip: "{{ truenas_share_provision_nfs_config.bindip | default(omit) }}"
+        state: present
+      when: truenas_share_provision_nfs_config | length > 0
+
+    - name: Create NFS exports
+      stevefulme1.truenas.nfs_share:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        path: "{{ item.path }}"
+        comment: "{{ item.comment | default(omit) }}"
+        hosts: "{{ item.hosts | default([]) }}"
+        maproot_user: "{{ item.maproot_user | default(omit) }}"
+        maproot_group: "{{ item.maproot_group | default(omit) }}"
+        security: "{{ item.security | default(['SYS']) }}"
+        ro: "{{ item.ro | default(false) }}"
+        enabled: "{{ item.enabled | default(true) }}"
+        state: present
+      loop: "{{ truenas_share_provision_nfs_shares }}"
+      when: truenas_share_provision_nfs_shares | length > 0
+
+    - name: Create iSCSI portals
+      stevefulme1.truenas.iscsi_portal:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        comment: "{{ item.comment }}"
+        listen: "{{ item.listen }}"
+        state: present
+      loop: "{{ truenas_share_provision_iscsi_portals }}"
+      when: truenas_share_provision_iscsi_portals | length > 0
+
+    - name: Create iSCSI initiator groups
+      stevefulme1.truenas.iscsi_initiator:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        comment: "{{ item.comment }}"
+        initiators: "{{ item.initiators | default([]) }}"
+        auth_network: "{{ item.auth_network | default([]) }}"
+        state: present
+      loop: "{{ truenas_share_provision_iscsi_initiators }}"
+      when: truenas_share_provision_iscsi_initiators | length > 0
+
+    - name: Create iSCSI targets
+      stevefulme1.truenas.iscsi_target:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        alias: "{{ item.alias | default(omit) }}"
+        mode: "{{ item.mode | default('ISCSI') }}"
+        state: present
+      loop: "{{ truenas_share_provision_iscsi_targets }}"
+      when: truenas_share_provision_iscsi_targets | length > 0
+
+    - name: Create iSCSI extents
+      stevefulme1.truenas.iscsi_extent:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        type: "{{ item.type | default('DISK') }}"
+        disk: "{{ item.disk }}"
+        blocksize: "{{ item.blocksize | default(512) }}"
+        rpm: "{{ item.rpm | default('SSD') }}"
+        state: present
+      loop: "{{ truenas_share_provision_iscsi_extents }}"
+      when: truenas_share_provision_iscsi_extents | length > 0
+
+    - name: Map iSCSI targets to extents
+      stevefulme1.truenas.iscsi_targetextent:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        target: "{{ item.target }}"
+        extent: "{{ item.extent }}"
+        lunid: "{{ item.lunid | default(0) }}"
+        state: present
+      loop: "{{ truenas_share_provision_iscsi_targetextents }}"
+      when: truenas_share_provision_iscsi_targetextents | length > 0
+
+    - name: Enable required services
+      stevefulme1.truenas.service:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        service: "{{ item.service }}"
+        enabled: "{{ item.enabled | default(true) }}"
+        state: started
+      loop: "{{ truenas_share_provision_services }}"
+      when: truenas_share_provision_services | length > 0
+
+  rescue:
+    - name: Share provisioning failed
+      ansible.builtin.fail:
+        msg: >-
+          TrueNAS share provisioning failed:
+          {{ ansible_failed_result.msg | default('unknown error') }}

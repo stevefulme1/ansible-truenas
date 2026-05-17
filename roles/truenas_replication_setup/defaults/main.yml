@@ -1,14 +1,86 @@
 ---
 # defaults/main.yml for truenas_replication_setup
 
-# Target host
+# Connection
 truenas_replication_setup_host: ""
-
-# Authentication
-truenas_replication_setup_username: ""
-truenas_replication_setup_password: ""
 truenas_replication_setup_api_key: ""
-
-# Behavior
 truenas_replication_setup_validate_certs: true
-truenas_replication_setup_state: present
+
+# Snapshot tasks (periodic snapshots)
+truenas_replication_setup_snapshot_tasks:
+  []
+  # - dataset: "tank/data"
+  #   recursive: true
+  #   lifetime_value: 2
+  #   lifetime_unit: "WEEK"
+  #   naming_schema: "auto-%Y-%m-%d_%H-%M"
+  #   schedule:
+  #     minute: "0"
+  #     hour: "*/6"
+  #     dom: "*"
+  #     month: "*"
+  #     dow: "*"
+  #   enabled: true
+
+# Replication tasks (to remote TrueNAS)
+truenas_replication_setup_replication_tasks:
+  []
+  # - name: "offsite-backup"
+  #   direction: "PUSH"
+  #   transport: "SSH"
+  #   ssh_credentials: "dr-site-key"
+  #   source_datasets: ["tank/data"]
+  #   target_dataset: "backup/data"
+  #   recursive: true
+  #   auto: true
+  #   retention_policy: "CUSTOM"
+  #   lifetime_value: 4
+  #   lifetime_unit: "WEEK"
+  #   schedule:
+  #     minute: "0"
+  #     hour: "2"
+  #     dom: "*"
+  #     month: "*"
+  #     dow: "*"
+  #   enabled: true
+
+# SSH connections for replication
+truenas_replication_setup_ssh_connections:
+  []
+  # - name: "dr-site-key"
+  #   host: "truenas-dr.example.com"
+  #   port: 22
+  #   username: "root"
+  #   private_key: ""
+  #   remote_host_key: ""
+
+# Cloud sync tasks
+truenas_replication_setup_cloud_sync_tasks:
+  []
+  # - description: "S3 backup"
+  #   direction: "PUSH"
+  #   transfer_mode: "SYNC"
+  #   path: "/mnt/tank/archive"
+  #   credentials: "aws-s3"
+  #   bucket: "my-backup-bucket"
+  #   folder: "/truenas"
+  #   schedule:
+  #     minute: "0"
+  #     hour: "3"
+  #     dom: "*"
+  #     month: "*"
+  #     dow: "1"
+
+# Rsync tasks
+truenas_replication_setup_rsync_tasks:
+  []
+  # - path: "/mnt/tank/sync"
+  #   remotehost: "backup.example.com"
+  #   remoteport: 22
+  #   remotepath: "/backup/sync"
+  #   direction: "PUSH"
+  #   mode: "SSH"
+  #   user: "rsync"
+  #   recursive: true
+  #   archive: true
+  #   compress: true

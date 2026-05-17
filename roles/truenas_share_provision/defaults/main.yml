@@ -1,0 +1,102 @@
+---
+# defaults/main.yml for truenas_share_provision
+
+# Connection
+truenas_share_provision_host: ""
+truenas_share_provision_api_key: ""
+truenas_share_provision_validate_certs: true
+
+# SMB shares
+truenas_share_provision_smb_shares:
+  []
+  # - name: "shared-docs"
+  #   path: "/mnt/tank/shared"
+  #   purpose: "DEFAULT_SHARE"
+  #   comment: "Shared documents"
+  #   browsable: true
+  #   ro: false
+  #   guestok: false
+  #   abe: false
+  #   hostsallow: []
+  #   hostsdeny: []
+  #   recyclebin: true
+  #   shadowcopy: true
+  #   acl: true
+  #   durablehandle: true
+
+# SMB global config
+truenas_share_provision_smb_config:
+  {}
+  # netbiosname: "TRUENAS"
+  # workgroup: "WORKGROUP"
+  # description: "TrueNAS Server"
+  # enable_smb1: false
+  # guest: "nobody"
+
+# NFS shares
+truenas_share_provision_nfs_shares:
+  []
+  # - path: "/mnt/tank/nfs-data"
+  #   comment: "NFS data export"
+  #   hosts: ["10.0.0.0/24"]
+  #   maproot_user: "root"
+  #   maproot_group: "wheel"
+  #   security: ["SYS"]
+  #   ro: false
+  #   enabled: true
+
+# NFS global config
+truenas_share_provision_nfs_config:
+  {}
+  # v4: true
+  # v4_v4owner: true
+  # mountd_port: 0
+  # bindip: []
+
+# iSCSI - Portals
+truenas_share_provision_iscsi_portals:
+  []
+  # - comment: "default-portal"
+  #   listen:
+  #     - ip: "0.0.0.0"
+  #       port: 3260
+
+# iSCSI - Targets
+truenas_share_provision_iscsi_targets:
+  []
+  # - name: "iqn.2024.com.example:target01"
+  #   alias: "vm-storage"
+  #   mode: "ISCSI"
+
+# iSCSI - Extents
+truenas_share_provision_iscsi_extents:
+  []
+  # - name: "extent01"
+  #   type: "DISK"
+  #   disk: "zvol/tank/iscsi-vol1"
+  #   blocksize: 512
+  #   rpm: "SSD"
+
+# iSCSI - Initiators
+truenas_share_provision_iscsi_initiators:
+  []
+  # - comment: "esxi-hosts"
+  #   initiators: []
+  #   auth_network: ["10.0.0.0/24"]
+
+# iSCSI - Target-Extent mappings
+truenas_share_provision_iscsi_targetextents:
+  []
+  # - target: "iqn.2024.com.example:target01"
+  #   extent: "extent01"
+  #   lunid: 0
+
+# Services to enable
+truenas_share_provision_services:
+  []
+  # - service: "cifs"
+  #   enabled: true
+  # - service: "nfs"
+  #   enabled: true
+  # - service: "iscsitarget"
+  #   enabled: true

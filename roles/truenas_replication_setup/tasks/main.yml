@@ -1,16 +1,120 @@
 ---
 # tasks/main.yml for truenas_replication_setup
-# Configure ZFS replication to remote
+# Configure snapshot tasks, ZFS replication, cloud sync, and rsync
 
 - name: Validate required variables
   ansible.builtin.assert:
     that:
-      - truenas_replication_setup_host is defined
-    fail_msg: "truenas_replication_setup_host must be defined"
+      - truenas_replication_setup_host | length > 0
+      - truenas_replication_setup_api_key | length > 0
+    fail_msg: >-
+      truenas_replication_setup_host and truenas_replication_setup_api_key must be defined.
     quiet: true
 
-- name: Execute truenas replication setup
-  ansible.builtin.debug:
-    msg: >-
-      Configure ZFS replication to remote.
-      Target: {{ truenas_replication_setup_host }}
+- name: Build authentication parameters
+  ansible.builtin.set_fact:
+    _tn_auth:
+      host: "{{ truenas_replication_setup_host }}"
+      api_key: "{{ truenas_replication_setup_api_key }}"
+      validate_certs: "{{ truenas_replication_setup_validate_certs }}"
+  no_log: true
+
+- name: Configure backup and replication
+  block:
+    - name: Create periodic snapshot tasks
+      stevefulme1.truenas.snapshot_task:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        dataset: "{{ item.dataset }}"
+        recursive: "{{ item.recursive | default(true) }}"
+        lifetime_value: "{{ item.lifetime_value | default(2) }}"
+        lifetime_unit: "{{ item.lifetime_unit | default('WEEK') }}"
+        naming_schema: "{{ item.naming_schema | default('auto-%Y-%m-%d_%H-%M') }}"
+        schedule: "{{ item.schedule }}"
+        enabled: "{{ item.enabled | default(true) }}"
+        state: present
+      loop: "{{ truenas_replication_setup_snapshot_tasks }}"
+      when: truenas_replication_setup_snapshot_tasks | length > 0
+
+    - name: Configure SSH connections for replication
+      stevefulme1.truenas.ssh_connection:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        setup_type: "MANUAL"
+        connection_host: "{{ item.host }}"
+        connection_port: "{{ item.port | default(22) }}"
+        connection_username: "{{ item.username | default('root') }}"
+        private_key: "{{ item.private_key }}"
+        remote_host_key: "{{ item.remote_host_key | default(omit) }}"
+        state: present
+      loop: "{{ truenas_replication_setup_ssh_connections }}"
+      when: truenas_replication_setup_ssh_connections | length > 0
+      no_log: true
+
+    - name: Create replication tasks
+      stevefulme1.truenas.replication:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        name: "{{ item.name }}"
+        direction: "{{ item.direction | default('PUSH') }}"
+        transport: "{{ item.transport | default('SSH') }}"
+        ssh_credentials: "{{ item.ssh_credentials }}"
+        source_datasets: "{{ item.source_datasets }}"
+        target_dataset: "{{ item.target_dataset }}"
+        recursive: "{{ item.recursive | default(true) }}"
+        auto: "{{ item.auto | default(true) }}"
+        retention_policy: "{{ item.retention_policy | default('CUSTOM') }}"
+        lifetime_value: "{{ item.lifetime_value | default(4) }}"
+        lifetime_unit: "{{ item.lifetime_unit | default('WEEK') }}"
+        schedule: "{{ item.schedule }}"
+        enabled: "{{ item.enabled | default(true) }}"
+        state: present
+      loop: "{{ truenas_replication_setup_replication_tasks }}"
+      when: truenas_replication_setup_replication_tasks | length > 0
+
+    - name: Create cloud sync tasks
+      stevefulme1.truenas.cloud_sync:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        description: "{{ item.description }}"
+        direction: "{{ item.direction | default('PUSH') }}"
+        transfer_mode: "{{ item.transfer_mode | default('SYNC') }}"
+        path: "{{ item.path }}"
+        credentials: "{{ item.credentials }}"
+        bucket: "{{ item.bucket | default(omit) }}"
+        folder: "{{ item.folder | default(omit) }}"
+        schedule: "{{ item.schedule }}"
+        state: present
+      loop: "{{ truenas_replication_setup_cloud_sync_tasks }}"
+      when: truenas_replication_setup_cloud_sync_tasks | length > 0
+
+    - name: Create rsync tasks
+      stevefulme1.truenas.rsync_task:
+        host: "{{ _tn_auth.host }}"
+        api_key: "{{ _tn_auth.api_key }}"
+        validate_certs: "{{ _tn_auth.validate_certs }}"
+        path: "{{ item.path }}"
+        remotehost: "{{ item.remotehost }}"
+        remoteport: "{{ item.remoteport | default(22) }}"
+        remotepath: "{{ item.remotepath }}"
+        direction: "{{ item.direction | default('PUSH') }}"
+        mode: "{{ item.mode | default('SSH') }}"
+        user: "{{ item.user | default('root') }}"
+        recursive: "{{ item.recursive | default(true) }}"
+        archive: "{{ item.archive | default(true) }}"
+        compress: "{{ item.compress | default(true) }}"
+        state: present
+      loop: "{{ truenas_replication_setup_rsync_tasks }}"
+      when: truenas_replication_setup_rsync_tasks | length > 0
+
+  rescue:
+    - name: Replication setup failed
+      ansible.builtin.fail:
+        msg: >-
+          TrueNAS replication setup failed:
+          {{ ansible_failed_result.msg | default('unknown error') }}

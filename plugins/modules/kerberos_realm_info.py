@@ -53,4 +53,3 @@ EXAMPLES = r"""
     host: "{{ truenas_host }}"
   register: result
 """
-

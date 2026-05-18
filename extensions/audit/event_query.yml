@@ -1,0 +1,101 @@
+---
+# extensions/audit/event_query.yml
+# Maps TrueNAS module return values to the AAP Normalized Resource Taxonomy.
+# Return key matches the module name (e.g. vm, dataset, pool).
+# TrueNAS API returns "id" (integer) and "name" fields in each resource dict.
+
+stevefulme1.truenas.vm:
+  query: >-
+    {
+      name: .vm.name,
+      canonical_facts: {
+        uuid: (.vm.id | tostring)
+      },
+      facts: {
+        device_type: "virtual_machine"
+      }
+    }
+
+stevefulme1.truenas.dataset:
+  query: >-
+    {
+      name: .dataset.name,
+      canonical_facts: {
+        uuid: .dataset.id
+      },
+      facts: {
+        device_type: "file_storage"
+      }
+    }
+
+stevefulme1.truenas.pool:
+  query: >-
+    {
+      name: .pool.name,
+      canonical_facts: {
+        uuid: (.pool.id | tostring)
+      },
+      facts: {
+        device_type: "file_storage"
+      }
+    }
+
+stevefulme1.truenas.zvol:
+  query: >-
+    {
+      name: .zvol.name,
+      canonical_facts: {
+        uuid: .zvol.id
+      },
+      facts: {
+        device_type: "block_storage"
+      }
+    }
+
+stevefulme1.truenas.iscsi_target:
+  query: >-
+    {
+      name: .iscsi_target.name,
+      canonical_facts: {
+        uuid: (.iscsi_target.id | tostring)
+      },
+      facts: {
+        device_type: "block_storage"
+      }
+    }
+
+stevefulme1.truenas.iscsi_extent:
+  query: >-
+    {
+      name: .iscsi_extent.name,
+      canonical_facts: {
+        uuid: (.iscsi_extent.id | tostring)
+      },
+      facts: {
+        device_type: "block_storage"
+      }
+    }
+
+stevefulme1.truenas.smb_share:
+  query: >-
+    {
+      name: .smb_share.name,
+      canonical_facts: {
+        uuid: (.smb_share.id | tostring)
+      },
+      facts: {
+        device_type: "file_storage"
+      }
+    }
+
+stevefulme1.truenas.nfs_share:
+  query: >-
+    {
+      name: (.nfs_share.path // .nfs_share.paths[0]),
+      canonical_facts: {
+        uuid: (.nfs_share.id | tostring)
+      },
+      facts: {
+        device_type: "file_storage"
+      }
+    }

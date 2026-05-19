@@ -134,7 +134,8 @@ def main():
                             "cloudsync/credentials/id/{0}".format(existing["id"]), changes
                         )
                     result["changed"] = True
-                result["cloud_credential"] = existing
+                _sensitive_keys = {'attributes'}
+                result["cloud_credential"] = {k: v for k, v in existing.items() if k not in _sensitive_keys}
             else:
                 if not module.check_mode:
                     existing = client.post("cloudsync/credentials", payload)

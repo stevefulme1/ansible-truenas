@@ -184,7 +184,8 @@ def main():
                             "certificate/id/{0}".format(existing["id"]), changes
                         )
                     result["changed"] = True
-                result["certificate"] = existing
+                _sensitive_keys = {'privatekey'}
+                result["certificate"] = {k: v for k, v in existing.items() if k not in _sensitive_keys}
             else:
                 if not module.check_mode:
                     existing = client.post("certificate", payload)

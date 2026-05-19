@@ -111,7 +111,8 @@ def main():
             if not module.check_mode:
                 current = client.put("mail", payload)
             result["changed"] = True
-        result["config"] = current
+        _sensitive_keys = {'pass_value'}
+        result["config"] = {k: v for k, v in current.items() if k not in _sensitive_keys}
     except TrueNASError as e:
         module.fail_json(msg=str(e))
 

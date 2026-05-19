@@ -137,7 +137,8 @@ def main():
             if not module.check_mode:
                 current = client.put("ldap", payload)
             result["changed"] = True
-        result["config"] = current
+        _sensitive_keys = {'bindpw'}
+        result["config"] = {k: v for k, v in current.items() if k not in _sensitive_keys}
     except TrueNASError as e:
         module.fail_json(msg=str(e))
 

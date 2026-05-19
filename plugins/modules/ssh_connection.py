@@ -147,7 +147,8 @@ def main():
                             "keychaincredential/id/{0}".format(existing["id"]), changes
                         )
                     result["changed"] = True
-                result["ssh_connection"] = existing
+                _sensitive_keys = {'private_key'}
+                result["ssh_connection"] = {k: v for k, v in existing.items() if k not in _sensitive_keys}
             else:
                 if not module.check_mode:
                     existing = client.post("keychaincredential", payload)

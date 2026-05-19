@@ -78,7 +78,7 @@ from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api im
 def main():
     argument_spec = truenas_argument_spec()
     argument_spec.update(
-        community=dict(type="str", default="public"),
+        community=dict(type="str", default="public", no_log=True),
         contact=dict(type="str"),
         location=dict(type="str"),
         v3=dict(type="bool", default=False),
@@ -123,7 +123,8 @@ def main():
             if not module.check_mode:
                 current = client.put("snmp", payload)
             result["changed"] = True
-        result["config"] = current
+        _sensitive_keys = {'community', 'v3_password', 'v3_privpassphrase'}
+        result["config"] = {k: v for k, v in current.items() if k not in _sensitive_keys}
     except TrueNASError as e:
         module.fail_json(msg=str(e))
 

@@ -1,0 +1,36 @@
+---
+name: Publish to Galaxy
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  NAMESPACE: stevefulme1
+  COLLECTION: truenas
+
+jobs:
+  publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ansible-core
+        run: pip install ansible-core>=2.16
+
+      - name: Build collection
+        run: ansible-galaxy collection build --force
+
+      - name: Publish to Galaxy
+        run: >-
+          ansible-galaxy collection publish
+          ./${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
+          --api-key "${{ secrets.GALAXY_API_KEY }}"

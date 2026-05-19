@@ -3,7 +3,7 @@
   hosts: all
   sources:
     - stevefulme1.truenas.truenas_webhook:
-        host: 0.0.0.0
+        host: 127.0.0.1
         port: 5000
   rules:
     - name: Critical alert

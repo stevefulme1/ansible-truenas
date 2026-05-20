@@ -14,7 +14,7 @@
 - name: Build authentication parameters
   ansible.builtin.set_fact:
     truenas_security_hardening_auth:
-      host: "{{ truenas_security_hardening_host }}"
+      api_url: "{{ truenas_security_hardening_host }}"
       api_key: "{{ truenas_security_hardening_api_key }}"
       validate_certs: "{{ truenas_security_hardening_validate_certs }}"
   no_log: true
@@ -23,7 +23,7 @@
   block:
     - name: Configure system settings
       stevefulme1.truenas.system:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         timezone: "{{ truenas_security_hardening_system.timezone }}"
@@ -35,7 +35,7 @@
 
     - name: Harden SSH configuration
       stevefulme1.truenas.ssh:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         tcpport: "{{ truenas_security_hardening_ssh.port | default(22) }}"
@@ -47,7 +47,7 @@
 
     - name: Enable or disable SSH service
       stevefulme1.truenas.service:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         service: "ssh"
@@ -56,7 +56,7 @@
 
     - name: Import Certificate Authorities
       stevefulme1.truenas.ca:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -69,7 +69,7 @@
 
     - name: Import TLS certificates
       stevefulme1.truenas.certificate:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -83,7 +83,7 @@
 
     - name: Create groups
       stevefulme1.truenas.group:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -95,7 +95,7 @@
 
     - name: Create user accounts
       stevefulme1.truenas.user:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         username: "{{ item.username }}"
@@ -114,7 +114,7 @@
 
     - name: Create API keys
       stevefulme1.truenas.api_key:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -125,7 +125,7 @@
 
     - name: Configure NTP servers
       stevefulme1.truenas.ntp:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         address: "{{ item.address }}"
@@ -138,7 +138,7 @@
 
     - name: Configure SNMP
       stevefulme1.truenas.snmp:
-        host: "{{ truenas_security_hardening_auth.host }}"
+        api_url: "{{ truenas_security_hardening_auth.api_url }}"
         api_key: "{{ truenas_security_hardening_auth.api_key }}"
         validate_certs: "{{ truenas_security_hardening_auth.validate_certs }}"
         community: "{{ truenas_security_hardening_snmp.community | default(omit) }}"

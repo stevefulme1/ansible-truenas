@@ -14,7 +14,7 @@
 - name: Build authentication parameters
   ansible.builtin.set_fact:
     truenas_storage_setup_auth:
-      host: "{{ truenas_storage_setup_host }}"
+      api_url: "{{ truenas_storage_setup_host }}"
       api_key: "{{ truenas_storage_setup_api_key }}"
       validate_certs: "{{ truenas_storage_setup_validate_certs }}"
   no_log: true
@@ -23,14 +23,14 @@
   block:
     - name: Gather disk information
       stevefulme1.truenas.disk_info:
-        host: "{{ truenas_storage_setup_auth.host }}"
+        api_url: "{{ truenas_storage_setup_auth.api_url }}"
         api_key: "{{ truenas_storage_setup_auth.api_key }}"
         validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
       register: truenas_storage_setup_disk_info
 
     - name: Create ZFS pools
       stevefulme1.truenas.pool:
-        host: "{{ truenas_storage_setup_auth.host }}"
+        api_url: "{{ truenas_storage_setup_auth.api_url }}"
         api_key: "{{ truenas_storage_setup_auth.api_key }}"
         validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -42,7 +42,7 @@
 
     - name: Create datasets
       stevefulme1.truenas.dataset:
-        host: "{{ truenas_storage_setup_auth.host }}"
+        api_url: "{{ truenas_storage_setup_auth.api_url }}"
         api_key: "{{ truenas_storage_setup_auth.api_key }}"
         validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -63,7 +63,7 @@
 
     - name: Create zvols
       stevefulme1.truenas.zvol:
-        host: "{{ truenas_storage_setup_auth.host }}"
+        api_url: "{{ truenas_storage_setup_auth.api_url }}"
         api_key: "{{ truenas_storage_setup_auth.api_key }}"
         validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -77,7 +77,7 @@
 
     - name: Configure pool scrub schedules
       stevefulme1.truenas.pool_scrub:
-        host: "{{ truenas_storage_setup_auth.host }}"
+        api_url: "{{ truenas_storage_setup_auth.api_url }}"
         api_key: "{{ truenas_storage_setup_auth.api_key }}"
         validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         pool: "{{ item.pool }}"
@@ -89,7 +89,7 @@
 
     - name: Configure resilver priority
       stevefulme1.truenas.pool_resilver:
-        host: "{{ truenas_storage_setup_auth.host }}"
+        api_url: "{{ truenas_storage_setup_auth.api_url }}"
         api_key: "{{ truenas_storage_setup_auth.api_key }}"
         validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         enabled: "{{ truenas_storage_setup_resilver.enabled }}"
@@ -100,7 +100,7 @@
 
     - name: Configure ZFS tunables
       stevefulme1.truenas.tunable:
-        host: "{{ truenas_storage_setup_auth.host }}"
+        api_url: "{{ truenas_storage_setup_auth.api_url }}"
         api_key: "{{ truenas_storage_setup_auth.api_key }}"
         validate_certs: "{{ truenas_storage_setup_auth.validate_certs }}"
         var: "{{ item.var }}"

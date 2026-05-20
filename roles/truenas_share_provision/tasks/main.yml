@@ -14,7 +14,7 @@
 - name: Build authentication parameters
   ansible.builtin.set_fact:
     truenas_share_provision_auth:
-      host: "{{ truenas_share_provision_host }}"
+      api_url: "{{ truenas_share_provision_host }}"
       api_key: "{{ truenas_share_provision_api_key }}"
       validate_certs: "{{ truenas_share_provision_validate_certs }}"
   no_log: true
@@ -23,7 +23,7 @@
   block:
     - name: Configure SMB global settings
       stevefulme1.truenas.smb_config:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         netbiosname: "{{ truenas_share_provision_smb_config.netbiosname | default(omit) }}"
@@ -36,7 +36,7 @@
 
     - name: Create SMB shares
       stevefulme1.truenas.smb_share:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -59,7 +59,7 @@
 
     - name: Configure NFS global settings
       stevefulme1.truenas.nfs_config:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         v4: "{{ truenas_share_provision_nfs_config.v4 | default(true) }}"
@@ -71,7 +71,7 @@
 
     - name: Create NFS exports
       stevefulme1.truenas.nfs_share:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         path: "{{ item.path }}"
@@ -88,7 +88,7 @@
 
     - name: Create iSCSI portals
       stevefulme1.truenas.iscsi_portal:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         comment: "{{ item.comment }}"
@@ -99,7 +99,7 @@
 
     - name: Create iSCSI initiator groups
       stevefulme1.truenas.iscsi_initiator:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         comment: "{{ item.comment }}"
@@ -111,7 +111,7 @@
 
     - name: Create iSCSI targets
       stevefulme1.truenas.iscsi_target:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -123,7 +123,7 @@
 
     - name: Create iSCSI extents
       stevefulme1.truenas.iscsi_extent:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         name: "{{ item.name }}"
@@ -137,7 +137,7 @@
 
     - name: Map iSCSI targets to extents
       stevefulme1.truenas.iscsi_targetextent:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         target: "{{ item.target }}"
@@ -149,7 +149,7 @@
 
     - name: Enable required services
       stevefulme1.truenas.service:
-        host: "{{ truenas_share_provision_auth.host }}"
+        api_url: "{{ truenas_share_provision_auth.api_url }}"
         api_key: "{{ truenas_share_provision_auth.api_key }}"
         validate_certs: "{{ truenas_share_provision_auth.validate_certs }}"
         service: "{{ item.service }}"

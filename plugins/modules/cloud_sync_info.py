@@ -1,55 +1,69 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
 module: cloud_sync_info
-short_description: Retrieve sync information
-description:
-    - Retrieve details about syncs.
-    - Read-only module.
+short_description: Gather cloud sync task information
 version_added: "1.0.0"
+description:
+  - Gather cloud sync task information from a TrueNAS system via the middleware API.
+  - This is a read-only module.
+extends_documentation_fragment:
+  - stevefulme1.truenas.truenas
 author:
-    - Steve Fulmer (@stevefulme1)
-options:
-    host:
-        description: API host address.
-        type: str
-        required: true
-    description:
-        description: ID of a specific resource.
-        type: str
-    username:
-        description: Authentication username.
-        type: str
-    password:
-        description: Authentication password.
-        type: str
-    api_key:
-        description: API key for authentication.
-        type: str
-    validate_certs:
-        description: Validate SSL certificates.
-        type: bool
-        default: true
-    limit:
-        description:
-            - Maximum number of results to return.
-        type: int
-        default: 100
-    offset:
-        description:
-            - Number of results to skip for pagination.
-        type: int
-        default: 0
+  - Steve Fulmer (@sfulmer)
 """
+
 EXAMPLES = r"""
-- name: Get cloud sync information
+- name: Get cloud sync task information
   stevefulme1.truenas.cloud_sync_info:
-    host: "{{ truenas_host }}"
+    api_url: "https://truenas.example.com"
+    api_key: "{ truenas_api_key }"
   register: result
 """
+
+RETURN = r"""
+cloud_sync_tasks:
+  description: The cloud sync task information.
+  returned: success
+  type: list
+"""
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
+    TrueNASClient,
+    TrueNASError,
+    truenas_argument_spec,
+)
+
+
+def main():
+    argument_spec = truenas_argument_spec()
+
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=[["api_key", "username"]],
+    )
+
+    client = TrueNASClient(module)
+    result = dict(changed=False)
+
+    try:
+        data = client.get("cloudsync")
+        result["cloud_sync_tasks"] = data
+    except TrueNASError as e:
+        module.fail_json(msg=str(e))
+
+    module.exit_json(**result)
+
+
+if __name__ == "__main__":
+    main()

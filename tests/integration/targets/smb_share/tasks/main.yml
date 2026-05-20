@@ -3,7 +3,8 @@
   stevefulme1.truenas.smb_share:
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
-    path: "{{ truenas_test_smb_share_name }}"
+    name: "{{ truenas_test_smb_share_name }}"
+    path: "/mnt/tank/{{ truenas_test_smb_share_name }}"
     state: present
   register: create_result
 
@@ -16,7 +17,8 @@
   stevefulme1.truenas.smb_share:
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
-    path: "{{ truenas_test_smb_share_name }}"
+    name: "{{ truenas_test_smb_share_name }}"
+    path: "/mnt/tank/{{ truenas_test_smb_share_name }}"
     state: present
   register: idem_result
 
@@ -29,7 +31,7 @@
   stevefulme1.truenas.smb_share:
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
-    path: "{{ truenas_test_smb_share_name }}"
+    name: "{{ truenas_test_smb_share_name }}"
     state: absent
   register: delete_result
 
@@ -42,7 +44,7 @@
   stevefulme1.truenas.smb_share:
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
-    path: "{{ truenas_test_smb_share_name }}"
+    name: "{{ truenas_test_smb_share_name }}"
     state: absent
   register: delete_idem
 

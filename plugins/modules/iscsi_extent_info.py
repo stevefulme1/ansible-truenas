@@ -1,55 +1,69 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
 module: iscsi_extent_info
-short_description: Retrieve extent information
-description:
-    - Retrieve details about extents.
-    - Read-only module.
+short_description: Gather iSCSI extent information
 version_added: "1.0.0"
+description:
+  - Gather iSCSI extent information from a TrueNAS system via the middleware API.
+  - This is a read-only module.
+extends_documentation_fragment:
+  - stevefulme1.truenas.truenas
 author:
-    - Steve Fulmer (@stevefulme1)
-options:
-    host:
-        description: API host address.
-        type: str
-        required: true
-    type:
-        description: ID of a specific resource.
-        type: str
-    username:
-        description: Authentication username.
-        type: str
-    password:
-        description: Authentication password.
-        type: str
-    api_key:
-        description: API key for authentication.
-        type: str
-    validate_certs:
-        description: Validate SSL certificates.
-        type: bool
-        default: true
-    limit:
-        description:
-            - Maximum number of results to return.
-        type: int
-        default: 100
-    offset:
-        description:
-            - Number of results to skip for pagination.
-        type: int
-        default: 0
+  - Steve Fulmer (@sfulmer)
 """
+
 EXAMPLES = r"""
-- name: Get iscsi extent information
+- name: Get iSCSI extent information
   stevefulme1.truenas.iscsi_extent_info:
-    host: "{{ truenas_host }}"
+    api_url: "https://truenas.example.com"
+    api_key: "{ truenas_api_key }"
   register: result
 """
+
+RETURN = r"""
+iscsi_extents:
+  description: The iSCSI extent information.
+  returned: success
+  type: list
+"""
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.stevefulme1.truenas.plugins.module_utils.truenas_api import (
+    TrueNASClient,
+    TrueNASError,
+    truenas_argument_spec,
+)
+
+
+def main():
+    argument_spec = truenas_argument_spec()
+
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=[["api_key", "username"]],
+    )
+
+    client = TrueNASClient(module)
+    result = dict(changed=False)
+
+    try:
+        data = client.get("iscsi/extent")
+        result["iscsi_extents"] = data
+    except TrueNASError as e:
+        module.fail_json(msg=str(e))
+
+    module.exit_json(**result)
+
+
+if __name__ == "__main__":
+    main()

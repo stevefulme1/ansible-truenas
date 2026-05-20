@@ -7,7 +7,7 @@ authors:
   - Steve Fulmer <sfulmer@redhat.com>
 description: >-
   Ansible collection for managing TrueNAS CORE and SCALE storage systems.
-  Provides 71 modules covering ZFS pools, datasets, snapshots, SMB/NFS/iSCSI sharing,
+  Provides 151 modules covering ZFS pools, datasets, snapshots, SMB/NFS/iSCSI sharing,
   networking, services, certificates, replication, cloud sync, virtualization,
   high availability, and monitoring via the TrueNAS middleware REST API.
   Status: Pre-release. Under active development.

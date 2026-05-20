@@ -1,27 +1,72 @@
-# WELCOME TO ANSIBLE GITHUB
+# Contributing
 
-Hi! Nice to see you here!
+Thank you for your interest in contributing to this Ansible collection!
 
-## QUESTIONS ?
+## How to Contribute
 
-Please see the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html) for information on how to ask questions on the [mailing lists](https://docs.ansible.com/ansible/latest/community/communication.html#mailing-list-information) and IRC.
+1. **Fork** this repository
+2. **Create a branch** for your change (`git checkout -b feature/my-change`)
+3. **Make your changes** following the guidelines below
+4. **Test your changes** locally
+5. **Submit a pull request**
 
-The GitHub issue tracker is not the best place for questions for various reasons, but both IRC and the mailing list are very helpful places for those things, as the community page explains best.
+## Development Setup
 
-## CONTRIBUTING ?
+```bash
+# Clone your fork
+git clone https://github.com/<your-user>/<repo>.git
+cd <repo>
 
-By contributing to this project you agree to the Developer Certificate of Origin (DCO). This document was created by the Linux Kernel community and is a simple statement that you, as a contributor, have the legal right to make the contribution.
+# Install development dependencies
+pip install ansible-core ansible-lint flake8 pytest
 
-You can read more about the [DCO and Contributor License Agreements](https://docs.ansible.com/ansible/latest/community/collection_contributors/collection_requirements.html#contributor-license-agreements) on the Ansible docsite.
+# Run linting
+ansible-lint --strict
+flake8 plugins/ --max-line-length=120
 
-Please review the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html) for more information on contributing to Ansible.
+# Run sanity tests
+mkdir -p /tmp/test/ansible_collections/<namespace>/<collection>
+rsync -a --exclude='.git' . /tmp/test/ansible_collections/<namespace>/<collection>/
+cd /tmp/test/ansible_collections/<namespace>/<collection>
+ansible-test sanity --local
+```
 
-## BUG TO REPORT ?
+## Module Guidelines
 
-First and foremost, also check the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html).
+- Every module must have `DOCUMENTATION`, `EXAMPLES`, and `RETURN` blocks
+- Use real vendor SDK or verified API endpoints -- never fabricate endpoints
+- Implement proper idempotency with `get_current_state()` / `needs_update()`
+- Support `check_mode` with honest reporting
+- Add `elements` to all `type: list` parameters
+- Add `no_log: true` to sensitive parameters (passwords, tokens, secrets)
+- Add `no_log: false` to non-sensitive parameters that contain "key" or "secret" in the name (e.g., `project_key` is not a secret)
+- Author field format: `Author Name (@github_handle)`
 
-You can report bugs or make enhancement requests at the [Ansible GitHub issue page](http://github.com/ansible/ansible/issues/new/choose) by filling out the issue template that will be presented.
+## Testing Requirements
 
-Also please make sure you are testing on the latest released version of Ansible or the development branch; see the [Installation Guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) for details.
+- **Unit tests**: Required for new modules (`tests/unit/plugins/modules/test_<module>.py`)
+- **Integration tests**: Required for CRUD modules (`tests/integration/targets/<module>/tasks/main.yml`)
+- Integration tests must include full CRUD lifecycle with idempotency checks
+- No `ignore_errors` in test files
+- No skipped tests
 
-Thanks!
+## Code Style
+
+- PEP 8 compliant (max line length 120 for flake8, 160 for ansible-test)
+- No smart/curly quotes in any Python file
+- No blank lines within YAML documentation blocks in Python modules
+- Use `autopep8 --select=E302,E303,E305` for blank line formatting
+
+## Commit Messages
+
+Use conventional commits:
+- `feat:` for new features
+- `fix:` for bug fixes
+- `test:` for test additions
+- `docs:` for documentation changes
+- `chore:` for maintenance tasks
+
+## License
+
+By contributing, you agree that your contributions will be licensed under
+the GNU General Public License v3.0 (see [COPYING](COPYING)).

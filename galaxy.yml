@@ -1,7 +1,7 @@
 ---
 namespace: stevefulme1
 name: truenas
-version: 3.1.2
+version: 0.1.0
 readme: README.md
 authors:
   - Steve Fulmer <sfulmer@redhat.com>
@@ -10,6 +10,7 @@ description: >-
   Provides 71 modules covering ZFS pools, datasets, snapshots, SMB/NFS/iSCSI sharing,
   networking, services, certificates, replication, cloud sync, virtualization,
   high availability, and monitoring via the TrueNAS middleware REST API.
+  Status: Pre-release. Under active development.
 license:
   - GPL-3.0-or-later
 tags:

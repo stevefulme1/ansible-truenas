@@ -1,0 +1,112 @@
+---
+# Integration tests for stevefulme1.truenas.static_route
+
+- name: List static_route resources
+  stevefulme1.truenas.static_route_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: list_result
+
+- name: Verify static_route listing
+  ansible.builtin.assert:
+    that:
+      - list_result is not failed
+
+- name: Create static_route (check_mode)
+  stevefulme1.truenas.static_route:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    destination: "ansible-test-destination"
+    gateway: "ansible-test-gateway"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode reports changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Create static_route
+  stevefulme1.truenas.static_route:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    destination: "ansible-test-destination"
+    gateway: "ansible-test-gateway"
+  register: create_result
+
+- name: Verify static_route was created
+  ansible.builtin.assert:
+    that:
+      - create_result is changed
+
+- name: Create static_route again (idempotency)
+  stevefulme1.truenas.static_route:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    destination: "ansible-test-destination"
+    gateway: "ansible-test-gateway"
+  register: idem_result
+
+- name: Verify idempotent create
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Delete static_route (check_mode)
+  stevefulme1.truenas.static_route:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    destination: "ansible-test-destination"
+    gateway: "ansible-test-gateway"
+  check_mode: true
+  register: delete_check
+
+- name: Verify check_mode delete reports changed
+  ansible.builtin.assert:
+    that:
+      - delete_check is changed
+
+- name: Delete static_route
+  stevefulme1.truenas.static_route:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    destination: "ansible-test-destination"
+    gateway: "ansible-test-gateway"
+  register: delete_result
+
+- name: Verify static_route was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result is changed
+
+- name: Delete static_route again (idempotent)
+  stevefulme1.truenas.static_route:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    destination: "ansible-test-destination"
+    gateway: "ansible-test-gateway"
+  register: delete_idem
+
+- name: Verify idempotent delete
+  ansible.builtin.assert:
+    that:
+      - delete_idem is not changed

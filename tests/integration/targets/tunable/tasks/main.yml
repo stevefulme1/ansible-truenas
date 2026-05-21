@@ -1,0 +1,112 @@
+---
+# Integration tests for stevefulme1.truenas.tunable
+
+- name: List tunable resources
+  stevefulme1.truenas.tunable_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: list_result
+
+- name: Verify tunable listing
+  ansible.builtin.assert:
+    that:
+      - list_result is not failed
+
+- name: Create tunable (check_mode)
+  stevefulme1.truenas.tunable:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    var: "ansible-test-var"
+    value: "ansible-test-value"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode reports changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Create tunable
+  stevefulme1.truenas.tunable:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    var: "ansible-test-var"
+    value: "ansible-test-value"
+  register: create_result
+
+- name: Verify tunable was created
+  ansible.builtin.assert:
+    that:
+      - create_result is changed
+
+- name: Create tunable again (idempotency)
+  stevefulme1.truenas.tunable:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    var: "ansible-test-var"
+    value: "ansible-test-value"
+  register: idem_result
+
+- name: Verify idempotent create
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Delete tunable (check_mode)
+  stevefulme1.truenas.tunable:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    var: "ansible-test-var"
+    value: "ansible-test-value"
+  check_mode: true
+  register: delete_check
+
+- name: Verify check_mode delete reports changed
+  ansible.builtin.assert:
+    that:
+      - delete_check is changed
+
+- name: Delete tunable
+  stevefulme1.truenas.tunable:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    var: "ansible-test-var"
+    value: "ansible-test-value"
+  register: delete_result
+
+- name: Verify tunable was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result is changed
+
+- name: Delete tunable again (idempotent)
+  stevefulme1.truenas.tunable:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    var: "ansible-test-var"
+    value: "ansible-test-value"
+  register: delete_idem
+
+- name: Verify idempotent delete
+  ansible.builtin.assert:
+    that:
+      - delete_idem is not changed

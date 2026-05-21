@@ -1,0 +1,112 @@
+---
+# Integration tests for stevefulme1.truenas.rsync_task
+
+- name: List rsync_task resources
+  stevefulme1.truenas.rsync_task_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: list_result
+
+- name: Verify rsync_task listing
+  ansible.builtin.assert:
+    that:
+      - list_result is not failed
+
+- name: Create rsync_task (check_mode)
+  stevefulme1.truenas.rsync_task:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    path: "/tmp/ansible-test"
+    remotehost: "ansible-test-remotehost"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode reports changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Create rsync_task
+  stevefulme1.truenas.rsync_task:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    path: "/tmp/ansible-test"
+    remotehost: "ansible-test-remotehost"
+  register: create_result
+
+- name: Verify rsync_task was created
+  ansible.builtin.assert:
+    that:
+      - create_result is changed
+
+- name: Create rsync_task again (idempotency)
+  stevefulme1.truenas.rsync_task:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    path: "/tmp/ansible-test"
+    remotehost: "ansible-test-remotehost"
+  register: idem_result
+
+- name: Verify idempotent create
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Delete rsync_task (check_mode)
+  stevefulme1.truenas.rsync_task:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    path: "/tmp/ansible-test"
+    remotehost: "ansible-test-remotehost"
+  check_mode: true
+  register: delete_check
+
+- name: Verify check_mode delete reports changed
+  ansible.builtin.assert:
+    that:
+      - delete_check is changed
+
+- name: Delete rsync_task
+  stevefulme1.truenas.rsync_task:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    path: "/tmp/ansible-test"
+    remotehost: "ansible-test-remotehost"
+  register: delete_result
+
+- name: Verify rsync_task was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result is changed
+
+- name: Delete rsync_task again (idempotent)
+  stevefulme1.truenas.rsync_task:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    path: "/tmp/ansible-test"
+    remotehost: "ansible-test-remotehost"
+  register: delete_idem
+
+- name: Verify idempotent delete
+  ansible.builtin.assert:
+    that:
+      - delete_idem is not changed

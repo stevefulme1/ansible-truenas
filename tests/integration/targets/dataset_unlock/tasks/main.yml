@@ -1,0 +1,28 @@
+---
+# Integration tests for stevefulme1.truenas.dataset_unlock
+
+- name: Query dataset_unlock info
+  stevefulme1.truenas.dataset_unlock_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: info_result
+
+- name: Verify dataset_unlock info
+  ansible.builtin.assert:
+    that:
+      - info_result is not failed
+
+- name: Run dataset_unlock (check_mode)
+  stevefulme1.truenas.dataset_unlock:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode result
+  ansible.builtin.assert:
+    that:
+      - check_result is not failed

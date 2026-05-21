@@ -1,0 +1,106 @@
+---
+# Integration tests for stevefulme1.truenas.pool_scrub
+
+- name: List pool_scrub resources
+  stevefulme1.truenas.pool_scrub_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: list_result
+
+- name: Verify pool_scrub listing
+  ansible.builtin.assert:
+    that:
+      - list_result is not failed
+
+- name: Create pool_scrub (check_mode)
+  stevefulme1.truenas.pool_scrub:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    pool: "{{ test_pool | default('tank') }}"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode reports changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Create pool_scrub
+  stevefulme1.truenas.pool_scrub:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    pool: "{{ test_pool | default('tank') }}"
+  register: create_result
+
+- name: Verify pool_scrub was created
+  ansible.builtin.assert:
+    that:
+      - create_result is changed
+
+- name: Create pool_scrub again (idempotency)
+  stevefulme1.truenas.pool_scrub:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    pool: "{{ test_pool | default('tank') }}"
+  register: idem_result
+
+- name: Verify idempotent create
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Delete pool_scrub (check_mode)
+  stevefulme1.truenas.pool_scrub:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    pool: "{{ test_pool | default('tank') }}"
+  check_mode: true
+  register: delete_check
+
+- name: Verify check_mode delete reports changed
+  ansible.builtin.assert:
+    that:
+      - delete_check is changed
+
+- name: Delete pool_scrub
+  stevefulme1.truenas.pool_scrub:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    pool: "{{ test_pool | default('tank') }}"
+  register: delete_result
+
+- name: Verify pool_scrub was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result is changed
+
+- name: Delete pool_scrub again (idempotent)
+  stevefulme1.truenas.pool_scrub:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    pool: "{{ test_pool | default('tank') }}"
+  register: delete_idem
+
+- name: Verify idempotent delete
+  ansible.builtin.assert:
+    that:
+      - delete_idem is not changed

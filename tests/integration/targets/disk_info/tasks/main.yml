@@ -1,0 +1,14 @@
+---
+# Integration tests for stevefulme1.truenas.disk_info
+
+- name: Query disk_info
+  stevefulme1.truenas.disk_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: result
+
+- name: Verify disk_info returns data
+  ansible.builtin.assert:
+    that:
+      - result is not failed

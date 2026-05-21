@@ -1,0 +1,6 @@
+---
+# Integration test configuration for stevefulme1.truenas
+truenas_api_url: "https://truenas.example.com/api/v2.0"
+truenas_api_key: "CHANGEME"
+truenas_validate_certs: false
+resource_prefix: "ansible-ci-truenas"

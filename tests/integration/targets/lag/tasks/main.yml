@@ -1,0 +1,106 @@
+---
+# Integration tests for stevefulme1.truenas.lag
+
+- name: List lag resources
+  stevefulme1.truenas.lag_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: list_result
+
+- name: Verify lag listing
+  ansible.builtin.assert:
+    that:
+      - list_result is not failed
+
+- name: Create lag (check_mode)
+  stevefulme1.truenas.lag:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    members: []
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode reports changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Create lag
+  stevefulme1.truenas.lag:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    members: []
+  register: create_result
+
+- name: Verify lag was created
+  ansible.builtin.assert:
+    that:
+      - create_result is changed
+
+- name: Create lag again (idempotency)
+  stevefulme1.truenas.lag:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    members: []
+  register: idem_result
+
+- name: Verify idempotent create
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Delete lag (check_mode)
+  stevefulme1.truenas.lag:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    members: []
+  check_mode: true
+  register: delete_check
+
+- name: Verify check_mode delete reports changed
+  ansible.builtin.assert:
+    that:
+      - delete_check is changed
+
+- name: Delete lag
+  stevefulme1.truenas.lag:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    members: []
+  register: delete_result
+
+- name: Verify lag was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result is changed
+
+- name: Delete lag again (idempotent)
+  stevefulme1.truenas.lag:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    members: []
+  register: delete_idem
+
+- name: Verify idempotent delete
+  ansible.builtin.assert:
+    that:
+      - delete_idem is not changed

@@ -1,0 +1,30 @@
+---
+# Integration tests for stevefulme1.truenas.ldap
+
+- name: Query ldap info
+  stevefulme1.truenas.ldap_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: info_result
+
+- name: Verify ldap info
+  ansible.builtin.assert:
+    that:
+      - info_result is not failed
+
+- name: Run ldap (check_mode)
+  stevefulme1.truenas.ldap:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    basedn: "dc=ansible-test,dc=example,dc=com"
+    hostname: "ansible-test-host.example.com"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode result
+  ansible.builtin.assert:
+    that:
+      - check_result is not failed

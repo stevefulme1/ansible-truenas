@@ -1,0 +1,29 @@
+---
+# Integration tests for stevefulme1.truenas.snapshot_clone
+
+- name: Query snapshot_clone info
+  stevefulme1.truenas.snapshot_clone_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: info_result
+
+- name: Verify snapshot_clone info
+  ansible.builtin.assert:
+    that:
+      - info_result is not failed
+
+- name: Run snapshot_clone (check_mode)
+  stevefulme1.truenas.snapshot_clone:
+    snapshot: "ansible-test-snap-{{ resource_prefix }}"
+    target: "ansible-test-target-{{ resource_prefix }}"
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode result
+  ansible.builtin.assert:
+    that:
+      - check_result is not failed

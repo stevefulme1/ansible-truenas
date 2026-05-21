@@ -1,0 +1,29 @@
+---
+# Integration tests for stevefulme1.truenas.smb_acl
+
+- name: Query smb_acl info
+  stevefulme1.truenas.smb_acl_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: info_result
+
+- name: Verify smb_acl info
+  ansible.builtin.assert:
+    that:
+      - info_result is not failed
+
+- name: Run smb_acl (check_mode)
+  stevefulme1.truenas.smb_acl:
+    acl_entries: []
+    share: "ansible-test-share-{{ resource_prefix }}"
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode result
+  ansible.builtin.assert:
+    that:
+      - check_result is not failed

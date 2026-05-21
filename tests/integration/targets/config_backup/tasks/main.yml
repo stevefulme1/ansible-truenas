@@ -1,0 +1,29 @@
+---
+# Integration tests for stevefulme1.truenas.config_backup
+
+- name: Query config_backup info
+  stevefulme1.truenas.config_backup_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: info_result
+
+- name: Verify config_backup info
+  ansible.builtin.assert:
+    that:
+      - info_result is not failed
+
+- name: Run config_backup (check_mode)
+  stevefulme1.truenas.config_backup:
+    action: backup
+    path: "/tmp/ansible-test-{{ resource_prefix }}"
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode result
+  ansible.builtin.assert:
+    that:
+      - check_result is not failed

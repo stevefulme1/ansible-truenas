@@ -1,0 +1,14 @@
+---
+# Integration tests for stevefulme1.truenas.enclosure_info
+
+- name: Query enclosure_info
+  stevefulme1.truenas.enclosure_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: result
+
+- name: Verify enclosure_info returns data
+  ansible.builtin.assert:
+    that:
+      - result is not failed

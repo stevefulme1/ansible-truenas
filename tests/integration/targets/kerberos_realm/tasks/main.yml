@@ -1,0 +1,106 @@
+---
+# Integration tests for stevefulme1.truenas.kerberos_realm
+
+- name: List kerberos_realm resources
+  stevefulme1.truenas.kerberos_realm_info:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+  register: list_result
+
+- name: Verify kerberos_realm listing
+  ansible.builtin.assert:
+    that:
+      - list_result is not failed
+
+- name: Create kerberos_realm (check_mode)
+  stevefulme1.truenas.kerberos_realm:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    realm: "ANSIBLE-TEST.EXAMPLE.COM"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode reports changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Create kerberos_realm
+  stevefulme1.truenas.kerberos_realm:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    realm: "ANSIBLE-TEST.EXAMPLE.COM"
+  register: create_result
+
+- name: Verify kerberos_realm was created
+  ansible.builtin.assert:
+    that:
+      - create_result is changed
+
+- name: Create kerberos_realm again (idempotency)
+  stevefulme1.truenas.kerberos_realm:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: present
+    realm: "ANSIBLE-TEST.EXAMPLE.COM"
+  register: idem_result
+
+- name: Verify idempotent create
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Delete kerberos_realm (check_mode)
+  stevefulme1.truenas.kerberos_realm:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    realm: "ANSIBLE-TEST.EXAMPLE.COM"
+  check_mode: true
+  register: delete_check
+
+- name: Verify check_mode delete reports changed
+  ansible.builtin.assert:
+    that:
+      - delete_check is changed
+
+- name: Delete kerberos_realm
+  stevefulme1.truenas.kerberos_realm:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    realm: "ANSIBLE-TEST.EXAMPLE.COM"
+  register: delete_result
+
+- name: Verify kerberos_realm was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result is changed
+
+- name: Delete kerberos_realm again (idempotent)
+  stevefulme1.truenas.kerberos_realm:
+    api_url: "{{ truenas_api_url }}"
+    api_key: "{{ truenas_api_key }}"
+    validate_certs: "{{ truenas_validate_certs | default(false) }}"
+    name: "ansible-test-{{ resource_prefix }}"
+    state: absent
+    realm: "ANSIBLE-TEST.EXAMPLE.COM"
+  register: delete_idem
+
+- name: Verify idempotent delete
+  ansible.builtin.assert:
+    that:
+      - delete_idem is not changed

@@ -1,6 +1,18 @@
 ---
 ancestor: null
 releases:
+  1.3.0:
+    release_date: "2026-10-28"
+    changes:
+      release_summary: >-
+        Breaking change: renamed API authentication parameters from
+        ``username``/``password`` to ``api_username``/``api_password``
+        to resolve clashes with module-specific parameters.
+      breaking_changes:
+        - All modules - renamed ``username`` and ``password`` connection
+          parameters to ``api_username`` and ``api_password`` to avoid
+          clashing with module-specific parameters of the same name
+          (e.g. the ``user`` and ``ssh_connection`` modules).
   1.2.0:
     release_date: "2026-05-08"
     changes:

@@ -113,7 +113,7 @@ class TestDelete:
 
         call_kwargs = mod.exit_json.call_args[1]
         assert call_kwargs["changed"] is True
-        client.delete.assert_called_once_with("pool/dataset/id/tank/data")
+        client.delete.assert_called_once_with("pool/dataset/id/tank%2Fdata")
 
     def test_delete_nonexistent(self):
         client = MagicMock()

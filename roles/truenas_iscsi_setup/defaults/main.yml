@@ -5,8 +5,8 @@
 truenas_iscsi_setup_host: ""
 
 # Authentication
-truenas_iscsi_setup_username: ""
-truenas_iscsi_setup_password: ""
+truenas_iscsi_setup_api_username: ""
+truenas_iscsi_setup_api_password: ""
 truenas_iscsi_setup_api_key: ""
 
 # Behavior

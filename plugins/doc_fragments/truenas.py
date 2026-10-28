@@ -18,19 +18,19 @@ options:
   api_key:
     description:
       - API key for authenticating with TrueNAS.
-      - Mutually exclusive with I(username) and I(password).
+      - Mutually exclusive with I(api_username) and I(api_password).
     type: str
     required: false
-  username:
+  api_username:
     description:
       - Username for basic authentication.
-      - Must be used together with I(password).
+      - Must be used together with I(api_password).
     type: str
     required: false
-  password:
+  api_password:
     description:
       - Password for basic authentication.
-      - Must be used together with I(username).
+      - Must be used together with I(api_username).
     type: str
     required: false
   validate_certs:

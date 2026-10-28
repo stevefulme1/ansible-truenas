@@ -5,8 +5,8 @@
 truenas_user_management_host: ""
 
 # Authentication
-truenas_user_management_username: ""
-truenas_user_management_password: ""
+truenas_user_management_api_username: ""
+truenas_user_management_api_password: ""
 truenas_user_management_api_key: ""
 
 # Behavior

@@ -21,8 +21,8 @@ def _make_module(**params):
     defaults = {
         "api_url": "https://truenas.local",
         "api_key": "test-api-key",
-        "username": None,
-        "password": None,
+        "api_username": None,
+        "api_password": None,
         "validate_certs": False,
         "api_timeout": 30,
     }
@@ -63,7 +63,7 @@ class TestAuthHeaders:
             TrueNASClient,
         )
 
-        module = _make_module(api_key=None, username="admin", password="secret")
+        module = _make_module(api_key=None, api_username="admin", api_password="secret")
         client = TrueNASClient(module)
         headers = client._headers()
         assert "Authorization" not in headers
@@ -75,7 +75,7 @@ class TestAuthHeaders:
             TrueNASClient,
         )
 
-        module = _make_module(api_key=None, username=None, password=None)
+        module = _make_module(api_key=None, api_username=None, api_password=None)
         with pytest.raises(SystemExit):
             TrueNASClient(module)
         module.fail_json.assert_called_once()
@@ -311,8 +311,8 @@ class TestArgumentSpec:
         spec = truenas_argument_spec()
         assert "api_url" in spec
         assert "api_key" in spec
-        assert "username" in spec
-        assert "password" in spec
+        assert "api_username" in spec
+        assert "api_password" in spec
         assert "validate_certs" in spec
         assert "api_timeout" in spec
 
@@ -323,4 +323,4 @@ class TestArgumentSpec:
 
         spec = truenas_argument_spec()
         assert spec["api_key"].get("no_log") is True
-        assert spec["password"].get("no_log") is True
+        assert spec["api_password"].get("no_log") is True

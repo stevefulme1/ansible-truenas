@@ -18,7 +18,8 @@
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
     validate_certs: "{{ truenas_validate_certs | default(false) }}"
-    name: "ansible-test-{{ resource_prefix }}"
+    username: "ansible-test-{{ resource_prefix }}"
+    full_name: "Ansible Test User"
     state: present
   check_mode: true
   register: check_result
@@ -33,7 +34,8 @@
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
     validate_certs: "{{ truenas_validate_certs | default(false) }}"
-    name: "ansible-test-{{ resource_prefix }}"
+    username: "ansible-test-{{ resource_prefix }}"
+    full_name: "Ansible Test User"
     state: present
   register: create_result
 
@@ -47,7 +49,8 @@
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
     validate_certs: "{{ truenas_validate_certs | default(false) }}"
-    name: "ansible-test-{{ resource_prefix }}"
+    username: "ansible-test-{{ resource_prefix }}"
+    full_name: "Ansible Test User"
     state: present
   register: idem_result
 
@@ -61,7 +64,7 @@
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
     validate_certs: "{{ truenas_validate_certs | default(false) }}"
-    name: "ansible-test-{{ resource_prefix }}"
+    username: "ansible-test-{{ resource_prefix }}"
     state: absent
   check_mode: true
   register: delete_check
@@ -76,7 +79,7 @@
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
     validate_certs: "{{ truenas_validate_certs | default(false) }}"
-    name: "ansible-test-{{ resource_prefix }}"
+    username: "ansible-test-{{ resource_prefix }}"
     state: absent
   register: delete_result
 
@@ -90,7 +93,7 @@
     api_url: "{{ truenas_api_url }}"
     api_key: "{{ truenas_api_key }}"
     validate_certs: "{{ truenas_validate_certs | default(false) }}"
-    name: "ansible-test-{{ resource_prefix }}"
+    username: "ansible-test-{{ resource_prefix }}"
     state: absent
   register: delete_idem
 

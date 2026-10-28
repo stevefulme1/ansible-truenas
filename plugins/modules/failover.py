@@ -71,7 +71,7 @@ def main():
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        required_one_of=[["api_key", "username"]],
+        required_one_of=[["api_key", "api_username"]],
     )
 
     client = TrueNASClient(module)

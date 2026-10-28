@@ -5,8 +5,8 @@
 truenas_smb_setup_host: ""
 
 # Authentication
-truenas_smb_setup_username: ""
-truenas_smb_setup_password: ""
+truenas_smb_setup_api_username: ""
+truenas_smb_setup_api_password: ""
 truenas_smb_setup_api_key: ""
 
 # Behavior

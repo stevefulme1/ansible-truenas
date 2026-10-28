@@ -5,8 +5,8 @@
 truenas_monitoring_host: ""
 
 # Authentication
-truenas_monitoring_username: ""
-truenas_monitoring_password: ""
+truenas_monitoring_api_username: ""
+truenas_monitoring_api_password: ""
 truenas_monitoring_api_key: ""
 
 # Behavior

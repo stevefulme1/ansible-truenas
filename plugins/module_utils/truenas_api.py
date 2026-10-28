@@ -10,7 +10,7 @@ module_utils: truenas_api
 short_description: TrueNAS REST API client and common argument spec
 description:
   - Provides the TrueNASClient class for communicating with the TrueNAS middleware
-    REST API v2.0, supporting both API key and username/password authentication.
+    REST API v2.0, supporting both API key and api_username/api_password authentication.
   - Includes convenience methods for GET, POST, PUT, and DELETE requests, as well
     as async job polling via job_wait. Also exports truenas_argument_spec for
     shared module parameters.
@@ -41,13 +41,13 @@ class TrueNASClient:
         self.module = module
         self.baseurl = module.params["api_url"].rstrip("/")
         self.api_key = module.params.get("api_key")
-        self.username = module.params.get("username")
-        self.password = module.params.get("password")
+        self.username = module.params.get("api_username")
+        self.password = module.params.get("api_password")
         self.validate_certs = module.params.get("validate_certs", True)
         self.timeout = module.params.get("api_timeout", 60)
 
         if not self.api_key and not (self.username and self.password):
-            module.fail_json(msg="Either api_key or username/password must be provided.")
+            module.fail_json(msg="Either api_key or api_username/api_password must be provided.")
 
     def _headers(self):
         headers = {"Content-Type": "application/json"}
@@ -142,8 +142,8 @@ def truenas_argument_spec():
     return dict(
         api_url=dict(type="str", required=True),
         api_key=dict(type="str", required=False, no_log=True),
-        username=dict(type="str", required=False),
-        password=dict(type="str", required=False, no_log=True),
+        api_username=dict(type="str", required=False),
+        api_password=dict(type="str", required=False, no_log=True),
         validate_certs=dict(type="bool", default=True),
         api_timeout=dict(type="int", default=60),
     )

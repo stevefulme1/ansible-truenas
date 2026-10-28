@@ -5,8 +5,8 @@
 truenas_upgrade_host: ""
 
 # Authentication
-truenas_upgrade_username: ""
-truenas_upgrade_password: ""
+truenas_upgrade_api_username: ""
+truenas_upgrade_api_password: ""
 truenas_upgrade_api_key: ""
 
 # Behavior

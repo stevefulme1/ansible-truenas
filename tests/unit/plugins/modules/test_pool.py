@@ -18,8 +18,8 @@ def _base_args(**kwargs):
     args = {
         "api_url": "https://truenas.local/api/v2.0",
         "api_key": "test-key",
-        "username": None,
-        "password": None,
+        "api_username": None,
+        "api_password": None,
         "validate_certs": False,
         "api_timeout": 30,
         "name": "tank",

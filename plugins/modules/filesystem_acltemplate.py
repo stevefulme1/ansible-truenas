@@ -134,7 +134,7 @@ def main():
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        required_one_of=[["api_key", "username"]],
+        required_one_of=[["api_key", "api_username"]],
         required_if=[
             ["state", "present", ["acl_type", "acl"]],
         ],
